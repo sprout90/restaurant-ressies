@@ -1,67 +1,71 @@
-/**
- * Knex configuration file.
- *
- * You will not need to make changes to this file.
- */
-
-require('dotenv').config();
-const path = require("path");
+const path = require("path")
+require("dotenv").config();
+// Update with your config settings.
 
 const {
-  DATABASE_URL = "postgresql://postgres@localhost/postgres",
-  DATABASE_URL_DEVELOPMENT = "postgresql://postgres@localhost/postgres",
-  DATABASE_URL_TEST = "postgresql://postgres@localhost/postgres",
-  DATABASE_URL_PREVIEW = "postgresql://postgres@localhost/postgres",
-  DEBUG,
+  NODE_ENV = "development",
+  DATABASE_URL_DEVELOPMENT,
+  DATABASE_URL_PRODUCTION,
 } = process.env;
+const DATABASE_URL =
+  NODE_ENV === "production"
+    ? DATABASE_URL_PRODUCTION
+    : DATABASE_URL_DEVELOPMENT;
+
+
 
 module.exports = {
+
   development: {
-    client: "postgresql",
-    pool: { min: 1, max: 5 },
-    connection: DATABASE_URL_DEVELOPMENT,
-    migrations: {
-      directory: path.join(__dirname, "src", "db", "migrations"),
-    },
-    seeds: {
-      directory: path.join(__dirname, "src", "db", "seeds"),
-    },
-    debug: !!DEBUG,
-  },
-  test: {
-    client: "postgresql",
-    pool: { min: 1, max: 5 },
-    connection: DATABASE_URL_TEST,
-    migrations: {
-      directory: path.join(__dirname, "src", "db", "migrations"),
-    },
-    seeds: {
-      directory: path.join(__dirname, "src", "db", "seeds"),
-    },
-    debug: !!DEBUG,
-  },
-  preview: {
-    client: "postgresql",
-    pool: { min: 1, max: 5 },
-    connection: DATABASE_URL_PREVIEW,
-    migrations: {
-      directory: path.join(__dirname, "src", "db", "migrations"),
-    },
-    seeds: {
-      directory: path.join(__dirname, "src", "db", "seeds"),
-    },
-    debug: !!DEBUG,
-  },
-  production: {
-    client: "postgresql",
-    pool: { min: 1, max: 5 },
+    client: 'postgresql',
     connection: DATABASE_URL,
+    pool: {
+      min: 2,
+      max: 10
+    },
     migrations: {
       directory: path.join(__dirname, "src", "db", "migrations"),
     },
     seeds: {
       directory: path.join(__dirname, "src", "db", "seeds"),
     },
-    debug: !!DEBUG,
+
   },
+
+  test: {
+    client: 'postgresql',
+    connection: DATABASE_URL,
+    pool: {
+      min: 2,
+      max: 10
+    },
+    migrations: {
+      tableName: 'knex_migrations'
+    }
+  },
+
+  preview: {
+    client: 'postgresql',
+    connection: DATABASE_URL,
+    pool: {
+      min: 2,
+      max: 10
+    },
+    migrations: {
+      tableName: 'knex_migrations'
+    }
+  },
+
+  production: {
+    client: 'postgresql',
+    connection: DATABASE_URL,
+    pool: {
+      min: 2,
+      max: 10
+    },
+    migrations: {
+      tableName: 'knex_migrations'
+    }
+  }
+
 };
