@@ -47,9 +47,11 @@ function Routes() {
     const abortController = new AbortController();
 
     const reservationPromise = updateReservation(saveReservation, abortController.signal);
-        reservationPromise.then((result) => history.goBack())
+        reservationPromise.then((result) => {
+          const url = `/dashboard`
+          history.push(url);
+        })
         .catch(setError);
-
 
     return () => {
       abortController.abort();

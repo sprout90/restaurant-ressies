@@ -1,12 +1,120 @@
+const service = require("./reservations.service.js");
+const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
+const hasProperties = require("../errors/hasProperties");
+const hasRequiredProperties = hasProperties("first_name", "last_name", "mobile_number", "reservation_date", "reservation_time", "people");
+
+// VALIDATION FUNCTIONS
+async function reservationExists(req, res, next){
+
+  const { reservationId } = req.params;
+  const reservation = await service.read(reservationId);
+  
+  if (reservation) {
+      res.locals.reservation = reservation;
+      return next();
+  } else {
+      next({ status: 404, message: `Reservation cannot be found.` });
+  }
+}
+
+async function validPeople(req, res, next){
+  const {people} = req.body.data;
+  if (people < 1){
+    next({ status: 400, message: `People must be 1 or greater.` });
+
+  } else {
+    return next();
+  }
+}
+
+async function validDate(req, res, next){
+  const {reservation_date} = req.body.data;
+  const date = new Date(reservation_date)
+  if (isNaN(date.getTime()) === true){
+    next({ status: 400, message: `Reservation date must be in a valid date format: YYYY-MM-DD` });
+
+  } else {
+    return next();
+  }
+}
+
+async function validTime(req, res, next){
+  const regex = /^([0-2][0-3]):([0-5][0-9])$/;
+  const {reservation_time} = req.body.data;
+
+  if (regex.test(reservation_time) === false){
+    next({ status: 400, message: `Reservation time must be in a valid time format: HH:MM` });
+
+  } else {
+    return next();
+  }
+}
+
+// SERVICE FUNCTIONS
+
 /**
  * List handler for reservation resources
  */
 async function list(req, res) {
-  res.json({
-    data: [],
-  });
+  const { date } = req.query;
+  const result = await service.list(date)
+  res.json( { data: result  })
 }
 
+async function read(req, res, next){
+  res.json( { data: res.locals.reservation })
+}
+
+async function create(req, res, next){
+
+  const data = await service.create(req.body.data);
+  res.status(201).json({ data })
+}
+
+async function update(req, res, next){
+  const updatedReservation = {
+      ...req.body.data,
+      reservation_id: res.locals.reservation.reservation_id,
+    };
+  
+    const data = await service.update(updatedReservation);
+
+    res.json({ data });
+}
+
+async function destroy(req, res, next){
+  await service.destroy(res.locals.reservation.reservation_id);
+  res.sendStatus(204);
+
+}
+
+
+
 module.exports = {
-  list,
+  list: [
+    asyncErrorBoundary(list)
+  ],
+  read: [
+    asyncErrorBoundary(reservationExists), 
+    asyncErrorBoundary(read)
+  ],
+  create: [
+    hasRequiredProperties, 
+    validDate,
+    validTime,
+    validPeople,
+    asyncErrorBoundary(create)
+  ],
+  update: [
+    asyncErrorBoundary(reservationExists), 
+    hasRequiredProperties, 
+    validDate,
+    validTime,
+    validPeople,
+    asyncErrorBoundary(update)
+  ],
+  destroy: [
+    asyncErrorBoundary(reservationExists), 
+    asyncErrorBoundary(destroy)
+  ]
 };
