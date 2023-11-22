@@ -50,6 +50,18 @@ async function validTime(req, res, next){
   }
 }
 
+async function validPhone(req, res, next){
+  const regex = /^(\()?\d{3}(\))?(-|\s)?\d{3}(-|\s)\d{4}$/;
+  const {mobile_number} = req.body.data;
+
+  if (regex.test(mobile_number) === false){
+    next({ status: 400, message: `Mobile number must be in a valid phone number format: 555-555-5555` });
+
+  } else {
+    return next();
+  }
+}
+
 // SERVICE FUNCTIONS
 
 /**
@@ -100,6 +112,7 @@ module.exports = {
   ],
   create: [
     hasRequiredProperties, 
+    validPhone, 
     validDate,
     validTime,
     validPeople,
@@ -108,6 +121,7 @@ module.exports = {
   update: [
     asyncErrorBoundary(reservationExists), 
     hasRequiredProperties, 
+    validPhone, 
     validDate,
     validTime,
     validPeople,
