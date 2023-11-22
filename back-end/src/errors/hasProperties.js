@@ -1,7 +1,13 @@
 function hasProperties(...properties) {
 
   return function (req, res, next) {
-      const { data = {} } = req.body;
+      const { data} = req.body;
+
+      if (!(data)){
+        const error = new Error(`Request package missing data object`);
+        error.status = 400;
+        throw error;
+      }
   
       try {
           properties.forEach((property) => {

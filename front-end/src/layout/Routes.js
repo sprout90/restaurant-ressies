@@ -25,6 +25,8 @@ function Routes() {
   // define event actions for create and delete
   const createReservationHandler = (newReservation) => {
 
+    console.log("new reservation ", newReservation)
+
     const abortController = new AbortController(); 
 
     const reservationPromise = createReservation(newReservation, abortController.signal);

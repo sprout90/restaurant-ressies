@@ -79,7 +79,10 @@ async function read(req, res, next){
 
 async function create(req, res, next){
 
+  console.error("inside controller create ")
   const data = await service.create(req.body.data);
+  console.error("body ", req.body)
+  console.error("data ", data)
   res.status(201).json({ data })
 }
 
