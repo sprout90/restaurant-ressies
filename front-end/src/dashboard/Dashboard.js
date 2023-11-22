@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { listReservations } from "../utils/api";
-import ReservationList from "../reservations/ReservationList"
-import { today } from "../utils/date-time";
+import { today, previous, next } from "../utils/date-time";
 import ErrorAlert from "../layout/ErrorAlert";
+import ReservationList from "../reservations/ReservationList"
 
 /**
  * Defines the dashboard page.
@@ -13,7 +13,9 @@ import ErrorAlert from "../layout/ErrorAlert";
 function Dashboard({ date = today()}) {
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
-  console.log("date ", date)
+  const [reservationDate, setReservationDate] = useState(date);
+
+  console.log("date ", reservationDate)
   useEffect(() => {
 
     const abortController = new AbortController();
@@ -21,6 +23,7 @@ function Dashboard({ date = today()}) {
     async function loadReservations(abortController) {
   
       setReservationsError(null);
+      date = reservationDate;
     
       try{
         const result = await listReservations({date}, abortController.signal);
@@ -33,16 +36,44 @@ function Dashboard({ date = today()}) {
     loadReservations(abortController);
 
     return () => abortController.abort();
-  }, [date]);
+  }, [reservationDate]);
+
+  const prevButton = () => {
+    const prevDate = previous(reservationDate);
+    setReservationDate(prevDate)
+  }
+
+  const todayButton = () => {
+    setReservationDate(today());
+  }
+
+  const nextButton = () => {
+    const nextDate = next(reservationDate);
+    setReservationDate(nextDate)
+  }
+
 
   return (
     <main>
       <h1>Dashboard</h1>
+      <div className="row">
+        <div>
+          <button id="previous" name="previous" onClick={prevButton}>Previous</button>        
+        </div>
+        <div>
+          <button id="today" name="today" onClick={todayButton}>Today</button>        
+        </div>
+        <div>
+          <button id="next" name="next" onClick={nextButton}>Next</button>        
+        </div>
+      </div>
       <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Reservations for {date}</h4>
+        <h4 className="mb-0">Reservations for {reservationDate}</h4>
       </div>
       <ErrorAlert error={reservationsError} />
-      {JSON.stringify(reservations)}
+      <div>
+        <ReservationList reservations={reservations} />  
+      </div>
     </main>
   );
 }

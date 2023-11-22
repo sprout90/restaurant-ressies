@@ -3,7 +3,9 @@ const knex = require("../db/connection");
 async function list(queryDate){
     return knex("reservations")
     .select("*")
-    .where({"reservation_date": queryDate});
+    .where({"reservation_date": queryDate})
+    .orderBy("reservation_date", "asc")
+    .orderBy("reservation_time", "asc")
 }
 
 async function read(reservationId){
