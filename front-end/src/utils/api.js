@@ -15,6 +15,16 @@ const headers = new Headers();
 headers.append("Content-Type", "application/json");
 
 /**
+ * Returns day of the week in which the restaurant is closed.
+ * @returns {String containing day of the week}
+ */
+export function getBlackoutDay(){
+  const BLACKOUT_DAY = process.env.BLACKOUT_DAY || "Tuesday";
+
+  return BLACKOUT_DAY;
+}
+
+/**
  * Fetch `json` from the specified URL and handle error status codes and ignore `AbortError`s
  *
  * This function is NOT exported because it is not needed outside of this file.

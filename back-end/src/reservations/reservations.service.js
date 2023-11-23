@@ -1,4 +1,5 @@
 const knex = require("../db/connection");
+require("dotenv").config();
 
 async function list(queryDate){
     return knex("reservations")
@@ -38,4 +39,10 @@ async function destroy(reservationId){
   .del();
 }
 
-module.exports = {list, read, create, update, destroy}
+function getBlackoutDay(){
+  const BLACKOUT_DAY = process.env.BLACKOUT_DAY || "Tuesday";
+
+  return BLACKOUT_DAY;
+}
+
+module.exports = {list, read, create, update, destroy, getBlackoutDay}

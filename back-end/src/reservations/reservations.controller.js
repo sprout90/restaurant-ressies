@@ -1,6 +1,7 @@
 const service = require("./reservations.service.js");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const hasProperties = require("../errors/hasProperties");
+const {dayOfWeek, lessThanToday} = require("../utils/date-time.js");
 const hasRequiredProperties = hasProperties("first_name", "last_name", "mobile_number", "reservation_date", "reservation_time", "people");
 
 // VALIDATION FUNCTIONS
@@ -38,6 +39,30 @@ async function validDate(req, res, next){
   }
 }
 
+async function validWorkingDate(req, res, next){
+  const {reservation_date} = req.body.data;
+  const requestDayOfWeek = dayOfWeek(reservation_date)
+  const blackoutDay = service.getBlackoutDay();
+  console.log("blackout and day-of-week ", blackoutDay, requestDayOfWeek)
+  if (blackoutDay === requestDayOfWeek){
+    next({ status: 400, message: `Reservations cannot be scheduled on ${blackoutDay}. Restaurant is closed.` });
+
+  } else {
+    return next();
+  }
+}
+
+async function validPresentDate(req, res, next){
+  const {reservation_date} = req.body.data;
+ 
+  if (lessThanToday(reservation_date)){
+    next({ status: 400, message: `Reservations cannot be scheduled in the past.` });
+
+  } else {
+    return next();
+  }
+}
+
 async function validTime(req, res, next){
   const regex = /^([0-2][0-3]):([0-5][0-9])$/;
   const {reservation_time} = req.body.data;
@@ -55,7 +80,7 @@ async function validPhone(req, res, next){
   const {mobile_number} = req.body.data;
 
   if (regex.test(mobile_number) === false){
-    next({ status: 400, message: `Mobile number must be in a valid phone number format: 555-555-5555` });
+    next({ status: 400, message: `The mobile number (${mobile_number}) is invalid. ` });
 
   } else {
     return next();
@@ -117,6 +142,8 @@ module.exports = {
     hasRequiredProperties, 
     validPhone, 
     validDate,
+    validWorkingDate,
+    validPresentDate,
     validTime,
     validPeople,
     asyncErrorBoundary(create)
@@ -126,6 +153,8 @@ module.exports = {
     hasRequiredProperties, 
     validPhone, 
     validDate,
+    validWorkingDate,
+    validPresentDate,
     validTime,
     validPeople,
     asyncErrorBoundary(update)

@@ -1,13 +1,16 @@
 import React, {useState, useEffect} from "react";
 import { useParams, useRouteMatch, useHistory} from "react-router-dom";
-import { readReservation } from "../utils/api"
-import { today } from "../utils/date-time";
+import { readReservation, getBlackoutDay } from "../utils/api"
+import { today, dayOfWeek, lessThanToday } from "../utils/date-time";
+import ErrorAlert from "../layout/ErrorAlert";
+require("dotenv").config();
 
 function ReservationEdit({createReservationEvent, saveReservationEvent }){
   const {reservationId} = useParams();
   const { path } = useRouteMatch();
   const history = useHistory();
-  const [error, setError] = useState(undefined)
+  const [reservationsError, setReservationsError] = useState(undefined)
+  const [blackoutDay, setBlackoutDay] = useState(undefined)
   
 
     // define inital form state object 
@@ -42,12 +45,17 @@ function ReservationEdit({createReservationEvent, saveReservationEvent }){
               people: result.people};
           setFormData(reservation);   
         })
-        .catch(setError);
+        .catch(setReservationsError);
       }
-
+    
+    // load Reservation if id defined
     if (reservationId){
       LoadReservation();
     }
+    
+    // retrieve blackout day from config for validation
+    setBlackoutDay(getBlackoutDay())
+
 
     return () => {
       abortController.abort();
@@ -73,16 +81,51 @@ function ReservationEdit({createReservationEvent, saveReservationEvent }){
     history.push(url);
   }
 
+
+  function validateForm(formData){
+    let validForm = true;
+    const errorList = [];
+
+    console.log("inside client validate" );
+    // test for blackout day reservation
+    const formDayOfWeek = dayOfWeek(formData.reservation_date)
+    if (blackoutDay === formDayOfWeek ){
+      const error = {name: "Backout Day reservation error",
+                   message: `Reservations cannot be scheduled on ${blackoutDay}. Restaurant is closed.`}
+      errorList.push(error)
+      validForm = false;
+    }
+    // test for reservation date in the past
+    if (lessThanToday(formData.reservation_date)){
+      const error = {name: "Backout Day reservation error",
+                   message: `Reservations cannot be scheduled in the past.`}
+      errorList.push(error)
+      validForm = false;
+
+    }
+
+    if (validForm == false){
+      setReservationsError(errorList)
+    }
+
+    return validForm;
+  }
+
   return (
     <div>
       <h1>{title}</h1>
+      <ErrorAlert error={reservationsError} />
       <hr/>
       <form name="create" onSubmit={(event) => {
           event.preventDefault();
           if (!(reservationId)){
-            createReservationEvent(formData);
+            if (validateForm(formData) === true){
+              createReservationEvent(formData);
+            }
           } else {
-            saveReservationEvent(formData)
+            if (validateForm(formData) === true){
+              saveReservationEvent(formData);
+            }
           }
         } } >
           <label htmlFor="first_name">First Name<br/>
