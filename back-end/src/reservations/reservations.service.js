@@ -45,4 +45,27 @@ function getBlackoutDay(){
   return BLACKOUT_DAY;
 }
 
-module.exports = {list, read, create, update, destroy, getBlackoutDay}
+/**
+ * Returns starting time for reservations of a given day
+ * 
+ * @returns {array where index 0 is hours, and index 1 is minutes}
+ */
+function getReservationStartTime(){
+  const RESERVATION_START_HOUR = process.env.RESERVATION_START_HOUR || "10";
+  const RESERVATION_START_MINUTE = process.env.RESERVATION_START_MINUTE || "30";
+  return [RESERVATION_START_HOUR, RESERVATION_START_MINUTE];
+}
+
+/**
+ * Returns ending time for reservations of a given day
+ * @returns {array where index 0 is hours, and index 1 is minutes}
+ */
+function getReservationEndTime(){
+  const RESERVATION_END_HOUR = process.env.RESERVATION_END_HOUR || "21";
+  const RESERVATION_END_MINUTE = process.env.RESERVATION_END_MINUTE || "30";
+  return [RESERVATION_END_HOUR, RESERVATION_END_MINUTE];
+}
+
+
+
+module.exports = {list, read, create, update, destroy, getBlackoutDay, getReservationStartTime, getReservationEndTime}

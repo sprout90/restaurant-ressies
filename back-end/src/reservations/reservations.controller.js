@@ -1,7 +1,7 @@
 const service = require("./reservations.service.js");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const hasProperties = require("../errors/hasProperties");
-const {dayOfWeek, lessThanToday} = require("../utils/date-time.js");
+const {dayOfWeek, lessThanToday, lessThanDefinedTime, greaterThanDefinedTime} = require("../utils/date-time.js");
 const hasRequiredProperties = hasProperties("first_name", "last_name", "mobile_number", "reservation_date", "reservation_time", "people");
 
 // VALIDATION FUNCTIONS
@@ -52,6 +52,27 @@ async function validWorkingDate(req, res, next){
   }
 }
 
+async function validWorkingTime(req, res, next){
+
+  const {reservation_time} = req.body.data;
+
+ // test for non-operating hours reservation
+ const start = service.getReservationStartTime();
+ const end = service.getReservationEndTime();
+
+ const validStartTime = `${start[0]}:${start[1]}`;
+ const validEndTime = `${end[0]}:${end[1]}`;
+
+ if ((lessThanDefinedTime(reservation_time, validStartTime)) || (greaterThanDefinedTime(reservation_time, validEndTime))){
+   next({ status: 400, message: `Reservations cannot be scheduled before ${validStartTime} or after ${validEndTime}.` });
+
+ } else {
+  next(); 
+ }
+
+}
+
+
 async function validPresentDate(req, res, next){
   const {reservation_date} = req.body.data;
  
@@ -64,11 +85,11 @@ async function validPresentDate(req, res, next){
 }
 
 async function validTime(req, res, next){
-  const regex = /^([0-2][0-3]):([0-5][0-9])$/;
+  const regex = /^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
   const {reservation_time} = req.body.data;
 
   if (regex.test(reservation_time) === false){
-    next({ status: 400, message: `Reservation time must be in a valid time format: HH:MM` });
+    next({ status: 400, message: `Reservation time (${reservation_time}) must be in a valid time format: HH:MM` });
 
   } else {
     return next();
@@ -76,7 +97,7 @@ async function validTime(req, res, next){
 }
 
 async function validPhone(req, res, next){
-  const regex = /^(\()?\d{3}(\))?(-|\s)?\d{3}(-|\s)\d{4}$/;
+  const regex = /^\d{3}-\d{3}-\d{4}$/;
   const {mobile_number} = req.body.data;
 
   if (regex.test(mobile_number) === false){
@@ -145,6 +166,7 @@ module.exports = {
     validWorkingDate,
     validPresentDate,
     validTime,
+    validWorkingTime,
     validPeople,
     asyncErrorBoundary(create)
   ],
@@ -156,6 +178,7 @@ module.exports = {
     validWorkingDate,
     validPresentDate,
     validTime,
+    validWorkingTime,
     validPeople,
     asyncErrorBoundary(update)
   ],

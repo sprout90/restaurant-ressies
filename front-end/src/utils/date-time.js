@@ -19,6 +19,40 @@ function asDateString(date) {
 }
 
 /**
+ * Returns input time (AM/PM) as 24 hour time.  
+ *
+ * This function is *not* exported because the UI should generally avoid working directly with time operations
+ * You may export this function if you need it.
+ *
+ * @param date
+ *  a string representing time in either 24-hour or meridiem time formats
+ * @returns {string}
+ *  the specified time in 24-hour format
+ */
+function as24HourTime(time){
+
+  const postMeridiem = time.indexOf("PM");
+  const anteMeridiem = time.indexOf("AM");
+
+  // test if string is already in 24 hour time
+  if ((postMeridiem === -1) && (anteMeridiem === -1)){
+    return time;
+  } else {
+    const hours = time.substr(0, 2);
+    const minutes = time.substr(3,2);
+    if (postMeridiem > -1 ){
+      const hours24 = String.toString(parseInt(hours) + 12); 
+      const as24Hours = `${hours24}:${minutes}`
+      return as24Hours
+    } else {
+      const as24Hours = `${hours}:${minutes}`
+      return as24Hours
+    }
+  }
+
+}
+
+/**
  * Format a date string in ISO-8601 format (which is what is returned from PostgreSQL) as YYYY-MM-DD.
  * @param dateString
  *  ISO-8601 date string
@@ -96,12 +130,85 @@ export function next(currentDate) {
   return asDateString(date);
 }
 
+/**
+ * Determines if in the input date (rawDate) is less than today
+ * @param rawDate
+ *  a date string in YYYY-MM-DD format (this is also ISO-8601 format)
+ * @returns {*}
+ *  true or false, whether the input date is less than today.
+ */
 export function lessThanToday(rawDate){
   let [ year, month, day ] = rawDate.split("-");
   month -= 1;
   const pickDate = new Date(year, month, day);
   const today = new Date()
   if (pickDate.getTime() < today.getTime()){
+    return true
+  } else {
+    return false;
+  }
+}
+
+/**
+ * Determines if in the input date (rawDate) is less than today
+ * @param rawDate
+ *  a date string in YYYY-MM-DD format (this is also ISO-8601 format)
+ * @param rawTime
+ *  a time string in HH:MM format
+ * @returns {*}
+ *  true or false, whether the input date & time is less than current date, and time
+ */
+export function lessThanNow(rawDate, rawTime){
+ 
+  const pickDate = new Date(rawDate + " " + rawTime);
+  const today = new Date()
+  if (pickDate.getTime() < today.getTime()){
+    return true
+  } else {
+    return false;
+  }
+}
+
+/**
+ * Determines if in the timeA is less than timeB
+ * @param timeA
+ *  a time string in HH:MM format from user input
+ * @param timeB
+ *  a time string in HH:MM format from env variable
+ * @returns {*}
+ *  true or false, whether the time is less than compare time.
+ */
+export function lessThanDefinedTime(timeA, timeB){
+ 
+  timeA = as24HourTime(timeA);
+  console.log("time A ", timeA)
+  const pickTime = new Date("1990-01-01 " + timeA);
+  const comparedTime = new Date("1990-01-01 " + timeB);
+  console.log("input and compare times ", pickTime, comparedTime)
+  if (pickTime.getTime() < comparedTime.getTime()){
+    return true
+  } else {
+    return false;
+  }
+}
+
+/**
+ * Determines if in the timeA is greater than timeB
+ * @param timeA
+ *  a time string in HH:MM format
+ * @param timeB
+ *  a time string in HH:MM format
+ * @returns {*}
+ *  true or false, whether the time is greater than compare time.
+ */
+export function greaterThanDefinedTime(timeA, timeB){
+ 
+  timeA = as24HourTime(timeA);
+  console.log("time A ", timeA)
+  const pickTime = new Date("1990-01-01 " + timeA);
+  const comparedTime = new Date("1990-01-01 " + timeB);
+  console.log("input and compare times ", pickTime, comparedTime)
+  if (pickTime.getTime() > comparedTime.getTime()){
     return true
   } else {
     return false;

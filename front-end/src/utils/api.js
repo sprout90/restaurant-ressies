@@ -25,6 +25,27 @@ export function getBlackoutDay(){
 }
 
 /**
+ * Returns starting time for reservations of a given day
+ * 
+ * @returns {array where index 0 is hours, and index 1 is minutes}
+ */
+export function getReservationStartTime(){
+  const RESERVATION_START_HOUR = process.env.RESERVATION_START_HOUR || "10";
+  const RESERVATION_START_MINUTE = process.env.RESERVATION_START_MINUTE || "30";
+  return [RESERVATION_START_HOUR, RESERVATION_START_MINUTE];
+}
+
+/**
+ * Returns ending time for reservations of a given day
+ * @returns {array where index 0 is hours, and index 1 is minutes}
+ */
+export function getReservationEndTime(){
+  const RESERVATION_END_HOUR = process.env.RESERVATION_END_HOUR || "21";
+  const RESERVATION_END_MINUTE = process.env.RESERVATION_END_MINUTE || "30";
+  return [RESERVATION_END_HOUR, RESERVATION_END_MINUTE];
+}
+
+/**
  * Fetch `json` from the specified URL and handle error status codes and ignore `AbortError`s
  *
  * This function is NOT exported because it is not needed outside of this file.

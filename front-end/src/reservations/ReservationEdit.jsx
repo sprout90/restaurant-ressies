@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { useParams, useRouteMatch, useHistory} from "react-router-dom";
-import { readReservation, getBlackoutDay } from "../utils/api"
-import { today, dayOfWeek, lessThanToday } from "../utils/date-time";
+import { readReservation, getBlackoutDay, getReservationStartTime, getReservationEndTime } from "../utils/api"
+import { today, dayOfWeek, lessThanNow, lessThanDefinedTime, greaterThanDefinedTime } from "../utils/date-time";
 import ErrorAlert from "../layout/ErrorAlert";
 require("dotenv").config();
 
@@ -95,16 +95,31 @@ function ReservationEdit({createReservationEvent, saveReservationEvent }){
       errorList.push(error)
       validForm = false;
     }
-    // test for reservation date in the past
-    if (lessThanToday(formData.reservation_date)){
-      const error = {name: "Backout Day reservation error",
+ 
+    // test for non-operating hours reservation
+    const start = getReservationStartTime();
+    const end = getReservationEndTime();
+
+    const validStartTime = `${start[0]}:${start[1]}`;
+    const validEndTime = `${end[0]}:${end[1]}`;
+    const inputTime = formData.reservation_time;
+
+    if ((lessThanDefinedTime(inputTime, validStartTime)) || (greaterThanDefinedTime(inputTime, validEndTime))){
+      const error = {name: "Time reservation error",
+                   message: `Reservations cannot be scheduled before ${validStartTime} or after ${validEndTime}.`}
+      errorList.push(error)
+      validForm = false;
+    }
+    
+    // test for reservation date & time that is less than now
+    if (lessThanNow(formData.reservation_date, formData.reservation_time)){
+      const error = {name: "Day & Time reservation error",
                    message: `Reservations cannot be scheduled in the past.`}
       errorList.push(error)
       validForm = false;
-
     }
 
-    if (validForm == false){
+    if (validForm === false){
       setReservationsError(errorList)
     }
 
