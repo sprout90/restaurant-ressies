@@ -70,7 +70,6 @@ function Dashboard({ date = today()}) {
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Reservations for {reservationDate}</h4>
       </div>
-      <ErrorAlert error={reservationsError} />
       <div>
         <ReservationList reservations={reservations} />  
       </div>

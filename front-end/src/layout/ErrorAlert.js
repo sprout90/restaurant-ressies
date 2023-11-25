@@ -35,7 +35,7 @@ function ErrorAlert({ error }) {
     } 
 } else {
   // return empty span tag for no errors as placeholder.
-    return (<span>&nbsp;</span>);    
+    return (null);    
   }
 }
 
