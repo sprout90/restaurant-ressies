@@ -89,7 +89,6 @@ async function fetchJson(url, options, onCancel) {
  * @returns {Promise<[reservation]>}
  *  a promise that resolves to a possibly empty array of reservation saved in the database.
  */
-
 export async function listReservations(params, signal) {
   const url = new URL(`${API_BASE_URL}/reservations?`);
   Object.entries(params).forEach(([key, value]) =>
@@ -169,6 +168,19 @@ export async function deleteReservation(reservationId, signal) {
   const url = `${API_BASE_URL}/reservations/${reservationId}`;
   const options = { method: "DELETE", signal };
   return await fetchJson(url, options);
+}
+
+/**
+ * Retrieves all existing tables.
+ * @returns {Promise<[reservation]>}
+ *  a promise that resolves to a possibly empty array of reservation saved in the database.
+ */
+export async function listTables(params, signal) {
+  const url = new URL(`${API_BASE_URL}/tables?`);
+  Object.entries(params).forEach(([key, value]) =>
+    url.searchParams.append(key, value.toString())
+  );
+  return await fetchJson(url, { headers, signal }, []);
 }
 
 /**

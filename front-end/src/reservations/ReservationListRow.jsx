@@ -1,4 +1,5 @@
 import React from "react";
+import ReservationSeatBtn from "./ReservationSeatBtn";
 
 function ReservationListRow({reservation}){
 
@@ -17,8 +18,11 @@ function ReservationListRow({reservation}){
       <div className="col-2">
         {reservation.reservation_time}
       </div>
-      <div className="col-2">
+      <div className="col-1">
         {reservation.people}
+      </div>
+      <div className="col-1">
+        <ReservationSeatBtn reservation_id={reservation.reservation_id}/>
       </div>
     </div>
   );

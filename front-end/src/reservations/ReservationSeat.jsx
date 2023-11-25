@@ -8,7 +8,7 @@ function ReservationSeat(){
 
   return (
     <div>
-      
+      <p>reservation seat</p>
     </div>
   );
 

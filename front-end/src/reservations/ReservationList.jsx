@@ -19,8 +19,11 @@ function ReservationList({reservations}){
           <div className="col-2">
             <span>Time</span>
           </div>
-          <div className="col-2">
+          <div className="col-1">
             <span>People</span>
+          </div>
+          <div className="col-1">
+            <span>Seat</span>
           </div>
       </div>
       <div>
