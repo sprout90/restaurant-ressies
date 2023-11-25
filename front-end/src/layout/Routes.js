@@ -1,10 +1,10 @@
-import React, {useState} from "react";
-import { Redirect, Route, Switch, useHistory } from "react-router-dom";
+import React from "react";
+import { Redirect, Route, Switch } from "react-router-dom";
 import Dashboard from "../dashboard/Dashboard";
-import ReservationEdit from "../reservations/ReservationEdit"
+import ReservationEdit from "../reservations/ReservationEdit";
+import ReservationSeat from "../reservations/ReservationSeat";
+import TableEdit from "../tables/TableEdit";
 import NotFound from "./NotFound";
-import { createReservation, updateReservation } from "../utils/api"
-
 import { today } from "../utils/date-time";
 
 /**
@@ -17,56 +17,21 @@ import { today } from "../utils/date-time";
 
 
 
-function Routes() {
-
-  const history = useHistory();
-  const [error, setError] = useState();
-
-  // define event actions for create and delete
-  const createReservationHandler = (newReservation) => {
-
-    console.log("new reservation ", newReservation)
-
-    const abortController = new AbortController(); 
-
-    const reservationPromise = createReservation(newReservation, abortController.signal);
-      reservationPromise.then((result) => {
-        // add new reservation (with id) to end of list, and set state
-        // newReservation.id = result.id;
-        const url = `/dashboard`
-        history.push(url);
-      })
-      .catch(setError);
-
-    return () => {
-      abortController.abort();
-    };
-  };
-
-
-  // define event actions for create and delete
-  const saveReservationHandler = (saveReservation) => {
-    const abortController = new AbortController();
-
-    const reservationPromise = updateReservation(saveReservation, abortController.signal);
-        reservationPromise.then((result) => {
-          const url = `/dashboard`
-          history.push(url);
-        })
-        .catch(setError);
-
-    return () => {
-      abortController.abort();
-    };
-  };
+function Routes() {  
 
   return (
     <Switch>
+     <Route path="/tables/new" >
+        <TableEdit />
+      </Route>
       <Route path="/reservations/new" >
-        <ReservationEdit createReservationEvent={createReservationHandler} saveReservationEvent={saveReservationHandler}/>
+        <ReservationEdit />
       </Route>
       <Route path="/reservations/:reservationId/edit" >
-        <ReservationEdit createReservationEvent={createReservationHandler} saveDeckEvent={saveReservationHandler}/>
+        <ReservationEdit />
+      </Route>
+      <Route path="/reservations/:reservationId/seat" >
+        <ReservationSeat />
       </Route>
       <Route exact={true} path="/reservations">
         <Redirect to={"/dashboard"} />

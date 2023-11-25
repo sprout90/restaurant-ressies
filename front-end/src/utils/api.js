@@ -4,6 +4,7 @@
  */
 import formatReservationDate from "./format-reservation-date";
 import formatReservationTime from "./format-reservation-date";
+require("dotenv").config();
 
 const API_BASE_URL =
   process.env.REACT_APP_API_BASE_URL || "http://localhost:5001";
@@ -168,4 +169,60 @@ export async function deleteReservation(reservationId, signal) {
   const url = `${API_BASE_URL}/reservations/${reservationId}`;
   const options = { method: "DELETE", signal };
   return await fetchJson(url, options);
+}
+
+/**
+ * Retrieves the table with the specified `tableId`
+ * @param tableId
+ *  the `id` property matching the desired table.
+ * @param signal
+ *  optional AbortController.signal
+ * @returns {Promise<any>}
+ *  a promise that resolves to the saved table.
+ */
+export async function readTable(tableId, signal) {
+  const url = `${API_BASE_URL}/tables/${tableId}`;
+  return await fetchJson(url, { signal }, {});
+}
+
+/**
+ * Saves table to the database.
+ * @param table
+ *  the table to save, which must not have an `id` property
+ * @param signal
+ *  optional AbortController.signal
+ * @returns {Promise<reservation>}
+ *  a promise that resolves the saved table, which will now have an `id` property.
+ */
+export async function createTable(table, signal) {
+  const data = table
+  const dataPackage = {data}
+  const url = `${API_BASE_URL}/tables`;
+  const options = {
+    method: "POST",
+    headers,
+    body: JSON.stringify(dataPackage),
+    signal,
+  };
+  return await fetchJson(url, options, {});
+}
+
+/**
+ * Updates an existing table
+ * @param updatedTable
+ *  the table to save, which must have an `id` property.
+ * @param signal
+ *  optional AbortController.signal
+ * @returns {Promise<Error|*>}
+ *  a promise that resolves to the updated table.
+ */
+export async function updateTable(updatedTable, signal) {
+  const url = `${API_BASE_URL}/tables/${updatedTable.table_id}`;
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify(updatedTable),
+    signal,
+  };
+  return await fetchJson(url, options, updatedTable);
 }

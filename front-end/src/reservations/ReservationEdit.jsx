@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from "react";
 import { useParams, useRouteMatch, useHistory} from "react-router-dom";
-import { readReservation, getBlackoutDay, getReservationStartTime, getReservationEndTime } from "../utils/api"
+import { readReservation, createReservation, updateReservation, getBlackoutDay, getReservationStartTime, getReservationEndTime } from "../utils/api"
 import { today, dayOfWeek, lessThanNow, lessThanDefinedTime, greaterThanDefinedTime } from "../utils/date-time";
 import ErrorAlert from "../layout/ErrorAlert";
-require("dotenv").config();
 
-function ReservationEdit({createReservationEvent, saveReservationEvent }){
+
+function ReservationEdit(){
   const {reservationId} = useParams();
   const { path } = useRouteMatch();
   const history = useHistory();
@@ -36,7 +36,7 @@ function ReservationEdit({createReservationEvent, saveReservationEvent }){
         const reservationPromise = readReservation(reservationId, abortController.signal);
         reservationPromise.then((result) => {
           const reservation = 
-            { id : result.id, 
+            { id : result.reservation_id, 
               first_name: result.first_name,
               last_name: result.last_name,
               mobile_number: result.mobile_number,
@@ -69,6 +69,46 @@ function ReservationEdit({createReservationEvent, saveReservationEvent }){
   } else {
     title = "Edit Reservation"
   }
+
+// define event actions for create
+const createReservationEvent = (newReservation) => {
+
+  console.log("new reservation ", newReservation)
+
+  const abortController = new AbortController(); 
+
+  const reservationPromise = createReservation(newReservation, abortController.signal);
+    reservationPromise.then((result) => {
+      // add new reservation (with id) to end of list, and set state
+      // newReservation.id = result.id;
+      const url = `/dashboard`
+      history.push(url);
+    })
+    .catch(setReservationsError);
+
+  return () => {
+    abortController.abort();
+  };
+};
+
+
+// define event actions for update
+const saveReservationEvent = (saveReservation) => {
+  const abortController = new AbortController();
+
+  const reservationPromise = updateReservation(saveReservation, abortController.signal);
+      reservationPromise.then((result) => {
+        const url = `/dashboard`
+        history.push(url);
+      })
+      .catch(setReservationsError);
+
+  return () => {
+    abortController.abort();
+  };
+};
+
+
 
   // define event handlers for field-level change, and form submit
   const handleChange = ({ target }) => { 
