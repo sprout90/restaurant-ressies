@@ -26,17 +26,16 @@ function ReservationEdit(){
   console.log("reservation id ", reservationId)
 
 
-  // populate primary deck and card stack properties
+  // load reservation for edit
   useEffect(() => {
 
-    // retrieve decks with cards, and store the DeckData arry in useState
     const abortController = new AbortController();
 
       function LoadReservation(){
         const reservationPromise = readReservation(reservationId, abortController.signal);
         reservationPromise.then((result) => {
           const reservation = 
-            { id : result.reservation_id, 
+            { reservation_id : result.reservation_id, 
               first_name: result.first_name,
               last_name: result.last_name,
               mobile_number: result.mobile_number,

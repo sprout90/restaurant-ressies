@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { listReservations, listTables } from "../utils/api";
 import { today, previous, next } from "../utils/date-time";
 import ErrorAlert from "../layout/ErrorAlert";
+import NavButtons from "./NavButtons";
 import ReservationList from "../reservations/ReservationList"
 import TableList from "../tables/TableList";
 
@@ -13,6 +14,7 @@ import TableList from "../tables/TableList";
  */
 function Dashboard({ date = today()}) {
   const [reservations, setReservations] = useState([]);
+  const [tables, setTables] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
   const [reservationDate, setReservationDate] = useState(date);
 
@@ -20,11 +22,8 @@ function Dashboard({ date = today()}) {
 
     const abortController = new AbortController();
 
-    async function loadReservations(abortController) {
-  
-      setReservationsError(null);
-      date = reservationDate;
-    
+    async function loadReservations(date, abortController) {
+      
       try{
         const result = await listReservations({date}, abortController.signal);
         setReservations(result)
@@ -33,7 +32,19 @@ function Dashboard({ date = today()}) {
       }
     }
 
-    loadReservations(abortController);
+    async function loadTables(date, abortController) {
+    
+      try{
+        const result = await listTables({date}, abortController.signal);
+        setTables(result)
+      } catch (error){
+        setReservationsError(error)
+      }
+    }
+
+    setReservationsError(null);
+    loadReservations(reservationDate, abortController);
+    loadTables(reservationDate, abortController);
 
     return () => abortController.abort();
   }, [reservationDate]);
@@ -57,17 +68,7 @@ function Dashboard({ date = today()}) {
     <main>
       <h1>Dashboard</h1>
       <ErrorAlert error={reservationsError} />
-      <div className="row">
-        <div>
-          <button id="previous" name="previous" onClick={prevButton}>Previous</button>        
-        </div>
-        <div>
-          <button id="today" name="today" onClick={todayButton}>Today</button>        
-        </div>
-        <div>
-          <button id="next" name="next" onClick={nextButton}>Next</button>        
-        </div>
-      </div>
+        <NavButtons prevClick={prevButton} todayClick={todayButton} nextClick={nextButton} />
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Reservations for {reservationDate}</h4>
       </div>
@@ -78,7 +79,7 @@ function Dashboard({ date = today()}) {
         <h4 className="mb-0">Tables</h4>
       </div>
       <div>
-      <TableList />
+      <TableList tables={tables}/>
       </div>
     </main>
   );

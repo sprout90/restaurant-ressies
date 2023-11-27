@@ -17,10 +17,9 @@ function TableEdit(){
   const [formData, setFormData] = useState( {...initialFormState })
   console.log("table id ", tableId)
 
-  // populate primary deck and card stack properties
+  // load table object
   useEffect(() => {
 
-    // retrieve decks with cards, and store the DeckData arry in useState
     const abortController = new AbortController();
 
       function LoadTable(){
@@ -28,7 +27,7 @@ function TableEdit(){
         tablePromise.then((result) => {
           const table = 
             { id : result.table_id, 
-              first_name: result.table_name,
+              table_name: result.table_name,
               capacity: result.capacity};
           setFormData(table);   
         })

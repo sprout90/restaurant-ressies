@@ -49,11 +49,19 @@ function dayOfWeek(rawDate){
   return dow;
 }
 
-function lessThanToday(rawDate){
+function lessThanToday(rawDate, rawTime){
+
+  // get selected date and time and create date object
   let [ year, month, day ] = rawDate.split("-");
   month -= 1;
-  const pickDate = new Date(year, month, day);
+  const convertedTime = as24HourTime(rawTime);
+  let [ hour, minute] = convertedTime.split(":")
+  const pickDate = new Date(year, month, day, hour, minute);
+
+  // get today's date object
   const today = new Date()
+
+  // compare user selected date/time with today's
   if (pickDate.getTime() < today.getTime()){
     return true
   } else {
@@ -73,10 +81,8 @@ function lessThanToday(rawDate){
 function lessThanDefinedTime(timeA, timeB){
  
   timeA = as24HourTime(timeA);
-  console.log("time A ", timeA)
   const pickTime = new Date("1990-01-01 " + timeA);
   const comparedTime = new Date("1990-01-01 " + timeB);
-  console.log("input and compare times ", pickTime, comparedTime)
   if (pickTime.getTime() < comparedTime.getTime()){
     return true
   } else {
@@ -96,10 +102,8 @@ function lessThanDefinedTime(timeA, timeB){
 function greaterThanDefinedTime(timeA, timeB){
  
   timeA = as24HourTime(timeA);
-  console.log("time A ", timeA)
   const pickTime = new Date("1990-01-01 " + timeA);
   const comparedTime = new Date("1990-01-01 " + timeB);
-  console.log("input and compare times ", pickTime, comparedTime)
   if (pickTime.getTime() > comparedTime.getTime()){
     return true
   } else {
@@ -107,4 +111,5 @@ function greaterThanDefinedTime(timeA, timeB){
   }
 }
 
-module.exports = { dayOfWeek, lessThanToday, lessThanDefinedTime, greaterThanDefinedTime };
+
+module.exports = { dayOfWeek, lessThanToday, lessThanDefinedTime, greaterThanDefinedTime};

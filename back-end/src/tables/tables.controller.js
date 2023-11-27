@@ -35,7 +35,7 @@ async function validCapacity(req, res, next){
 async function list(req, res) {
   const { date } = req.query;
   const result = await service.list(date)
-  res.json( { data: result  })
+  res.json( { data: result })
 }
 
 async function read(req, res, next){

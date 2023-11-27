@@ -74,9 +74,9 @@ async function validWorkingTime(req, res, next){
 
 
 async function validPresentDate(req, res, next){
-  const {reservation_date} = req.body.data;
+  const {reservation_date, reservation_time} = req.body.data;
  
-  if (lessThanToday(reservation_date)){
+  if (lessThanToday(reservation_date, reservation_time)){
     next({ status: 400, message: `Reservations cannot be scheduled in the past.` });
 
   } else {
