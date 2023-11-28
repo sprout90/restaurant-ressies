@@ -53,8 +53,6 @@ function ReservationSeat(){
       setErrors(null);
       LoadReservation();
 
-      console.log("loaded reservation ", reservation)
-      console.log("loaded tables ", tables)
     
     return () => {
       abortController.abort();
@@ -136,8 +134,6 @@ function ReservationSeat(){
     let validForm = true;
     const errorList = [];
 
-    console.log("validate table id ", table_id)
-    
     // get table from useState array
     const table = tables.find((table) => parseInt(table_id) === table.table_id);
 
@@ -145,7 +141,8 @@ function ReservationSeat(){
       const error = {name: "Table selection required",
       message: `A table must be selected to seat a reservation.`}
       errorList.push(error)
-      validForm = false;
+      setErrors(errorList)
+      return false;
     }
 
     if (validCapacity(table_id, table.capacity) === false) {
@@ -160,6 +157,34 @@ function ReservationSeat(){
     }
 
     return validForm;
+  }
+
+  const renderSelectControl = () => {
+      if (tables.length !== 0){
+        return <div>
+        <label htmlFor="type">Table:&nbsp;</label>
+          <select 
+          id="table_id" 
+          name="table_id" 
+          required={true}
+          onChange={handleChange}
+          value={formData.table_id} 
+          >
+            <option value="0">Select a Table</option>
+            {tables.map((table) => <option key={table.table_id} value={table.table_id}>Table: {table.table_name} - Capacity: {table.capacity}</option>)}
+        </select>
+      </div>
+    } else {
+      return <p><b>No tables available for seating.</b></p>
+    }
+  }
+
+  const renderSubmitBtn = () => {
+    if (tables.length !== 0){
+      return <button type="submit" className="btn btn-secondary">Submit</button>
+    } else {
+      return null;
+    }
   }
 
   if (!(reservation)){
@@ -185,24 +210,12 @@ function ReservationSeat(){
               saveSeatEvent(formData);
             }
           } } >
-          <div>
-            <label htmlFor="type">Table:&nbsp;</label>
-            <select 
-              id="table_id" 
-              name="table_id" 
-              required={true}
-              onChange={handleChange}
-              value={formData.table_id} 
-              >
-                <option value="0">Select a Table</option>
-                {tables.map((table) => <option key={table.table_id} value={table.table_id}>Table: {table.table_name} - Capacity: {table.capacity}</option>)}
-            </select>
-          </div>
+            {renderSelectControl()}
           <br/>
           <div>
             <button onClick={cancelButton} className="btn btn-primary">Cancel</button>
             &nbsp;
-            <button type="submit" className="btn btn-secondary">Submit</button>
+            {renderSubmitBtn()}
           </div>
         </form>
       </div>

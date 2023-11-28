@@ -17,6 +17,8 @@ headers.append("Content-Type", "application/json");
 
 /**
  * Returns day of the week in which the restaurant is closed.
+ * Defined in API, to easily support defining single definition on server
+ * in a future refactor if needed.
  * @returns {String containing day of the week}
  */
 export function getBlackoutDay(){
