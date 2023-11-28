@@ -37,6 +37,16 @@ async function validFreeSeat(req, res, next){
   }
 }
 
+async function validOccupiedSeat(req, res, next){
+  const { table_id, reservation_id } = res.locals.table;
+  if (reservation_id === null){
+    next({ status: 400, message: `Table_id (${table_id}) must be occupied to allow finish event.` });
+
+  } else {
+    return next();
+  }
+}
+
 async function validReservationCapacity(req, res, next){
   const abortController = new AbortController();
   const { capacity } = res.locals.table;
@@ -90,12 +100,19 @@ async function updateSeat(req, res, next){
 
   const table_id = res.locals.table.table_id;
   const { reservation_id } = req.body.data; 
-  console.error("update seat params ", table_id, reservation_id)
   const data = await service.updateSeat(table_id, reservation_id);
 
   res.json({ data });
 }
 
+async function deleteSeat(req, res, next){
+
+  const table_id = res.locals.table.table_id;
+  const reservation_id = null; 
+  const data = await service.updateSeat(table_id, reservation_id);
+
+  res.json({ data });
+}
 
 async function destroy(req, res, next){
   await service.destroy(res.locals.table.table_id);
@@ -129,6 +146,11 @@ module.exports = {
     validReservationCapacity,
     validFreeSeat,
     asyncErrorBoundary(updateSeat)
+  ], 
+  deleteSeat: [
+    asyncErrorBoundary(tableExists), 
+    validOccupiedSeat,
+    asyncErrorBoundary(deleteSeat)
   ], 
   destroy: [
     asyncErrorBoundary(tableExists), 

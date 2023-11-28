@@ -24,6 +24,7 @@ router
   router
   .route("/:tableId/seat")
   .put(controller.updateSeat)
+  .delete(controller.deleteSeat)
   .all(methodNotAllowed);
 
 module.exports = router;

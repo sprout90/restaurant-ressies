@@ -114,7 +114,7 @@ function ReservationSeat(){
     // TODO: Replace with db table load within promise to minimize concurrency
     //const table = tables.find((table) => parseInt(table_id) === table.table_id);
     
-    // merge table object with new reservation id (from useState())
+    // set table object to only include reservation_id 
     const saveTable = {reservation_id: reservation_id};
 
     // save updated table objection with reservation

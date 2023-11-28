@@ -1,6 +1,7 @@
 import React from "react";
+import TableFinishBtn from "./TableFinishBtn";
 
-function TableListRow({table}){
+function TableListRow({table, finishTableHandler}){
 
   return (
     <div className="row" data-table-id-status={table.table_id}>
@@ -15,6 +16,9 @@ function TableListRow({table}){
     </div>
     <div className="col-2">
       {table.formatted_date}&nbsp;{table.formatted_time}
+    </div>
+    <div>
+      <TableFinishBtn table={table} finishTableHandler={finishTableHandler}/>
     </div>
   </div>
   );

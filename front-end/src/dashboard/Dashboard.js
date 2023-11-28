@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { listReservations, listTables } from "../utils/api";
+import { useHistory} from "react-router-dom";
+import { listReservations, listTables, deleteTableSeat } from "../utils/api";
 import { today, previous, next } from "../utils/date-time";
 import ErrorAlert from "../layout/ErrorAlert";
 import NavButtons from "./NavButtons";
@@ -17,6 +18,7 @@ function Dashboard({ date = today()}) {
   const [tables, setTables] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
   const [reservationDate, setReservationDate] = useState(date);
+  const history = useHistory();
 
     useEffect(() => {
 
@@ -49,6 +51,23 @@ function Dashboard({ date = today()}) {
     return () => abortController.abort();
   }, [reservationDate]);
 
+
+  // define event actions for update
+  const finishTableEvent = (table_id) => {
+    const abortController = new AbortController();
+
+    // save updated table objection with reservation
+    try{
+      deleteTableSeat(table_id, abortController.signal)
+    } catch (error){
+      setReservationsError(error)
+    }
+
+    return () => {
+      abortController.abort();
+    };
+  };
+
   const prevButton = () => {
     const prevDate = previous(reservationDate);
     setReservationDate(prevDate)
@@ -62,7 +81,15 @@ function Dashboard({ date = today()}) {
     const nextDate = next(reservationDate);
     setReservationDate(nextDate)
   }
-
+ 
+  const finishTableClick = (event) => {
+    if (window.confirm("Is this table ready to seat new guests? This cannot be undone.")){
+      const element = event.target;
+      const id = element.getAttribute("data-table-id-finish");
+      finishTableEvent(id);
+      window.location.reload()
+      } 
+  }
 
   return (
     <main>
@@ -79,7 +106,7 @@ function Dashboard({ date = today()}) {
         <h4 className="mb-0">Tables</h4>
       </div>
       <div>
-      <TableList tables={tables}/>
+      <TableList tables={tables} finishTableHandler={finishTableClick}/>
       </div>
     </main>
   );

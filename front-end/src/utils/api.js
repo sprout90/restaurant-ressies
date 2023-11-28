@@ -245,6 +245,7 @@ export async function updateTable(updatedTable, signal) {
 
 /**
  * Updates an exising table with a reservation_id
+ *  in effect, setting seat to "occupied".
  * @param table_id
  *  the row to update in tables
  * @param updatedTable 
@@ -266,3 +267,29 @@ export async function updateTableSeat(table_id, updatedTable, signal) {
   };
   return await fetchJson(url, options, {});
 }
+
+/**
+ * Updates an exising table with a reservation_id
+ *  in effect, setting seat to "free"
+ * @param table_id
+ *  the row to update in tables
+ * @param signal
+ *  optional AbortController.signal
+ * @returns {Promise<Error|*>}
+ *  a promise that resolves to the updated table.
+ */
+export async function deleteTableSeat(table_id, signal) {
+  const url = `${API_BASE_URL}/tables/${table_id}/seat`;
+  const data = {table_id: table_id,
+                event: "finish table"
+              }
+  const dataPackage = {data}
+  const options = {
+    method: "DELETE",
+    headers,
+    body: JSON.stringify(dataPackage),
+    signal,
+  };
+  return await fetchJson(url, options, {});
+}
+

@@ -1,7 +1,7 @@
 import React from "react";
 import TableListRow from "./TableListRow";
 
-function TableList({tables}){
+function TableList({tables, finishTableHandler}){
 
   return ( 
     <div>
@@ -25,7 +25,7 @@ function TableList({tables}){
     </div>
     <div>
     {tables.map((table, index) =>  
-          <TableListRow table={table} key={index} index={index}/>
+          <TableListRow table={table} key={index} index={index} finishTableHandler={finishTableHandler}/>
           ) 
     }
     </div>
