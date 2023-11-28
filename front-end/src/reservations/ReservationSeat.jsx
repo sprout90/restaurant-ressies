@@ -121,7 +121,7 @@ function ReservationSeat(){
     const tableSavePromise = updateTableSeat(table_id, saveTable, abortController.signal);
     tableSavePromise
     .then((result) => {
-      const url = `/dashboard`
+      const url = `/dashboard?date=${reservation.formatted_date}`
       history.push(url);
     })
     .catch(setErrors);

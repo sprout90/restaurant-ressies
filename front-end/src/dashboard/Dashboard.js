@@ -22,35 +22,24 @@ function Dashboard({ date = today()}) {
 
     useEffect(() => {
 
-    const abortController = new AbortController();
+      const abortController = new AbortController();
 
-    async function loadReservations(date, abortController) {
+      setReservationsError(null);
+      loadReservations(reservationDate, abortController);
+      loadTables(reservationDate, abortController);
+
+      return () => abortController.abort();
+    }, [reservationDate]);
+
+  async function loadReservations(date, abortController) {
       
-      try{
-        const result = await listReservations({date}, abortController.signal);
-        setReservations(result)
-      } catch (error){
-        setReservationsError(error)
-      }
+    try{
+      const result = await listReservations({date}, abortController.signal);
+      setReservations(result)
+    } catch (error){
+      setReservationsError(error)
     }
-
-    async function loadTables(date, abortController) {
-    
-      try{
-        const result = await listTables({date}, abortController.signal);
-        setTables(result)
-      } catch (error){
-        setReservationsError(error)
-      }
-    }
-
-    setReservationsError(null);
-    loadReservations(reservationDate, abortController);
-    loadTables(reservationDate, abortController);
-
-    return () => abortController.abort();
-  }, [reservationDate]);
-
+  }
 
   async function loadTables(date, abortController) {
     
@@ -69,6 +58,7 @@ function Dashboard({ date = today()}) {
     // save updated table object with reservation removed
       const deletePromise = deleteTableSeat(table_id, abortController.signal)
       .then(() => {
+        loadReservations(reservationDate, abortController);
         loadTables(reservationDate, abortController);
       })
       .catch(setReservationsError)

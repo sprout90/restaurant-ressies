@@ -20,8 +20,11 @@ async function list(queryDate){
 
 async function read(reservationId){
 
-  return knex("reservations")
-  .select("*")
+  return knex("reservations as r")
+  .select("r.*",
+      knex.raw("to_char(r.reservation_date, 'YYYY-MM-DD') as formatted_date"),
+      knex.raw("to_char(r.reservation_time, 'HH12:MIPM') as formatted_time")
+  )
   .where({"reservation_id": reservationId})
   .first();
 }
