@@ -1,5 +1,6 @@
 const service = require("./tables.service.js");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
+const api = require("../utils/api");
 const hasProperties = require("../errors/hasProperties");
 const hasRequiredProperties = hasProperties("table_name", "capacity");
 
@@ -8,23 +9,48 @@ async function tableExists(req, res, next){
 
   const { tableId } = req.params;
   const table = await service.read(tableId);
-  console.log("table Id in exists ", tableId)
   if (table) {
       res.locals.table = table;
       return next();
   } else {
-      next({ status: 404, message: `Restaurant table cannot be found.` });
+      next({ status: 404, message: `Table record cannot be found.` });
   }
 }
 
 async function validCapacity(req, res, next){
-  const {capacity} = req.body.data;
+  const { capacity } = res.locals.table;
   if (capacity < 1){
     next({ status: 400, message: `Capacity must be 1 or greater.` });
 
   } else {
     return next();
   }
+}
+
+async function validFreeSeat(req, res, next){
+  const { table_id, reservation_id } = res.locals.table;
+  if (reservation_id !== null){
+    next({ status: 400, message: `Reservation_id (${reservation_id}) must be open at table (${table_id}) to accept seating.` });
+
+  } else {
+    return next();
+  }
+}
+
+async function validReservationCapacity(req, res, next){
+  const abortController = new AbortController();
+  const { capacity } = res.locals.table;
+  const { reservation_id } = req.body.data; 
+
+  await api.readReservation(reservation_id, abortController.signal)
+    .then((reservation) => {
+        if (reservation.people > capacity) {
+          next({ status: 400, message: `Reservation cannot exceed the table capacity. Table capacity: ${capacity}` });
+        } else {  
+          return next();
+        }
+      } 
+    ) 
 }
 
 // SERVICE FUNCTIONS
@@ -99,6 +125,8 @@ module.exports = {
   ],
   updateSeat: [
     asyncErrorBoundary(tableExists), 
+    validReservationCapacity,
+    validFreeSeat,
     asyncErrorBoundary(updateSeat)
   ], 
   destroy: [
