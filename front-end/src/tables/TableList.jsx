@@ -16,7 +16,7 @@ function TableList({tables}){
           <span>Status</span>
         </div>
         <div className="col-2">
-          <span>Res. Date & Time</span>
+          <span>Reservation Date & Time</span>
         </div>
     </div>
     <div>

@@ -2,11 +2,14 @@ const knex = require("../db/connection");
 require("dotenv").config();
 
 async function list(queryDate){
-    return knex("reservations")
-    .select("*")
-    .where({"reservation_date": queryDate})
-    .orderBy("reservation_date", "asc")
-    .orderBy("reservation_time", "asc")
+    return knex("reservations as r")
+    .select("r.*",
+      knex.raw("to_char(r.reservation_date, 'YYYY-MM-DD') as formatted_date"),
+      knex.raw("to_char(r.reservation_time, 'HH12:MIPM') as formatted_time")
+      )
+    .where({"r.reservation_date": queryDate})
+    .orderBy("r.reservation_date", "asc")
+    .orderBy("r.reservation_time", "asc")
 }
 
 async function read(reservationId){

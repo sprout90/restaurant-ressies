@@ -1,15 +1,15 @@
 import React, {useState, useEffect} from "react";
 import { useParams, useRouteMatch, useHistory} from "react-router-dom";
-import { readTable, readReservation, listTables, updateTable } from "../utils/api"
+import { readReservation, listTables, updateTableSeat } from "../utils/api"
 import { formatAsDate, formatAsTime } from "../utils/date-time"
 import ErrorAlert from "../layout/ErrorAlert";
 
 function ReservationSeat(){
   const {reservationId} = useParams();
+  const [reservation_id, setReservation_Id] = useState(reservationId);
   const history = useHistory();
   const [reservation, setReservation] = useState(undefined)
   const [tables, setTables] = useState([])
-  const [table, setTable] = useState(undefined)
   const [errors, setErrors] = useState(undefined)
 
     // define inital form state object 
@@ -17,8 +17,6 @@ function ReservationSeat(){
       table_id: -1
     }; 
   const [formData, setFormData] = useState( {...initialFormState })
-  console.log("reservation id ", reservationId)
-
 
   // load reservation object, and available tables for reservation date.
   useEffect(() => {
@@ -28,7 +26,7 @@ function ReservationSeat(){
       async function LoadReservation(){
 
         try{
-          const result = await readReservation(reservationId, abortController.signal)
+          await readReservation(reservation_id, abortController.signal)
           .then((result)=> {
             console.log(result)
             setReservation(result);
@@ -44,7 +42,7 @@ function ReservationSeat(){
     
         try{
           const result = await listTables({date}, abortController.signal);
-          const filtered = result.filter((table) => table.reservation_date === null )
+          const filtered = result.filter((table) => ((table.reservation_date === null) && (table.reservation_id === null  )))
 
           setTables(filtered)
         } catch (error){
@@ -64,14 +62,12 @@ function ReservationSeat(){
   }, []);
 
 
-  function validCapacity(tableId){
-    // load table and store in useState
-    loadTable(tableId);
-
+  function validCapacity(tableId, capacity){
+ 
     // compare table capacity to reservation people
-    if (table.capacity <= reservation.people){
+    if (capacity <= reservation.people){
       return true;
-    } else {
+    }  else {
       return false;
     }
   }
@@ -95,7 +91,7 @@ function ReservationSeat(){
     history.push(url);
   }
 
-  const loadTable = (tableId) => {
+  /*const loadTable = (tableId) => {
     const abortController = new AbortController();
 
     const tablePromise = readTable(tableId, abortController.signal);
@@ -110,16 +106,21 @@ function ReservationSeat(){
     .catch(setErrors);
   
   }
+*/
 
   // define event action for table save
-  const saveTableEvent = () => {
+  const saveSeatEvent = ({table_id}) => {
     const abortController = new AbortController();
 
-    // using table object stored in useState by validator
-    setTable({...table, reservation_id: reservationId})
+    // get table
+    // TODO: Replace with db table load within promise to minimize concurrency
+    //const table = tables.find((table) => parseInt(table_id) === table.table_id);
+    
+    // merge table object with new reservation id (from useState())
+    const saveTable = {reservation_id: reservation_id};
 
-    // save table object with new reservation id
-    const tableSavePromise = updateTable(table, abortController.signal);
+    // save updated table objection with reservation
+    const tableSavePromise = updateTableSeat(table_id, saveTable, abortController.signal);
     tableSavePromise.then((result) => {
       const url = `/dashboard`
       history.push(url);
@@ -131,20 +132,23 @@ function ReservationSeat(){
     };
   };
 
-  function validateForm(formData){
+  function validateForm({table_id}){
     let validForm = true;
     const errorList = [];
 
-    console.log("validate table id ", formData.table_id)
+    console.log("validate table id ", table_id)
+    
+    // get table from useState array
+    const table = tables.find((table) => parseInt(table_id) === table.table_id);
 
-    if (validRequiredTable(formData.table_id) === false) {
+    if (validRequiredTable(table_id) === false) {
       const error = {name: "Table selection required",
       message: `A table must be selected to seat a reservation.`}
       errorList.push(error)
       validForm = false;
     }
 
-    if (validCapacity(formData.table_id) === false) {
+    if (validCapacity(table_id, table.capacity) === false) {
       const error = {name: "Table capacity error",
       message: `Reservation cannot exceed the table capacity. Table capacity: ${table.capacity}`}
       errorList.push(error)
@@ -178,7 +182,7 @@ function ReservationSeat(){
         <form name="update" onSubmit={(event) => {
             event.preventDefault();
             if (validateForm(formData) === true){
-              saveTableEvent();
+              saveSeatEvent(formData);
             }
           } } >
           <div>

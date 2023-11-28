@@ -3,8 +3,7 @@ import ReservationSeatBtn from "./ReservationSeatBtn";
 
 function ReservationListRow({reservation}){
 
-  
-  return (
+   return (
     <div className="row">
       <div className="col-4">
         {reservation.first_name}&nbsp;{reservation.last_name}
@@ -13,10 +12,7 @@ function ReservationListRow({reservation}){
         {reservation.mobile_number}
       </div>
       <div className="col-2">
-        {reservation.reservation_date}
-      </div>
-      <div className="col-2">
-        {reservation.reservation_time}
+        {reservation.formatted_date}&nbsp;{reservation.formatted_time}
       </div>
       <div className="col-1">
         {reservation.people}

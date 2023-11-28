@@ -8,7 +8,7 @@ async function tableExists(req, res, next){
 
   const { tableId } = req.params;
   const table = await service.read(tableId);
-  
+  console.log("table Id in exists ", tableId)
   if (table) {
       res.locals.table = table;
       return next();
@@ -51,13 +51,24 @@ async function create(req, res, next){
 async function update(req, res, next){
   const updatedTable = {
       ...req.body.data,
-      reservation_id: res.locals.table.table_id,
+      table_id: res.locals.table.table_id,
     };
   
     const data = await service.update(updatedTable);
 
     res.json({ data });
 }
+
+async function updateSeat(req, res, next){
+
+  const table_id = res.locals.table.table_id;
+  const { reservation_id } = req.body.data; 
+  console.error("update seat params ", table_id, reservation_id)
+  const data = await service.updateSeat(table_id, reservation_id);
+
+  res.json({ data });
+}
+
 
 async function destroy(req, res, next){
   await service.destroy(res.locals.table.table_id);
@@ -86,6 +97,10 @@ module.exports = {
     validCapacity,
     asyncErrorBoundary(update)
   ],
+  updateSeat: [
+    asyncErrorBoundary(tableExists), 
+    asyncErrorBoundary(updateSeat)
+  ], 
   destroy: [
     asyncErrorBoundary(tableExists), 
     asyncErrorBoundary(destroy)

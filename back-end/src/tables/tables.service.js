@@ -26,10 +26,10 @@ async function read(tableId){
   .first();
 }
 
-async function create(newTable){
+async function create(newTableRow){
 
   await knex("tables")
-    .insert(newTable)
+    .insert(newTableRow)
     .returning("*")
     .then((createdRecords) => createdRecords[0])
 
@@ -42,10 +42,18 @@ async function update(updatedTable){
   .update(updatedTable)
 }
 
+async function updateSeat(table_id, reservation_id){
+
+  console.log("params ", table_id, reservation_id)
+  await knex("tables")
+  .where({"table_id": table_id})
+  .update({reservation_id: reservation_id})
+}
+
 async function destroy(tableId){
   return knex("tables")
   .where({"table_id": tableId})
   .del();
 }
 
-module.exports = {list, read, create, update, destroy}
+module.exports = {list, read, create, update, updateSeat, destroy}

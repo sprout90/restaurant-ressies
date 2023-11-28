@@ -2,8 +2,8 @@
  * Defines the base URL for the API.
  * The default values is overridden by the `API_BASE_URL` environment variable.
  */
-import formatReservationDate from "./format-reservation-date";
-import formatReservationTime from "./format-reservation-date";
+//import formatReservationDate from "./format-reservation-date";
+//import formatReservationTime from "./format-reservation-date";
 require("dotenv").config();
 
 const API_BASE_URL =
@@ -94,9 +94,7 @@ export async function listReservations(params, signal) {
   Object.entries(params).forEach(([key, value]) =>
     url.searchParams.append(key, value.toString())
   );
-  return await fetchJson(url, { headers, signal }, [])
-    .then(formatReservationDate)
-    .then(formatReservationTime);
+  return await fetchJson(url, { headers, signal }, []);
 }
 
 /**
@@ -109,8 +107,8 @@ export async function listReservations(params, signal) {
  *  a promise that resolves the saved reservation, which will now have an `id` property.
  */
 export async function createReservation(reservation, signal) {
-  const data = reservation
-  const dataPackage = {data}
+  const data = reservation;
+  const dataPackage = {data};
   const url = `${API_BASE_URL}/reservations`;
   const options = {
     method: "POST",
@@ -145,14 +143,16 @@ export async function readReservation(reservationId, signal) {
  *  a promise that resolves to the updated reservation.
  */
 export async function updateReservation(updatedReservation, signal) {
+  const data = updatedReservation;
+  const dataPackage = {data};
   const url = `${API_BASE_URL}/reservations/${updatedReservation.reservation_id}`;
   const options = {
     method: "PUT",
     headers,
-    body: JSON.stringify(updatedReservation),
+    body: JSON.stringify(dataPackage),
     signal,
   };
-  return await fetchJson(url, options, updatedReservation);
+  return await fetchJson(url, options, {});
 }
 
 /**
@@ -207,8 +207,8 @@ export async function readTable(tableId, signal) {
  *  a promise that resolves the saved table, which will now have an `id` property.
  */
 export async function createTable(table, signal) {
-  const data = table
-  const dataPackage = {data}
+  const data = table;
+  const dataPackage = {data};
   const url = `${API_BASE_URL}/tables`;
   const options = {
     method: "POST",
@@ -229,12 +229,38 @@ export async function createTable(table, signal) {
  *  a promise that resolves to the updated table.
  */
 export async function updateTable(updatedTable, signal) {
+  const data = updatedTable;
+  const dataPackage = {data};
   const url = `${API_BASE_URL}/tables/${updatedTable.table_id}`;
   const options = {
     method: "PUT",
     headers,
-    body: JSON.stringify(updatedTable),
+    body: JSON.stringify(dataPackage),
     signal,
   };
-  return await fetchJson(url, options, updatedTable);
+  return await fetchJson(url, options, {});
+}
+
+/**
+ * Updates an exising table with a reservation_id
+ * @param table_id
+ *  the row to update in tables
+ * @param updatedTable 
+ *  the object containing table data to update
+ * @param signal
+ *  optional AbortController.signal
+ * @returns {Promise<Error|*>}
+ *  a promise that resolves to the updated table.
+ */
+export async function updateTableSeat(table_id, updatedTable, signal) {
+  const data = updatedTable;
+  const dataPackage = {data};
+  const url = `${API_BASE_URL}/tables/${table_id}/seat`;
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify(dataPackage),
+    signal,
+  };
+  return await fetchJson(url, options, {});
 }

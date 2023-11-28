@@ -14,10 +14,7 @@ function ReservationList({reservations}){
             <span>Mobile</span>
           </div>
           <div className="col-2">
-            <span>Date</span>
-          </div>
-          <div className="col-2">
-            <span>Time</span>
+            <span>Reservation Date & Time</span>
           </div>
           <div className="col-1">
             <span>People</span>
