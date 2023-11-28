@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useHistory} from "react-router-dom";
+import { useHistory, useParams} from "react-router-dom";
 import { listReservations, listTables, deleteTableSeat } from "../utils/api";
 import { today, previous, next } from "../utils/date-time";
 import ErrorAlert from "../layout/ErrorAlert";
@@ -20,6 +20,17 @@ function Dashboard({ date = today()}) {
   const [reservationDate, setReservationDate] = useState(date);
   const history = useHistory();
 
+  // init dashboard date from default param, or query parameter
+  // query parameter takes precedence
+  /*const params = new URLSearchParams(window.location.search)
+  const qDate = params.get("date")
+  console.log("qDate ", qDate)
+  const dashboardDate = (qDate === null) ? date : qDate;
+  const [reservationDate, setReservationDate] = dashboardDate
+  */
+
+  // query parameter overrides the default date
+  
     useEffect(() => {
 
       const abortController = new AbortController();
@@ -81,6 +92,8 @@ function Dashboard({ date = today()}) {
   const nextButton = () => {
     const nextDate = next(reservationDate);
     setReservationDate(nextDate)
+    console.log("next date ", nextDate)
+    //window.location.href = `/dashboard?date=${nextDate}`
   }
  
   const finishTableClick = (event) => {

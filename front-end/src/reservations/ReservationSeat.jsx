@@ -28,7 +28,6 @@ function ReservationSeat(){
         try{
           await readReservation(reservation_id, abortController.signal)
           .then((result)=> {
-            console.log(result)
             setReservation(result);
             loadTables(result.reservation_date, abortController);}
             )
