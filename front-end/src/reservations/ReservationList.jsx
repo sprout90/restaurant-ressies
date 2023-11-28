@@ -20,7 +20,7 @@ function ReservationList({reservations}){
             <span>People</span>
           </div>
           <div className="col-1">
-            <span>Seat</span>
+            <span>Action</span>
           </div>
       </div>
       <div>

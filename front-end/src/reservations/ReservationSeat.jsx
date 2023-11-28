@@ -60,10 +60,10 @@ function ReservationSeat(){
   }, []);
 
 
-  function validCapacity(tableId, capacity){
+  function validCapacity(capacity){
  
     // compare table capacity to reservation people
-    if (capacity <= reservation.people){
+    if (parseInt(capacity) >= parseInt(reservation.people)){
       return true;
     }  else {
       return false;
@@ -145,7 +145,8 @@ function ReservationSeat(){
       return false;
     }
 
-    if (validCapacity(table_id, table.capacity) === false) {
+    if (validCapacity(table.capacity) === false) {
+      console.log("fe error: table capacity ", table.capacity, reservation.people )
       const error = {name: "Table capacity error",
       message: `Reservation cannot exceed the table capacity. Table capacity: ${table.capacity}`}
       errorList.push(error)

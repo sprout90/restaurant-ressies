@@ -18,6 +18,10 @@ function TableList({tables}){
         <div className="col-2">
           <span>Reservation Date & Time</span>
         </div>
+        <div className="col-2">
+          <span>Action</span>
+        </div>
+
     </div>
     <div>
     {tables.map((table, index) =>  

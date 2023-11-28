@@ -44,7 +44,8 @@ async function validReservationCapacity(req, res, next){
 
   await api.readReservation(reservation_id, abortController.signal)
     .then((reservation) => {
-        if (reservation.people > capacity) {
+        if ((capacity >= reservation.people) === false) {
+          console.log("Be capacity ", capacity, reservation.people)
           next({ status: 400, message: `Reservation cannot exceed the table capacity. Table capacity: ${capacity}` });
         } else {  
           return next();
