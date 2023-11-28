@@ -52,21 +52,32 @@ function Dashboard({ date = today()}) {
   }, [reservationDate]);
 
 
+  async function loadTables(date, abortController) {
+    
+    try{
+      const result = await listTables({date}, abortController.signal);
+      setTables(result)
+    } catch (error){
+      setReservationsError(error)
+    }
+  }
+
   // define event actions for update
   const finishTableEvent = (table_id) => {
     const abortController = new AbortController();
 
-    // save updated table objection with reservation
-    try{
-      deleteTableSeat(table_id, abortController.signal)
-    } catch (error){
-      setReservationsError(error)
-    }
+    // save updated table object with reservation removed
+      const deletePromise = deleteTableSeat(table_id, abortController.signal)
+      .then(() => {
+        loadTables(reservationDate, abortController);
+      })
+      .catch(setReservationsError)
 
     return () => {
       abortController.abort();
     };
   };
+
 
   const prevButton = () => {
     const prevDate = previous(reservationDate);
@@ -87,8 +98,7 @@ function Dashboard({ date = today()}) {
       const element = event.target;
       const id = element.getAttribute("data-table-id-finish");
       finishTableEvent(id);
-      window.location.reload()
-      } 
+    } 
   }
 
   return (

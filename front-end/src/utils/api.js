@@ -283,6 +283,7 @@ export async function deleteTableSeat(table_id, signal) {
   const data = {table_id: table_id,
                 event: "finish table"
               }
+              
   const dataPackage = {data}
   const options = {
     method: "DELETE",
@@ -290,6 +291,7 @@ export async function deleteTableSeat(table_id, signal) {
     body: JSON.stringify(dataPackage),
     signal,
   };
+
   return await fetchJson(url, options, {});
 }
 

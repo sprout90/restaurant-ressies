@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import { useParams, useRouteMatch, useHistory} from "react-router-dom";
+import { useParams, useHistory} from "react-router-dom";
 import { readReservation, listTables, updateTableSeat } from "../utils/api"
 import { formatAsDate, formatAsTime } from "../utils/date-time"
 import ErrorAlert from "../layout/ErrorAlert";
@@ -57,7 +57,7 @@ function ReservationSeat(){
     return () => {
       abortController.abort();
     };
-  }, []);
+  }, [reservation_id]);
 
 
   function validCapacity(capacity){
@@ -119,7 +119,8 @@ function ReservationSeat(){
 
     // save updated table objection with reservation
     const tableSavePromise = updateTableSeat(table_id, saveTable, abortController.signal);
-    tableSavePromise.then((result) => {
+    tableSavePromise
+    .then((result) => {
       const url = `/dashboard`
       history.push(url);
     })
@@ -146,7 +147,6 @@ function ReservationSeat(){
     }
 
     if (validCapacity(table.capacity) === false) {
-      console.log("fe error: table capacity ", table.capacity, reservation.people )
       const error = {name: "Table capacity error",
       message: `Reservation cannot exceed the table capacity. Table capacity: ${table.capacity}`}
       errorList.push(error)
