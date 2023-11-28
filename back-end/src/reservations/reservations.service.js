@@ -2,8 +2,14 @@ const knex = require("../db/connection");
 require("dotenv").config();
 
 async function list(queryDate){
+
     return knex("reservations as r")
-    .select("r.*",
+    .leftJoin("tables as t", function() {
+      this.on("r.reservation_id", "=", "t.reservation_id")
+      this.andOnVal("r.reservation_date", "=", queryDate)
+    })
+    .select("r.*", 
+      knex.raw("(select case when t.reservation_id is null then 'waiting' else 'seated' end) as seat_status"),
       knex.raw("to_char(r.reservation_date, 'YYYY-MM-DD') as formatted_date"),
       knex.raw("to_char(r.reservation_time, 'HH12:MIPM') as formatted_time")
       )

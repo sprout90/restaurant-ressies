@@ -1,7 +1,6 @@
 const service = require("./tables.service.js");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const api = require("../utils/api");
-const api = require("../utils/api");
 const hasProperties = require("../errors/hasProperties");
 const hasRequiredProperties = hasProperties("table_name", "capacity");
 
@@ -15,12 +14,10 @@ async function tableExists(req, res, next){
       return next();
   } else {
       next({ status: 404, message: `Table record cannot be found.` });
-      next({ status: 404, message: `Table record cannot be found.` });
   }
 }
 
 async function validCapacity(req, res, next){
-  const { capacity } = res.locals.table;
   const { capacity } = res.locals.table;
   if (capacity < 1){
     next({ status: 400, message: `Capacity must be 1 or greater.` });
