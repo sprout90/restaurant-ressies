@@ -39,8 +39,9 @@ function Dashboard({date}) {
       
     try{
       const result = await listReservations({date}, abortController.signal);
-      const filtered = result.filter((reservation) => (reservation.status !== "finished" ))
-      
+      const filtered = result.filter((reservation) => 
+        (reservation.status === "booked" ) || (reservation.status === "seated")  )
+
       setReservations(filtered)
     } catch (error){
       setReservationsError(error)

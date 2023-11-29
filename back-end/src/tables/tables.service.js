@@ -1,6 +1,10 @@
 const knex = require("../db/connection");
 require("dotenv").config();
 
+async function getKnexTransaction(){
+  return await knex.transaction();
+}
+
 async function list(queryDate){
 
     return knex("tables as t")
@@ -55,4 +59,4 @@ async function destroy(tableId){
   .del();
 }
 
-module.exports = {list, read, create, update, updateSeat, destroy}
+module.exports = {list, read, create, update, updateSeat, destroy, getKnexTransaction}

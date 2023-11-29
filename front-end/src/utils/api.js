@@ -173,7 +173,7 @@ export async function deleteReservation(reservationId, signal) {
 }
 
 /**
- * Updates an exising reservation with a reservation status (booked, seated, finished)
+ * Updates an exising reservation with a reservation status (booked, seated, finished, cancelled)
  * @param reservation_id
  *  the row to update in reservations
  * @param updatedReservation
