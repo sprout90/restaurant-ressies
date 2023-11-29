@@ -1,10 +1,14 @@
 import React from "react";
 
-function ReservationSeatBtn({reservation_id, seat_status}){
+function ReservationSeatBtn({reservation_id, status}){
 
-  if (seat_status !== "seated"){
+  if (status === "booked"){
     return (
-      <a id="seat" name="seat" className="btn btn-primary" href={`/reservations/${reservation_id}/seat`} >
+      <a id="seat" 
+        name="seat" 
+        className="btn btn-primary" 
+        data-reservation-id-status={`${reservation_id}`}
+        href={`/reservations/${reservation_id}/seat`} >
         Seat
       </a>
     )

@@ -124,11 +124,10 @@ async function read(req, res, next){
 }
 
 async function create(req, res, next){
-
-  console.error("inside controller create ")
+  const newReservation = req.body.data;
+  newReservation.status = "booked";
   const data = await service.create(req.body.data);
-  console.error("body ", req.body)
-  console.error("data ", data)
+ 
   res.status(201).json({ data })
 }
 
@@ -141,6 +140,14 @@ async function update(req, res, next){
     const data = await service.update(updatedReservation);
 
     res.json({ data });
+}
+
+async function updateStatus(req, res, next){
+  const reservation_id = res.locals.reservation.reservation_id;
+  const { status } = req.body.data; 
+  const data = await service.updateSeat(reservation_id, status);
+
+  res.json({ data });
 }
 
 async function destroy(req, res, next){
@@ -181,6 +188,10 @@ module.exports = {
     validWorkingTime,
     validPeople,
     asyncErrorBoundary(update)
+  ],
+  updateStatus: [
+    asyncErrorBoundary(reservationExists), 
+    asyncErrorBoundary(updateStatus)
   ],
   destroy: [
     asyncErrorBoundary(reservationExists), 

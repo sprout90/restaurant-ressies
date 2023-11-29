@@ -4,7 +4,7 @@
  * @type {Router}
  */
 
-const router = require("express").Router();
+const router = require("express").Router({mergeParams: true});
 const controller = require("./reservations.controller");
 const methodNotAllowed = require("../errors/methodNotAllowed");
 
@@ -21,5 +21,9 @@ router
   .delete(controller.destroy)
   .all(methodNotAllowed);
 
+  router
+  .route("/:reservationId/status")
+  .put(controller.updateStatus)
+  .all(methodNotAllowed);
 
 module.exports = router;

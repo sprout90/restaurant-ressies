@@ -39,7 +39,9 @@ function Dashboard({date}) {
       
     try{
       const result = await listReservations({date}, abortController.signal);
-      setReservations(result)
+      const filtered = result.filter((reservation) => (reservation.status !== "finished" ))
+      
+      setReservations(filtered)
     } catch (error){
       setReservationsError(error)
     }
@@ -85,8 +87,6 @@ function Dashboard({date}) {
   const nextButton = () => {
     const nextDate = next(reservationDate);
     setReservationDate(nextDate)
-    console.log("next date ", nextDate)
-    //window.location.href = `/dashboard?date=${nextDate}`
   }
  
   const finishTableClick = (event) => {

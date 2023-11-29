@@ -44,7 +44,6 @@ async function update(updatedTable){
 
 async function updateSeat(table_id, reservation_id){
 
-  console.log("params ", table_id, reservation_id)
   await knex("tables")
   .where({"table_id": table_id})
   .update({reservation_id: reservation_id})

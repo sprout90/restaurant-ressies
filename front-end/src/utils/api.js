@@ -173,6 +173,30 @@ export async function deleteReservation(reservationId, signal) {
 }
 
 /**
+ * Updates an exising reservation with a reservation status (booked, seated, finished)
+ * @param reservation_id
+ *  the row to update in reservations
+ * @param updatedReservation
+ *  the object containing reservation data to update
+ * @param signal
+ *  optional AbortController.signal
+ * @returns {Promise<Error|*>}
+ *  a promise that resolves to the updated reservation.
+ */
+export async function updateReservationStatus(reservation_id, updatedReservation, signal) {
+  const data = updatedReservation;
+  const dataPackage = {data};
+  const url = `${API_BASE_URL}/reservations/${reservation_id}/status`;
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify(dataPackage),
+    signal,
+  };
+  return await fetchJson(url, options, {});
+}
+
+/**
  * Retrieves all existing tables.
  * @returns {Promise<[reservation]>}
  *  a promise that resolves to a possibly empty array of reservation saved in the database.

@@ -9,7 +9,7 @@ async function list(queryDate){
       this.andOnVal("r.reservation_date", "=", queryDate)
     })
     .select("r.*", 
-      knex.raw("(select case when t.reservation_id is null then 'waiting' else 'seated' end) as seat_status"),
+      //knex.raw("(select case when t.reservation_id is null then 'waiting' else 'seated' end) as seat_status"),
       knex.raw("to_char(r.reservation_date, 'YYYY-MM-DD') as formatted_date"),
       knex.raw("to_char(r.reservation_time, 'HH12:MIPM') as formatted_time")
       )
@@ -43,6 +43,13 @@ async function update(updatedReservation){
   .select("*")
   .where({"reservation_id": updatedReservation.reservation_id})
   .update(updatedReservation)
+}
+
+async function updateStatus(reservation_id, status){
+
+  await knex("reservations")
+  .where({"reservation_id": reservation_id})
+  .update({status: status})
 }
 
 async function destroy(reservationId){
@@ -80,4 +87,4 @@ function getReservationEndTime(){
 
 
 
-module.exports = {list, read, create, update, destroy, getBlackoutDay, getReservationStartTime, getReservationEndTime}
+module.exports = {list, read, create, update, updateStatus, destroy, getBlackoutDay, getReservationStartTime, getReservationEndTime}

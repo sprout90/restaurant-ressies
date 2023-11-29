@@ -18,7 +18,7 @@ function ReservationListRow({reservation}){
         {reservation.people}
       </div>
       <div className="col-1">
-        <ReservationSeatBtn reservation_id={reservation.reservation_id} seat_status={reservation.seat_status}/>
+        <ReservationSeatBtn reservation_id={reservation.reservation_id} status={reservation.status}/>
       </div>
     </div>
   );
