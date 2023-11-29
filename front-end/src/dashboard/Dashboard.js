@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { listReservations, listTables, deleteTableSeat } from "../utils/api";
-import { today, previous, next, validDate } from "../utils/date-time";
+import { today, previous, next } from "../utils/date-time";
 import ErrorAlert from "../layout/ErrorAlert";
 import NavButtons from "./NavButtons";
 import ReservationList from "../reservations/ReservationList"

@@ -1,5 +1,5 @@
 import React, {useState, useEffect } from "react";
-import { useHistory, useParams, useLocation} from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { readReservation, listTables, updateTableSeat } from "../utils/api"
 import { formatAsDate, formatAsTime } from "../utils/date-time"
 import ErrorAlert from "../layout/ErrorAlert";
