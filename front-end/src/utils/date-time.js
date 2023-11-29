@@ -52,6 +52,31 @@ function as24HourTime(time){
 
 }
 
+function validDate(dateString){
+
+  try {
+    let [ year, month, day ] = rawDate.split("-");
+    
+    // create the date object with the values sent in (month is zero based)
+    const testDate = new Date(year,month-1,day,0,0,0,0);
+
+    // get the month, day, and year from the object we just created 
+    const testMonth = testDate.getMonth() + 1;
+    const testDay = testDate.getDate();
+    const testYear = testDate.getYear() + 1900;
+
+    // if they match then the date is valid
+    if ( testMonth == month && testYear == year && testDay == day )
+      return true; 
+    else
+      return false;
+
+  } catch (error) {
+      return false;
+  }
+
+}
+
 /**
  * Format a date string in ISO-8601 format (which is what is returned from PostgreSQL) as YYYY-MM-DD.
  * @param dateString
