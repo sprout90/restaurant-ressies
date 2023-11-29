@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from "react";
-import { useParams, useHistory} from "react-router-dom";
+import React, {useState, useEffect } from "react";
+import { useHistory, useParams, useLocation} from "react-router-dom";
 import { readReservation, listTables, updateTableSeat } from "../utils/api"
 import { formatAsDate, formatAsTime } from "../utils/date-time"
 import ErrorAlert from "../layout/ErrorAlert";
@@ -28,6 +28,7 @@ function ReservationSeat(){
         try{
           await readReservation(reservation_id, abortController.signal)
           .then((result)=> {
+            result.reservation_date = formatAsDate(result.reservation_date);
             setReservation(result);
             loadTables(result.reservation_date, abortController);}
             )
@@ -84,8 +85,19 @@ function ReservationSeat(){
   };
 
   const cancelButton = () => {
-    const url = `/dashboard`
-    history.push(url);
+    gotoDashboard();
+  }
+
+  function gotoDashboard(){
+    const url = "/dashboard"
+    const location = {
+      pathname: url,
+      search: "",
+      state: {
+        date: reservation.reservation_date
+      }
+    }
+    history.push(location);
   }
 
   /*const loadTable = (tableId) => {
@@ -109,7 +121,6 @@ function ReservationSeat(){
   const saveSeatEvent = ({table_id}) => {
     const abortController = new AbortController();
 
-    // get table
     // TODO: Replace with db table load within promise to minimize concurrency
     //const table = tables.find((table) => parseInt(table_id) === table.table_id);
     
@@ -120,8 +131,7 @@ function ReservationSeat(){
     const tableSavePromise = updateTableSeat(table_id, saveTable, abortController.signal);
     tableSavePromise
     .then((result) => {
-      const url = `/dashboard?date=${reservation.formatted_date}`
-      history.push(url);
+      gotoDashboard();
     })
     .catch(setErrors);
 

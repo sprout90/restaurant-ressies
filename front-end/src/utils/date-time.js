@@ -52,10 +52,10 @@ function as24HourTime(time){
 
 }
 
-function validDate(dateString){
+export function validDate(dateString){
 
   try {
-    let [ year, month, day ] = rawDate.split("-");
+    let [ year, month, day ] = dateString.split("-");
     
     // create the date object with the values sent in (month is zero based)
     const testDate = new Date(year,month-1,day,0,0,0,0);
@@ -66,7 +66,7 @@ function validDate(dateString){
     const testYear = testDate.getYear() + 1900;
 
     // if they match then the date is valid
-    if ( testMonth == month && testYear == year && testDay == day )
+    if ( testMonth === month && testYear === year && testDay === day )
       return true; 
     else
       return false;

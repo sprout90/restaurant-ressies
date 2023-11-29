@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useHistory, useParams} from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { listReservations, listTables, deleteTableSeat } from "../utils/api";
-import { today, previous, next } from "../utils/date-time";
+import { today, previous, next, validDate } from "../utils/date-time";
 import ErrorAlert from "../layout/ErrorAlert";
 import NavButtons from "./NavButtons";
 import ReservationList from "../reservations/ReservationList"
@@ -13,23 +13,16 @@ import TableList from "../tables/TableList";
  *  the date for which the user wants to view reservations.
  * @returns {JSX.Element}
  */
-function Dashboard({ date = today()}) {
+function Dashboard({date}) {
   const [reservations, setReservations] = useState([]);
   const [tables, setTables] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
+  
+  // location state overrides the default date set as prop
+  const {state} = useLocation();
+  date = (state !== undefined) ? state.date : date;
   const [reservationDate, setReservationDate] = useState(date);
-  const history = useHistory();
-
-  // init dashboard date from default param, or query parameter
-  // query parameter takes precedence
-  /*const params = new URLSearchParams(window.location.search)
-  const qDate = params.get("date")
-  console.log("qDate ", qDate)
-  const dashboardDate = (qDate === null) ? date : qDate;
-  const [reservationDate, setReservationDate] = dashboardDate
-  */
-
-  // query parameter overrides the default date
+ 
   
     useEffect(() => {
 
