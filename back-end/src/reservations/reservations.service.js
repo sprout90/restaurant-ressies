@@ -40,7 +40,6 @@ async function create(newReservation){
 
 async function update(updatedReservation){
   await knex("reservations")
-  .select("*")
   .where({"reservation_id": updatedReservation.reservation_id})
   .update(updatedReservation)
 }

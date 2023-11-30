@@ -8,6 +8,7 @@ function TableFinishBtn({table, finishTableHandler}){
       <button id="seat" 
         name="seat" 
         data-table-id-finish={table.table_id}
+        data-reservation-id-finish={table.reservation_id}
         className="btn btn-primary" 
         onClick={finishTableHandler} >
         Finish

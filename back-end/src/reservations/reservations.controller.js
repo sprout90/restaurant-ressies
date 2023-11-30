@@ -145,7 +145,7 @@ async function update(req, res, next){
 async function updateStatus(req, res, next){
   const reservation_id = res.locals.reservation.reservation_id;
   const { status } = req.body.data; 
-  const data = await service.updateSeat(reservation_id, status);
+  const data = await service.updateStatus(reservation_id, status);
 
   res.json({ data });
 }

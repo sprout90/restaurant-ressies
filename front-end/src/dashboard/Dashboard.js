@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { listReservations, listTables, deleteTableSeat } from "../utils/api";
+import { listReservations, listTables, deleteTableSeat, updateReservationStatus } from "../utils/api";
 import { today, previous, next } from "../utils/date-time";
 import ErrorAlert from "../layout/ErrorAlert";
 import NavButtons from "./NavButtons";
@@ -19,11 +19,13 @@ function Dashboard({date}) {
   const [reservationsError, setReservationsError] = useState(null);
   
   // location state overrides the default date set as prop
-  const {state} = useLocation();
-  date = (state !== undefined) ? state.date : date;
-  const [reservationDate, setReservationDate] = useState(date);
+  let {state} = useLocation();
  
-  
+  // reset date var from state variable if defined.
+  date = (state !== undefined) ? state.date : date;
+ 
+  const [reservationDate, setReservationDate] = useState(date);
+   
     useEffect(() => {
 
       const abortController = new AbortController();
@@ -39,12 +41,13 @@ function Dashboard({date}) {
       
     try{
       const result = await listReservations({date}, abortController.signal);
+
       const filtered = result.filter((reservation) => 
         (reservation.status === "booked" ) || (reservation.status === "seated")  )
 
       setReservations(filtered)
-    } catch (error){
-      setReservationsError(error)
+      } catch (error){
+        setReservationsError(error)
     }
   }
 
@@ -59,22 +62,28 @@ function Dashboard({date}) {
   }
 
   // define event actions for update
-  const finishTableEvent = (table_id) => {
+  const finishTableEvent = (table_id, reservation_id) => {
     const abortController = new AbortController();
 
-    // save updated table object with reservation removed
-      const deletePromise = deleteTableSeat(table_id, abortController.signal)
-      .then(() => {
-        loadReservations(reservationDate, abortController);
-        loadTables(reservationDate, abortController);
-      })
-      .catch(setReservationsError)
+    const saveReservation = {status: "finished"}
 
+         // remove reservation from table entry
+      const tablePromise = deleteTableSeat(table_id, abortController.signal)
+      .then((tableResult) => {
+        // save updated reservation status
+        const reservationPromise = updateReservationStatus(reservation_id, saveReservation, abortController.signal)
+        reservationPromise
+        .then((reservationResult) => {
+          loadTables(reservationDate, abortController)
+          loadReservations(reservationDate, abortController)
+        })
+        })
+      .catch(setReservationsError);        
+ 
     return () => {
       abortController.abort();
     };
   };
-
 
   const prevButton = () => {
     const prevDate = previous(reservationDate);
@@ -93,8 +102,9 @@ function Dashboard({date}) {
   const finishTableClick = (event) => {
     if (window.confirm("Is this table ready to seat new guests? This cannot be undone.")){
       const element = event.target;
-      const id = element.getAttribute("data-table-id-finish");
-      finishTableEvent(id);
+      const table_id = element.getAttribute("data-table-id-finish");
+      const reservation_id = element.getAttribute("data-reservation-id-finish");
+      finishTableEvent(table_id, reservation_id);
     } 
   }
 

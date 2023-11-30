@@ -85,54 +85,44 @@ function ReservationSeat(){
   };
 
   const cancelButton = () => {
-    gotoDashboard();
+    gotoDashboard(false);
   }
 
-  function gotoDashboard(){
+  function gotoDashboard(reload){
     const url = "/dashboard"
     const location = {
       pathname: url,
       search: "",
       state: {
-        date: reservation.reservation_date
+        date: reservation.reservation_date,
+        reload: reload
       }
     }
     history.push(location);
   }
 
-  /*const loadTable = (tableId) => {
-    const abortController = new AbortController();
-
-    const tablePromise = readTable(tableId, abortController.signal);
-    tablePromise.then((result) => {
-      const table = 
-        { id : result.table_id, 
-          table_name: result.table_name,
-          capacity: result.capacity,
-          reservation_id: result.reservation_id};
-      setTable(table);   
-    })
-    .catch(setErrors);
-  
-  }
-*/
-
+ 
   // define event action for table save
   const saveSeatEvent = ({table_id}) => {
     const abortController = new AbortController();
 
-    // TODO: Replace with db table load within promise to minimize concurrency
-    //const table = tables.find((table) => parseInt(table_id) === table.table_id);
-    
     // set table object to only include reservation_id 
     const saveTable = {reservation_id: reservation_id};
 
-    // save updated table objection with reservation
-    const tableSavePromise = updateTableSeat(table_id, saveTable, abortController.signal);
-    tableSavePromise
-    .then((result) => {
-      gotoDashboard();
-    })
+    // set reservation object to only include reservation status ("seated")
+    const saveReservation = {status: "seated"};
+
+    // save updated table object with reservation
+    const tablePromise = updateTableSeat(table_id, saveTable, abortController.signal);
+    tablePromise
+    .then((tableResult) => {
+      // save updated reservation object with status 
+     const reservationPromise = updateReservationStatus(reservation_id, saveReservation, abortController.signal)
+     reservationPromise
+      .then((reservationResult) => {
+        gotoDashboard(true);
+      })
+      })
     .catch(setErrors);
 
     return () => {
