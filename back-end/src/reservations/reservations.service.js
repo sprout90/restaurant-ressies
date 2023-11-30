@@ -1,15 +1,10 @@
 const knex = require("../db/connection");
 require("dotenv").config();
 
-async function list(queryDate){
+async function listByDate(queryDate){
 
     return knex("reservations as r")
-    .leftJoin("tables as t", function() {
-      this.on("r.reservation_id", "=", "t.reservation_id")
-      this.andOnVal("r.reservation_date", "=", queryDate)
-    })
     .select("r.*", 
-      //knex.raw("(select case when t.reservation_id is null then 'waiting' else 'seated' end) as seat_status"),
       knex.raw("to_char(r.reservation_date, 'YYYY-MM-DD') as formatted_date"),
       knex.raw("to_char(r.reservation_time, 'HH12:MIPM') as formatted_time")
       )
@@ -17,6 +12,19 @@ async function list(queryDate){
     .orderBy("r.reservation_date", "asc")
     .orderBy("r.reservation_time", "asc")
 }
+
+async function listByNumber(queryMobileNumber){
+
+  return knex("reservations as r")
+  .select("r.*", 
+    knex.raw("to_char(r.reservation_date, 'YYYY-MM-DD') as formatted_date"),
+    knex.raw("to_char(r.reservation_time, 'HH12:MIPM') as formatted_time")
+    )
+  .where({"r.mobile_number": queryMobileNumber})
+  .orderBy("r.reservation_date", "asc")
+  .orderBy("r.reservation_time", "asc")
+}
+
 
 async function read(reservationId){
 
@@ -86,4 +94,4 @@ function getReservationEndTime(){
 
 
 
-module.exports = {list, read, create, update, updateStatus, destroy, getBlackoutDay, getReservationStartTime, getReservationEndTime}
+module.exports = {listByDate, listByNumber, read, create, update, updateStatus, destroy, getBlackoutDay, getReservationStartTime, getReservationEndTime}

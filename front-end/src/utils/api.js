@@ -196,6 +196,7 @@ export async function updateReservationStatus(reservation_id, updatedReservation
   return await fetchJson(url, options, {});
 }
 
+
 /**
  * Retrieves all existing tables.
  * @returns {Promise<[reservation]>}

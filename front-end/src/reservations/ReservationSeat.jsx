@@ -85,17 +85,16 @@ function ReservationSeat(){
   };
 
   const cancelButton = () => {
-    gotoDashboard(false);
+    gotoDashboard();
   }
 
-  function gotoDashboard(reload){
+  function gotoDashboard(){
     const url = "/dashboard"
     const location = {
       pathname: url,
       search: "",
       state: {
-        date: reservation.reservation_date,
-        reload: reload
+        date: reservation.reservation_date
       }
     }
     history.push(location);
@@ -120,7 +119,7 @@ function ReservationSeat(){
      const reservationPromise = updateReservationStatus(reservation_id, saveReservation, abortController.signal)
      reservationPromise
       .then((reservationResult) => {
-        gotoDashboard(true);
+        gotoDashboard();
       })
       })
     .catch(setErrors);

@@ -28,6 +28,16 @@ async function validPeople(req, res, next){
   }
 }
 
+async function validQueryParameter(req, res, next){
+  const { date, mobile_number } = req.query;
+
+  if ((!(date)) && (!mobile_number) ){
+    next({ status: 400, message: `Missing valid reservation list query parameter. Must be date or mobile_number.` });
+  } else {
+    return next();
+  }
+}
+
 async function validDate(req, res, next){
   const {reservation_date} = req.body.data;
   const date = new Date(reservation_date)
@@ -67,7 +77,7 @@ async function validWorkingTime(req, res, next){
    next({ status: 400, message: `Reservations cannot be scheduled before ${validStartTime} or after ${validEndTime}.` });
 
  } else {
-  next(); 
+  return next(); 
  }
 
 }
@@ -114,8 +124,15 @@ async function validPhone(req, res, next){
  * List handler for reservation resources
  */
 async function list(req, res) {
-  const { date } = req.query;
-  const result = await service.list(date)
+  const { date, mobile_number } = req.query;
+ 
+  if (date) {
+    result = await service.listByDate(date)
+  } else {
+    if (mobile_number){
+      result = await service.listByNumber(mobile_number)
+    }
+  }
   res.json( { data: result  })
 }
 
@@ -160,6 +177,7 @@ async function destroy(req, res, next){
 
 module.exports = {
   list: [
+    validQueryParameter,
     asyncErrorBoundary(list)
   ],
   read: [
