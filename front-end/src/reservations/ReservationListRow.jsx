@@ -1,5 +1,6 @@
 import React from "react";
 import ReservationSeatBtn from "./ReservationSeatBtn";
+import ReservationEditBtn from "./ReservationEditBtn";
 
 function ReservationListRow({reservation}){
 
@@ -20,6 +21,10 @@ function ReservationListRow({reservation}){
       <div className="col-1">
         <ReservationSeatBtn reservation_id={reservation.reservation_id} status={reservation.status}/>
       </div>
+      <div className="col-1">
+        <ReservationEditBtn reservation_id={reservation.reservation_id} status={reservation.status}/>
+      </div>
+
     </div>
   );
 

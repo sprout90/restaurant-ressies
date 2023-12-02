@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { useParams, useRouteMatch, useHistory} from "react-router-dom";
 import { readReservation, createReservation, updateReservation, getBlackoutDay, getReservationStartTime, getReservationEndTime } from "../utils/api"
-import { today, dayOfWeek, lessThanNow, lessThanDefinedTime, greaterThanDefinedTime } from "../utils/date-time";
+import { today, dayOfWeek, lessThanNow, lessThanDefinedTime, greaterThanDefinedTime, formatAsDate, formatAsTime } from "../utils/date-time";
 import ErrorAlert from "../layout/ErrorAlert";
 
 
@@ -39,10 +39,11 @@ function ReservationEdit(){
               first_name: result.first_name,
               last_name: result.last_name,
               mobile_number: result.mobile_number,
-              reservation_date: result.reservation_date,
-              reservation_time: result.reservation_time,
+              reservation_date: formatAsDate(result.reservation_date),
+              reservation_time: formatAsTime(result.reservation_time),
               people: result.people};
           setFormData(reservation);   
+
         })
         .catch(setReservationsError);
       }
@@ -72,16 +73,13 @@ function ReservationEdit(){
 // define event actions for create
 const createReservationEvent = (newReservation) => {
 
-  console.log("new reservation ", newReservation)
-
   const abortController = new AbortController(); 
 
   const reservationPromise = createReservation(newReservation, abortController.signal);
     reservationPromise.then((result) => {
       // add new reservation (with id) to end of list, and set state
       // newReservation.id = result.id;
-      const url = `/dashboard`
-      history.push(url);
+      gotoDashboard();
     })
     .catch(setReservationsError);
 
@@ -97,8 +95,7 @@ const saveReservationEvent = (saveReservation) => {
 
   const reservationPromise = updateReservation(saveReservation, abortController.signal);
       reservationPromise.then((result) => {
-        const url = `/dashboard`
-        history.push(url);
+        gotoDashboard();
       })
       .catch(setReservationsError);
 
@@ -116,8 +113,19 @@ const saveReservationEvent = (saveReservation) => {
   };
 
   const cancelButton = () => {
-    const url = `/dashboard`
-    history.push(url);
+    gotoDashboard();
+  }
+
+  function gotoDashboard(){
+    const url = "/dashboard"
+    const location = {
+      pathname: url,
+      search: "",
+      state: {
+        date: formData.reservation_date
+      }
+    }
+    history.push(location);
   }
 
 
@@ -125,7 +133,6 @@ const saveReservationEvent = (saveReservation) => {
     let validForm = true;
     const errorList = [];
 
-    console.log("inside client validate" );
     // test for blackout day reservation
     const formDayOfWeek = dayOfWeek(formData.reservation_date)
     if (blackoutDay === formDayOfWeek ){
