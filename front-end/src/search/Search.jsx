@@ -1,24 +1,19 @@
 import React, {useState, useEffect } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { listReservations } from "../utils/api";
 import ReservationList from "../reservations/ReservationList"
 import ErrorAlert from "../layout/ErrorAlert";
-import { today } from "../utils/date-time";
 
 function Search(){
 
-  // remember date state for dashboard
-  let {date} = useParams();
-  date = (date) ? date : today();
-  const [reservationDate, setReservationDate] = useState(date);
   const [reservations, setReservations] = useState([])
-
   const [errors, setErrors] = useState(undefined)
   const history = useHistory();
 
   // define inital form state object 
    const initialFormState = {
-      mobile_number: ""
+      mobile_number: "",
+      searchAttempted: false
    }; 
    const [formData, setFormData] = useState( {...initialFormState })
 
@@ -29,15 +24,7 @@ function Search(){
 
   function gotoDashboard(){
     const url = "/dashboard"
-    const date = `${reservationDate}`
-    const location = {
-      pathname: url,
-      search: "",
-      state: {
-        date: `${reservationDate}`
-      }
-    }
-    history.push(location);
+    history.push(url);
   }
 
    // define event handlers for field-level change, and form submit
@@ -60,22 +47,34 @@ function Search(){
 
   async function loadReservations() {
     
-    console.log("load reservations ")
     const abortController = new AbortController(); 
 
     try{
       const mobile_number = formData.mobile_number;
       const result = await listReservations({mobile_number}, abortController.signal);
 
-      console.log(result)
       setReservations(result)
       } catch (error){
         setErrors(error)
     }
   }
 
+  const renderReservationList = () => {
+
+    { if((reservations.length===0) && (formData.searchAttempted===true)){
+        return (<p>No matches found. Please correct phone number and try again.</p>)
+      } else {
+        if (formData.searchAttempted===false){
+          return null;          
+        } else {
+          return (<ReservationList reservations={reservations}/>)
+        }
+      }
+    } 
+  }
+
   const searchEvent = () => {
-    console.log("in search event ")
+    setFormData({ ...formData, ["searchAttempted"]: true})
     loadReservations();
   }
 
@@ -110,7 +109,7 @@ function Search(){
     </form>
     <br/>
     <div>
-        <ReservationList reservations={reservations}/>
+      {renderReservationList()}
     </div>
   </div>
   )

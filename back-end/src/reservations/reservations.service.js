@@ -15,12 +15,15 @@ async function listByDate(queryDate){
 
 async function listByNumber(queryMobileNumber){
 
+  const scrubbedNumber = queryMobileNumber.replace(/\D/g, "");
+  const searchNumber = `%${scrubbedNumber}%`
+
   return knex("reservations as r")
   .select("r.*", 
     knex.raw("to_char(r.reservation_date, 'YYYY-MM-DD') as formatted_date"),
     knex.raw("to_char(r.reservation_time, 'HH12:MIPM') as formatted_time")
     )
-  .where({"r.mobile_number": queryMobileNumber})
+  .whereRaw("translate(r.mobile_number, '() -', '') like ?", searchNumber)
   .orderBy("r.reservation_date", "asc")
   .orderBy("r.reservation_time", "asc")
 }
