@@ -104,7 +104,7 @@ function Dashboard({date}) {
       const element = event.target;
       const table_id = element.getAttribute("data-table-id-finish");
       const reservation_id = element.getAttribute("data-reservation-id-finish");
-      closeReservationEvent(reservation_id, table_id, "finish");
+      closeReservationEvent(reservation_id, table_id, "finished");
     } 
   }
 
@@ -113,7 +113,7 @@ function Dashboard({date}) {
       const element = event.target;
       const reservation_id = element.getAttribute("data-reservation-id-cancel");
       const table_id = element.getAttribute("data-table-id-cancel")
-      closeReservationEvent(reservation_id, table_id, "cancel");
+      closeReservationEvent(reservation_id, table_id, "cancelled");
     } 
   }
 
@@ -132,7 +132,7 @@ function Dashboard({date}) {
         <h4 className="mb-0">Tables</h4>
       </div>
       <div>
-      <TableList tables={tables} finishTableHandler={finishTableClick}/>
+        <TableList tables={tables} finishTableHandler={finishTableClick}/>
       </div>
     </main>
   );
