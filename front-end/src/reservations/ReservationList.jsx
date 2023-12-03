@@ -1,7 +1,7 @@
 import React from "react";
 import ReservationListRow from "./ReservationListRow";
 
-function ReservationList({reservations}){
+function ReservationList({reservations, cancelHandler}){
 
  
     return ( 
@@ -25,10 +25,13 @@ function ReservationList({reservations}){
           <div className="col-1">
             <span>Edit</span>
           </div>
+          <div className="col-1">
+            <span>Cancel</span>
+          </div>
       </div>
       <div>
       {reservations.map((reservation, index) =>  
-            <ReservationListRow reservation={reservation} key={index} index={index}/>
+            <ReservationListRow reservation={reservation} cancelHandler={cancelHandler} key={index} index={index}/>
             ) 
       }
       </div>

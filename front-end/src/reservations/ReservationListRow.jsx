@@ -1,8 +1,10 @@
 import React from "react";
 import ReservationSeatBtn from "./ReservationSeatBtn";
 import ReservationEditBtn from "./ReservationEditBtn";
+import ReservationCancelBtn from "./ReservationCancelBtn";
 
-function ReservationListRow({reservation}){
+
+function ReservationListRow({reservation, cancelHandler}){
 
    return (
     <div className="row">
@@ -23,6 +25,9 @@ function ReservationListRow({reservation}){
       </div>
       <div className="col-1">
         <ReservationEditBtn reservation_id={reservation.reservation_id} status={reservation.status}/>
+      </div>
+      <div className="col-1">
+        <ReservationCancelBtn reservation_id={reservation.reservation_id} table_id={reservation.table_id} cancelHandler={cancelHandler}/>
       </div>
 
     </div>

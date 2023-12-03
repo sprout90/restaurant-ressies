@@ -4,7 +4,10 @@ require("dotenv").config();
 async function listByDate(queryDate){
 
     return knex("reservations as r")
-    .select("r.*", 
+    .leftJoin("tables as t", function() {
+      this.on("r.reservation_id", "=", "t.reservation_id")
+    })
+    .select("r.*", "t.table_id",
       knex.raw("to_char(r.reservation_date, 'YYYY-MM-DD') as formatted_date"),
       knex.raw("to_char(r.reservation_time, 'HH12:MIPM') as formatted_time")
       )

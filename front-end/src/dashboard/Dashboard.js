@@ -61,13 +61,13 @@ function Dashboard({date}) {
     }
   }
 
-  // define event actions for update
-  const finishTableEvent = (table_id, reservation_id) => {
+  // define event actions for finish table or cancel reservation
+  const closeReservationEvent = (reservation_id, table_id, closeStatus) => {
     const abortController = new AbortController();
 
-    const saveReservation = {status: "finished"}
+    const saveReservation = {status: closeStatus }
 
-         // remove reservation from table entry
+      // remove reservation from table entry
       const tablePromise = deleteTableSeat(table_id, abortController.signal)
       .then((tableResult) => {
         // save updated reservation status
@@ -104,7 +104,16 @@ function Dashboard({date}) {
       const element = event.target;
       const table_id = element.getAttribute("data-table-id-finish");
       const reservation_id = element.getAttribute("data-reservation-id-finish");
-      finishTableEvent(table_id, reservation_id);
+      closeReservationEvent(reservation_id, table_id, "finish");
+    } 
+  }
+
+  const cancelReservationClick = (event) => {
+    if (window.confirm("Do you want to cancel this reservation? This cannot be undone.")){
+      const element = event.target;
+      const reservation_id = element.getAttribute("data-reservation-id-cancel");
+      const table_id = element.getAttribute("data-table-id-cancel")
+      closeReservationEvent(reservation_id, table_id, "cancel");
     } 
   }
 
@@ -117,7 +126,7 @@ function Dashboard({date}) {
         <h4 className="mb-0">Reservations for {reservationDate}</h4>
       </div>
       <div>
-        <ReservationList reservations={reservations} />  
+        <ReservationList reservations={reservations} cancelHandler={cancelReservationClick}/>  
       </div>
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Tables</h4>

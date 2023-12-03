@@ -317,6 +317,14 @@ export async function deleteTableSeat(table_id, signal) {
     signal,
   };
 
-  return await fetchJson(url, options, {});
+  // handle case where cancelling reservation 
+  // with NULL and table not seated
+  // ...
+  // nothing to do here, so return "resolve" on promise
+  if (table_id !== "null") {
+    return await fetchJson(url, options, {})
+  } else {
+    return Promise.resolve(signal);
+  }
 }
 
