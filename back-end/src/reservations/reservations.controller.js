@@ -14,15 +14,22 @@ async function reservationExists(req, res, next){
       res.locals.reservation = reservation;
       return next();
   } else {
-      next({ status: 404, message: `Reservation cannot be found.` });
+      return next({ status: 404, message: `Reservation cannot be found.` });
   }
 }
 
 async function validPeople(req, res, next){
   const {people} = req.body.data;
-  if (people < 1){
-    next({ status: 400, message: `People must be 1 or greater.` });
 
+  //const test = typeof(people)
+  //console.log("typeof test ", test)
+
+  if ((isNaN(people) === true) || (typeof(people) !== "number")){
+    return next({ status: 400, message: `People must be valid number.` });
+  }
+
+  if (people < 1){
+    return next({ status: 400, message: `People must be 1 or greater.` });
   } else {
     return next();
   }

@@ -18,7 +18,9 @@ async function tableExists(req, res, next){
 }
 
 async function validCapacity(req, res, next){
-  const { capacity } = res.locals.table;
+  //const { capacity } = res.locals.table;
+  
+  const { capacity } = req.body.data; 
   if (capacity < 1){
     next({ status: 400, message: `Capacity must be 1 or greater.` });
 
