@@ -1,4 +1,4 @@
-const path = require("path")
+const path = require("path");
 require("dotenv").config();
 // Update with your config settings.
 
@@ -12,16 +12,13 @@ const DATABASE_URL =
     ? DATABASE_URL_PRODUCTION
     : DATABASE_URL_DEVELOPMENT;
 
-
-
 module.exports = {
-
   development: {
-    client: 'postgresql',
+    client: "postgresql",
     connection: DATABASE_URL,
     pool: {
       min: 2,
-      max: 10
+      max: 10,
     },
     migrations: {
       directory: path.join(__dirname, "src", "db", "migrations"),
@@ -29,43 +26,50 @@ module.exports = {
     seeds: {
       directory: path.join(__dirname, "src", "db", "seeds"),
     },
-
   },
 
   test: {
-    client: 'postgresql',
+    client: "postgresql",
     connection: DATABASE_URL,
     pool: {
       min: 2,
-      max: 10
+      max: 10,
     },
     migrations: {
-      tableName: 'knex_migrations'
-    }
+      directory: path.join(__dirname, "src", "db", "migrations"),
+    },
+    seeds: {
+      directory: path.join(__dirname, "src", "db", "seeds"),
+    },
   },
 
   preview: {
-    client: 'postgresql',
+    client: "postgresql",
     connection: DATABASE_URL,
     pool: {
       min: 2,
-      max: 10
+      max: 10,
     },
     migrations: {
-      tableName: 'knex_migrations'
-    }
+      directory: path.join(__dirname, "src", "db", "migrations"),
+    },
+    seeds: {
+      directory: path.join(__dirname, "src", "db", "seeds"),
+    },
   },
 
   production: {
-    client: 'postgresql',
+    client: "postgresql",
     connection: DATABASE_URL,
     pool: {
       min: 2,
-      max: 10
+      max: 10,
     },
     migrations: {
-      tableName: 'knex_migrations'
-    }
-  }
-
+      directory: path.join(__dirname, "src", "db", "migrations"),
+    },
+    seeds: {
+      directory: path.join(__dirname, "src", "db", "seeds"),
+    },
+  },
 };
