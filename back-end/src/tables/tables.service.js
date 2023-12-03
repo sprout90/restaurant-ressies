@@ -11,7 +11,7 @@ async function list(queryDate) {
       "t.*",
       "r.*",
       knex.raw("to_char(r.reservation_date, 'YYYY-MM-DD') as formatted_date"),
-      knex.raw("to_char(r.reservation_time, 'HH12:MIPM') as formatted_time")
+      knex.raw("to_char(r.reservation_time, 'HH12:MIPM') as formatted_time"),
     )
     .orderBy("t.table_name", "asc");
 }
