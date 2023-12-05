@@ -111,5 +111,41 @@ function greaterThanDefinedTime(timeA, timeB){
   }
 }
 
+function validDate(dateString){
 
-module.exports = { dayOfWeek, lessThanToday, lessThanDefinedTime, greaterThanDefinedTime};
+  try {
+    let [ year, month, day ] = dateString.split("-");
+    
+    // create the date object with the values sent in (month is zero based)
+    const testDate = new Date(year,month-1,day,0,0,0,0);
+
+    year = parseFloat(year);
+    month = parseFloat(month);
+    day = parseFloat(day);
+
+    // get the month, day, and year from the object we just created 
+    const testMonth = testDate.getMonth() + 1;
+    const testDay = testDate.getDate();
+    const testYear = testDate.getYear() + 1900;
+
+    // if they match then the date is valid
+    if ( (testMonth === month) && (testYear === year) && (testDay === day) ){
+      return true; }
+    else
+      return false;
+
+  } catch (error) {
+      return false;
+  }
+
+}
+
+function validTime(timeString){
+  const regex = /^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
+  
+  const valid = regex.test(timeString);
+
+  return valid;
+}
+
+module.exports = { dayOfWeek, lessThanToday, lessThanDefinedTime, greaterThanDefinedTime, validDate, validTime};
