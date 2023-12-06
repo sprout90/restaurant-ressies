@@ -160,7 +160,7 @@ const saveReservationEvent = (saveReservation) => {
     // test for reservation date & time that is less than now
     if (lessThanNow(formData.reservation_date, formData.reservation_time)){
       const error = {name: "Day & Time reservation error",
-                   message: `Reservations cannot be scheduled in the past.`}
+                   message: `Reservations must be scheduled in the future.`}
       errorList.push(error)
       validForm = false;
     }

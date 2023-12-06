@@ -125,7 +125,7 @@ async function validPresentDate(req, res, next) {
   if (lessThanToday(reservation_date, reservation_time)) {
     next({
       status: 400,
-      message: `Reservations cannot be scheduled in the past.`,
+      message: `Reservations must be scheduled in the future.`,
     });
   } else {
     return next();
