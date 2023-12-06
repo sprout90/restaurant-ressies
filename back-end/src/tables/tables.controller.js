@@ -47,6 +47,39 @@ async function validTableName(req, res, next){
   }
 }
 
+async function validSeatRequest(req, res, next){
+  
+  if (!(req.body.data)){
+    next({ status: 400, message: `Invalid seat request.  Missing data.` });
+
+  } else {
+    return next();
+  }
+}
+
+async function validReservationIdRequest(req, res, next){
+  const data = req.body.data;
+
+  if (!(data.reservation_id)){
+    next({ status: 400, message: `Invalid seat request.  Missing reservation_id` });
+
+  } else {
+    return next();
+  }
+}
+
+async function validReservationId(req, res, next){
+  const reservationId = req.body.data.reservation_id
+  const reservation = await service.readReservation(reservationId);
+  if (reservation) {
+      res.locals.reservation = reservation;
+      return next();
+  } else {
+      next({ status: 404, message: `Reservation ${reservationId} record cannot be found.` });
+  }
+}
+
+
 async function validFreeSeat(req, res, next){
   const { table_id, reservation_id } = res.locals.table;
   if (reservation_id !== null){
@@ -68,21 +101,18 @@ async function validOccupiedSeat(req, res, next){
 }
 
 async function validReservationCapacity(req, res, next){
-  const abortController = new AbortController();
+  const { people } = res.locals.reservation;
   const { capacity } = res.locals.table;
   const { reservation_id } = req.body.data; 
 
-  await api.readReservation(reservation_id, abortController.signal)
-    .then((reservation) => {
-        if ((capacity >= reservation.people) === false) {
-          console.log("Be capacity ", capacity, reservation.people)
-          next({ status: 400, message: `Reservation cannot exceed the table capacity. Table capacity: ${capacity}` });
-        } else {  
-          return next();
-        }
-      } 
-    ) 
-}
+
+  if ((capacity >= people) === false) {
+    next({ status: 400, message: `Reservation cannot exceed the table capacity. Table capacity: ${capacity}` });
+  } else {  
+    return next();
+  }
+} 
+
 
 // SERVICE FUNCTIONS
 
@@ -165,8 +195,11 @@ module.exports = {
   ],
   updateSeat: [
     asyncErrorBoundary(tableExists), 
-    validReservationCapacity,
+    validSeatRequest,
     validFreeSeat,
+    validReservationIdRequest,
+    validReservationId, 
+    validReservationCapacity,
     asyncErrorBoundary(updateSeat)
   ], 
   deleteSeat: [
