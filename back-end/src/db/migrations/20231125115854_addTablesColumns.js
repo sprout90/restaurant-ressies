@@ -2,7 +2,7 @@
 exports.up = function(knex) {
   return knex.schema.table("tables", (table) => {
     table.string("table_name");
-    table.string("capacity");  
+    table.integer("capacity");  
     table.integer("reservation_id");
     table.foreign("reservation_id").references("reservation_id").inTable("reservations")
   });

@@ -13,16 +13,34 @@ async function tableExists(req, res, next){
       res.locals.table = table;
       return next();
   } else {
-      next({ status: 404, message: `Table record cannot be found.` });
+      next({ status: 404, message: `Table ${tableId} record cannot be found.` });
   }
 }
 
 async function validCapacity(req, res, next){
-  //const { capacity } = res.locals.table;
   
   const { capacity } = req.body.data; 
+
+  if (isNaN(capacity) === true || typeof capacity !== "number") {
+    return next({
+      status: 400,
+      message: `The capacity field must contain a valid number.`,
+    });
+  }
+
   if (capacity < 1){
     next({ status: 400, message: `Capacity must be 1 or greater.` });
+
+  } else {
+    return next();
+  }
+}
+
+async function validTableName(req, res, next){
+  
+  const { table_name } = req.body.data; 
+  if (table_name.length < 2){
+    next({ status: 400, message: `The table_name field must be greater than 1 character.` });
 
   } else {
     return next();
@@ -135,12 +153,14 @@ module.exports = {
   create: [
     hasRequiredProperties, 
     validCapacity,
+    validTableName,
     asyncErrorBoundary(create)
   ],
   update: [
     asyncErrorBoundary(tableExists), 
     hasRequiredProperties, 
     validCapacity,
+    validTableName,
     asyncErrorBoundary(update)
   ],
   updateSeat: [
