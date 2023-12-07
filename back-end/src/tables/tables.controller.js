@@ -97,7 +97,7 @@ async function validOccupiedSeat(req, res, next) {
   if (reservation_id === null) {
     next({
       status: 400,
-      message: `Table_id (${table_id}) must be occupied to allow finish event.`,
+      message: `Table_id (${table_id}) is not occupied.  Table must be occupied to allow finish event.`,
     });
   } else {
     return next();
