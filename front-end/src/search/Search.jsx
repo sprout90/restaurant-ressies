@@ -60,7 +60,7 @@ function Search() {
   const renderReservationList = () => {
     if (reservations.length === 0 && formData.searchAttempted === true) {
       return (
-        <p>No matches found. Please correct phone number and try again.</p>
+        <p>No reservations found. Please correct phone number and try again.</p>
       );
     }
 
