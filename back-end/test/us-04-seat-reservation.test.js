@@ -226,9 +226,6 @@ describe("US-04 - Seat reservation", () => {
           .send({ data });
 
 
-        console.log("body.error ", response.body.error)
-        console.log("status ", response.status)
-
         expect(response.body.error).toContain("999");
         expect(response.status).toBe(404);
       });
