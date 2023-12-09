@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import {
-  listReservations,
-  listTables,
-  deleteTableSeat
-} from "../utils/api";
+import { listReservations, listTables, deleteTableSeat } from "../utils/api";
 import { today, previous, next } from "../utils/date-time";
 import ErrorAlert from "../layout/ErrorAlert";
 import NavButtons from "./NavButtons";
@@ -22,12 +18,13 @@ function Dashboard({ date }) {
   const [tables, setTables] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
 
-  // location state overrides the default date set as prop
-  let { state } = useLocation();
+  // get date inputs from lcoation.state and query param.
+  // query param assumes only 1 param
+  const { state, search } = useLocation();
+  const qDate = search.substring(search.indexOf("=") + 1);
 
   // reset date var from state variable if defined.
-  date = state !== undefined ? state.date : date;
-
+  date = getDateParam(date, qDate, state);
   const [reservationDate, setReservationDate] = useState(date);
 
   useEffect(() => {
@@ -68,15 +65,17 @@ function Dashboard({ date }) {
   const closeReservationEvent = (reservation_id, table_id, closeStatus) => {
     const abortController = new AbortController();
 
-    //const reservationStatus = { status: closeStatus };
-    //console.log("save reservation status ", reservationStatus)
-
     // remove reservation from table entry
-    const tablePromise = deleteTableSeat(reservation_id, table_id, closeStatus, abortController.signal)
+    const tablePromise = deleteTableSeat(
+      reservation_id,
+      table_id,
+      closeStatus,
+      abortController.signal
+    )
       .then((tableResult) => {
-          loadTables(reservationDate, abortController);
-          loadReservations(reservationDate, abortController);
-        })
+        loadTables(reservationDate, abortController);
+        loadReservations(reservationDate, abortController);
+      })
       .catch(setReservationsError);
 
     return () => {
@@ -123,6 +122,23 @@ function Dashboard({ date }) {
       closeReservationEvent(reservation_id, table_id, "cancelled");
     }
   };
+
+  // determine input value for date init
+  // TODO: remove console statements
+  function getDateParam(propDate, qDate, state) {
+    if (qDate) {
+      //console.log("qDate wins ", qDate)
+      return qDate;
+    } else {
+      if (state !== undefined) {
+        // console.log("state date wins ", state.date)
+        return state.date;
+      } else {
+        // console.log("propDate wins ", propDate)
+        return propDate;
+      }
+    }
+  }
 
   return (
     <main>
