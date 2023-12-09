@@ -163,6 +163,55 @@ async function validPhone(req, res, next) {
   }
 }
 
+async function validCreateStatus(req, res, next) {
+  const { status } = req.body.data;
+
+  const valid = (status === "seated") || (status === "finished") ? false : true;
+  if (valid) {
+    return next();
+  } else {
+    next({
+      status: 400,
+      message: `A new reservation cannot have a status of ${status}`,
+    });
+  }
+}
+
+async function validStatus(req, res, next) {
+  const { status } = req.body.data;
+
+  const validStatus = ["booked", "seated", "finished", "cancelled"]
+
+  let valid = (validStatus.indexOf(status) === -1) ? false : true;
+  if (valid) {
+    return next();
+  } else {
+    next({
+      status: 400,
+      message: `The reservation status of ${status} is invalid.`,
+    });
+  }
+}
+
+async function validStatusFreeze(req, res, next) {
+ 
+  valid = (res.locals.reservation.status === "finished") ? false : true;
+  if (valid) {
+    console.log("valid ", valid)
+    return next();
+  } else {
+    console.log("not valid")
+    next({
+      status: 400,
+      message: `The reservation with finished status cannot be updated.`,
+    });
+  }
+
+}
+
+
+
+
 function formatPhoneNumber(phoneNumberString) {
   const cleaned = ("" + phoneNumberString).replace(/\Dg/, "");
   var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
@@ -171,6 +220,8 @@ function formatPhoneNumber(phoneNumberString) {
   }
   return null;
 }
+
+
 
 // SERVICE FUNCTIONS
 
@@ -217,8 +268,7 @@ async function updateStatus(req, res, next) {
   const reservation_id = res.locals.reservation.reservation_id;
   const { status } = req.body.data;
   const data = await service.updateStatus(reservation_id, status);
-  const updatedStatus = data.status;
-
+ 
   res.status(200).json({ data: { status: data.status } });
 }
 
@@ -239,6 +289,8 @@ module.exports = {
     validInputTime,
     validWorkingTime,
     validPeople,
+    validCreateStatus,
+    validStatus,
     asyncErrorBoundary(create),
   ],
   update: [
@@ -251,10 +303,13 @@ module.exports = {
     validInputTime,
     validWorkingTime,
     validPeople,
+    validStatus,
     asyncErrorBoundary(update),
   ],
   updateStatus: [
     asyncErrorBoundary(reservationExists),
+    validStatus,
+    validStatusFreeze,
     asyncErrorBoundary(updateStatus),
   ],
   destroy: [asyncErrorBoundary(reservationExists), asyncErrorBoundary(destroy)],
