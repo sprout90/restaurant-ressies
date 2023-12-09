@@ -270,6 +270,9 @@ describe("US-04 - Seat reservation - E2E", () => {
           .includes("seat");
       }, hrefSelector);
 
+
+     // console.log("debug seat ", hrefSelector, containsSeat)
+
       expect(containsSeat).toBe(true);
     });
   });

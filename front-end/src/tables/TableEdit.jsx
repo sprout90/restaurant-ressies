@@ -12,7 +12,7 @@ function TableEdit(){
     // define inital form state object 
     const initialFormState = {
       table_name: "",
-      capacity: 1
+      capacity: ""
     }; 
   const [formData, setFormData] = useState( {...initialFormState })
   console.log("table id ", tableId)
@@ -59,16 +59,14 @@ function TableEdit(){
   };
 
   const cancelButton = () => {
-    const url = `/dashboard`
-    history.push(url);
+    history.goBack();
   }
 
 
   // define event actions for create 
   const createTableEvent = (newTable) => {
 
-    console.log("new table", newTable)
-
+    newTable.capacity = parseInt(newTable.capacity);
     const abortController = new AbortController(); 
 
     const tablePromise = createTable(newTable, abortController.signal);
@@ -88,6 +86,7 @@ function TableEdit(){
 
   // define event action for table save
   const saveTableEvent = (saveTable) => {
+    saveTable.capacity = parseInt(saveTable.capacity);
     const abortController = new AbortController();
 
     const tablePromise = updateTable(saveTable, abortController.signal);
@@ -148,7 +147,6 @@ function TableEdit(){
               name="capacity" 
               type="number" 
               placeholder="Table capacity"
-              min="1"
               onChange={handleChange}
               value={formData.capacity}
               required={true} />
