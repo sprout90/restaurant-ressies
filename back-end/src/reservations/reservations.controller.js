@@ -258,7 +258,7 @@ async function read(req, res, next) {
 async function create(req, res, next) {
   const newReservation = req.body.data;
   newReservation.status = "booked";
-  const data = await service.create(req.body.data);
+  const data = await service.create(newReservation);
 
   res.status(201).json({ data });
 }
@@ -300,7 +300,6 @@ module.exports = {
     validWorkingTime,
     validPeople,
     validCreateStatus,
-    validStatus,
     asyncErrorBoundary(create),
   ],
   update: [

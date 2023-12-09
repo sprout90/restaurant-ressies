@@ -85,7 +85,7 @@ async function validFreeSeat(req, res, next) {
   if (reservation_id !== null) {
     next({
       status: 400,
-      message: `Table (${table_id}) is already seated. Reservation must be placed at an open table to accept seating.`,
+      message: `Table (${table_id}) is already seated and occupied. Reservation must be placed at an open table to accept seating.`,
     });
   } else {
     return next();
@@ -97,7 +97,7 @@ async function validOccupiedSeat(req, res, next) {
   if (reservation_id === null) {
     next({
       status: 400,
-      message: `Table_id (${table_id}) is not seated.  Table must be seated to allow finish event.`,
+      message: `Table_id (${table_id}) is not occupied and seated.  Table must be seated to allow finish event.`,
     });
   } else {
     return next();
