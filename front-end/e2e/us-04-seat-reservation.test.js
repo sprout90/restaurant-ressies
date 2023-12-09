@@ -257,11 +257,7 @@ describe("US-04 - Seat reservation - E2E", () => {
 
       const hrefSelector = `[href="/reservations/${reservation.reservation_id}/seat"]`;
 
-      console.log("debug href ", hrefSelector)
-
       await page.waitForSelector(hrefSelector);
-
-      console.log("debug wait for selector ", hrefSelector)
 
       await page.screenshot({
         path: ".screenshots/us-04-dashboard-seat-button-after.png",
@@ -275,8 +271,6 @@ describe("US-04 - Seat reservation - E2E", () => {
           .includes("seat");
       }, hrefSelector);
 
-
-     // console.log("debug seat ", hrefSelector, containsSeat)
 
       expect(containsSeat).toBe(true);
     });

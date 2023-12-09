@@ -53,6 +53,7 @@ function ReservationEdit() {
             first_name: result.first_name,
             last_name: result.last_name,
             mobile_number: result.mobile_number,
+            status: result.status,
             reservation_date: formatAsDate(result.reservation_date),
             reservation_time: formatAsTime(result.reservation_time),
             people: result.people,
