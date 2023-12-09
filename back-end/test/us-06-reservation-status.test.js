@@ -113,14 +113,10 @@ describe("US-06 - Reservation status", () => {
         .where({ reservation_id: reservationOne.reservation_id })
         .update(reservationOne, "*");
 
-      console.log("reservationOne ", reservationOne)
-
       const response = await request(app)
         .put(`/reservations/${reservationOne.reservation_id}/status`)
         .set("Accept", "application/json")
         .send({ data: { status: "seated" } });
-
-      console.log("body.error ", response.body.error)
 
       expect(response.body.error).toContain("finished");
       expect(response.status).toBe(400);
@@ -191,7 +187,7 @@ describe("US-06 - Reservation status", () => {
         .put(`/tables/${tableTwo.table_id}/seat`)
         .set("Accept", "application/json")
         .send({ data: { reservation_id: reservationOne.reservation_id } });
-
+ 
       expect(secondSeatResponse.body.error).toContain("seated");
       expect(secondSeatResponse.status).toBe(400);
     });

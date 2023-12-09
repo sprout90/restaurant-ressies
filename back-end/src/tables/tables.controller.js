@@ -85,7 +85,7 @@ async function validFreeSeat(req, res, next) {
   if (reservation_id !== null) {
     next({
       status: 400,
-      message: `Table (${table_id}) is occupied. Reservation must be placed at an open to accept seating.`,
+      message: `Table (${table_id}) is already seated. Reservation must be placed at an open table to accept seating.`,
     });
   } else {
     return next();
@@ -97,7 +97,7 @@ async function validOccupiedSeat(req, res, next) {
   if (reservation_id === null) {
     next({
       status: 400,
-      message: `Table_id (${table_id}) is not occupied.  Table must be occupied to allow finish event.`,
+      message: `Table_id (${table_id}) is not seated.  Table must be seated to allow finish event.`,
     });
   } else {
     return next();
@@ -107,7 +107,6 @@ async function validOccupiedSeat(req, res, next) {
 async function validReservationCapacity(req, res, next) {
   const { people } = res.locals.reservation;
   const { capacity } = res.locals.table;
-  const { reservation_id } = req.body.data;
 
   if (capacity >= people === false) {
     next({
@@ -118,6 +117,22 @@ async function validReservationCapacity(req, res, next) {
     return next();
   }
 }
+
+async function validReservationStatus(req, res, next) {
+  const { reservation_id, status } = res.locals.reservation
+
+  valid = (res.locals.reservation.status === "seated") ? false : true;
+  if (valid) {
+    return next();
+  } else {
+    next({
+      status: 400,
+      message: `The reservation with already seated status cannot be seated.`,
+    });
+  }
+
+}
+
 
 // SERVICE FUNCTIONS
 
@@ -150,18 +165,30 @@ async function update(req, res, next) {
   res.json({ data });
 }
 
-async function updateSeat(req, res, next) {
+async function fillSeat(req, res, next) {
   const table_id = res.locals.table.table_id;
+  const { reservation_id } = req.body.data;
+
+  const data = await service.updateSeat(table_id, reservation_id);
+  const reservation = await reservationService.updateStatus(reservation_id, "seated");
+
+  res.status(200).json({ data });
+}
+
+
+async function updateSeat(req, res, next) {
+  const { table_id } = res.locals.table;
   const { reservation_id } = req.body.data;
   const data = await service.updateSeat(table_id, reservation_id);
 
-  res.json({ data });
+  res.status(200).json({ data });
 }
 
 async function deleteSeat(req, res, next) {
-  const table_id = res.locals.table.table_id;
-  const reservation_id = null;
-  const data = await service.updateSeat(table_id, reservation_id);
+  const { table_id } = res.locals.table;
+  const { reservation_id } = res.locals.table;
+  const data = await service.updateSeat(table_id, null);
+  const reservation = await reservationService.updateStatus(reservation_id, "finished");
 
   res.json({ data });
 }
@@ -187,14 +214,15 @@ module.exports = {
     validTableName,
     asyncErrorBoundary(update),
   ],
-  updateSeat: [
+  fillSeat: [
     asyncErrorBoundary(tableExists),
     validSeatRequest,
     validFreeSeat,
     validReservationIdRequest,
     validReservationId,
     validReservationCapacity,
-    asyncErrorBoundary(updateSeat),
+    validReservationStatus,
+    asyncErrorBoundary(fillSeat),
   ],
   deleteSeat: [
     asyncErrorBoundary(tableExists),

@@ -197,10 +197,8 @@ async function validStatusFreeze(req, res, next) {
  
   valid = (res.locals.reservation.status === "finished") ? false : true;
   if (valid) {
-    console.log("valid ", valid)
     return next();
   } else {
-    console.log("not valid")
     next({
       status: 400,
       message: `The reservation with finished status cannot be updated.`,
@@ -209,7 +207,19 @@ async function validStatusFreeze(req, res, next) {
 
 }
 
+async function validStatusNotSeated(req, res, next) {
+ 
+  valid = ((res.locals.reservation.status === "seated") && (req.body.data.seated === "seated")) ? false : true;
+  if (valid) {
+    return next();
+  } else {
+    next({
+      status: 400,
+      message: `The reservation with already seated status cannot be seated.`,
+    });
+  }
 
+}
 
 
 function formatPhoneNumber(phoneNumberString) {
@@ -310,6 +320,7 @@ module.exports = {
     asyncErrorBoundary(reservationExists),
     validStatus,
     validStatusFreeze,
+    validStatusNotSeated,
     asyncErrorBoundary(updateStatus),
   ],
   destroy: [asyncErrorBoundary(reservationExists), asyncErrorBoundary(destroy)],

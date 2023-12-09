@@ -13,6 +13,7 @@ async function listByDate(queryDate) {
       knex.raw("to_char(r.reservation_time, 'HH12:MIPM') as formatted_time")
     )
     .where({ "r.reservation_date": queryDate })
+    .whereNot({ "r.status": "finished"} )
     .orderBy("r.reservation_date", "asc")
     .orderBy("r.reservation_time", "asc");
 }

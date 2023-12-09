@@ -23,7 +23,7 @@ router
 
 router
   .route("/:tableId/seat")
-  .put(controller.updateSeat)
+  .put(controller.fillSeat)
   .delete(controller.deleteSeat)
   .all(methodNotAllowed);
 
