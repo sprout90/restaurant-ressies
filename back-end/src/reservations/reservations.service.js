@@ -51,15 +51,19 @@ async function create(newReservation) {
 }
 
 async function update(updatedReservation) {
-  await knex("reservations")
+  return await knex("reservations")
     .where({ reservation_id: updatedReservation.reservation_id })
-    .update(updatedReservation);
+    .update(updatedReservation)
+    .returning("*")
+    .then((updatedRecords) => updatedRecords[0]);
 }
 
 async function updateStatus(reservation_id, status) {
-  await knex("reservations")
+  return await knex("reservations")
     .where({ reservation_id: reservation_id })
-    .update({ status: status });
+    .update({ status: status })
+    .returning("*")
+    .then((updatedRecords) => updatedRecords[0]);
 }
 
 async function destroy(reservationId) {

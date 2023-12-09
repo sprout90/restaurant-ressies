@@ -146,17 +146,30 @@ async function validInputTime(req, res, next) {
 }
 
 async function validPhone(req, res, next) {
-  const regex = /^\d{3}-\d{3}-\d{4}$/;
-  const { mobile_number } = req.body.data;
+  const regexWithDashes = /^\d{3}-\d{3}-\d{4}$/;
+  const regexNoDashes = /^\d{10}$/;
+  let { mobile_number } = req.body.data;
 
-  if (regex.test(mobile_number) === false) {
+  if (
+    regexWithDashes.test(mobile_number) === true ||
+    regexNoDashes.test(mobile_number) === true
+  ) {
+    return next();
+  } else {
     next({
       status: 400,
       message: `The mobile number (${mobile_number}) is invalid. `,
     });
-  } else {
-    return next();
   }
+}
+
+function formatPhoneNumber(phoneNumberString) {
+  const cleaned = ("" + phoneNumberString).replace(/\Dg/, "");
+  var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+  if (match) {
+    return match[1] + "-" + match[2] + "-" + match[3];
+  }
+  return null;
 }
 
 // SERVICE FUNCTIONS
@@ -204,8 +217,9 @@ async function updateStatus(req, res, next) {
   const reservation_id = res.locals.reservation.reservation_id;
   const { status } = req.body.data;
   const data = await service.updateStatus(reservation_id, status);
+  const updatedStatus = data.status;
 
-  res.json({ data });
+  res.status(200).json({ data: { status: data.status } });
 }
 
 async function destroy(req, res, next) {
