@@ -199,10 +199,9 @@ export function lessThanNow(rawDate, rawTime) {
  */
 export function lessThanDefinedTime(timeA, timeB) {
   timeA = as24HourTime(timeA);
-  console.log("time A ", timeA);
+
   const pickTime = new Date("1990-01-01 " + timeA);
   const comparedTime = new Date("1990-01-01 " + timeB);
-  console.log("input and compare times ", pickTime, comparedTime);
   if (pickTime.getTime() < comparedTime.getTime()) {
     return true;
   } else {
@@ -221,10 +220,8 @@ export function lessThanDefinedTime(timeA, timeB) {
  */
 export function greaterThanDefinedTime(timeA, timeB) {
   timeA = as24HourTime(timeA);
-  console.log("time A ", timeA);
   const pickTime = new Date("1990-01-01 " + timeA);
   const comparedTime = new Date("1990-01-01 " + timeB);
-  console.log("input and compare times ", pickTime, comparedTime);
   if (pickTime.getTime() > comparedTime.getTime()) {
     return true;
   } else {

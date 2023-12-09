@@ -303,28 +303,47 @@ export async function updateTableSeat(table_id, updatedTable, signal) {
  * @returns {Promise<Error|*>}
  *  a promise that resolves to the updated table.
  */
-export async function deleteTableSeat(table_id, signal) {
-  const url = `${API_BASE_URL}/tables/${table_id}/seat`;
-  const data = {table_id: table_id,
-                event: "finish table"
-              }
-              
-  const dataPackage = {data}
-  const options = {
-    method: "DELETE",
-    headers,
-    body: JSON.stringify(dataPackage),
-    signal,
-  };
+export async function deleteTableSeat(reservation_id, table_id, status, signal) {
 
-  // handle case where cancelling reservation 
-  // with NULL and table not seated
-  // ...
-  // nothing to do here, so return "resolve" on promise
-  if (table_id !== "null") {
+  if (table_id === "null"){
+
+    // delete by calling reservation table
+    const url = `${API_BASE_URL}/reservations/${reservation_id}/status`;
+    const data = {reservation_id: reservation_id,
+                  status: status,
+                  event: "clear table"
+                }
+                
+    console.log("update ressie status only ", url)
+    const dataPackage = {data}
+    const options = {
+      method: "PUT",
+      headers,
+      body: JSON.stringify(dataPackage),
+      signal,
+    };
+
     return await fetchJson(url, options, {})
+
   } else {
-    return Promise.resolve(signal);
+
+    // delete by calling delete table
+    const url = `${API_BASE_URL}/tables/${table_id}/seat`;
+    const data = {reservation_id: reservation_id,
+                  status: status,
+                  event: "finish table"
+                }
+                
+    console.log("delete url ", url)
+    const dataPackage = {data}
+    const options = {
+      method: "DELETE",
+      headers,
+      body: JSON.stringify(dataPackage),
+      signal,
+    };
+
+    return await fetchJson(url, options, {})
   }
 }
 

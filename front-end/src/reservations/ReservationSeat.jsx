@@ -1,6 +1,6 @@
 import React, {useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { readReservation, listTables, updateTableSeat, updateReservationStatus } from "../utils/api"
+import { readReservation, listTables, updateTableSeat } from "../utils/api"
 import { formatAsDate, formatAsTime } from "../utils/date-time"
 import ErrorAlert from "../layout/ErrorAlert";
 
@@ -110,8 +110,9 @@ function ReservationSeat(){
 
     // save updated table object with reservation
     try{
-      updateTableSeat(table_id, saveTable, abortController.signal);
-      gotoDashboard();
+      const tablePromise = updateTableSeat(table_id, saveTable, abortController.signal);
+      tablePromise
+      .then((tableResult) =>  gotoDashboard() )
     } catch(error){
       setErrors(error);
     }

@@ -185,10 +185,15 @@ async function updateSeat(req, res, next) {
 }
 
 async function deleteSeat(req, res, next) {
+
+  // next status object.  
+  const { status } = req.body.data;
   const { table_id } = res.locals.table;
   const { reservation_id } = res.locals.table;
   const data = await service.updateSeat(table_id, null);
-  const reservation = await reservationService.updateStatus(reservation_id, "finished");
+  console.log("updated seat ", data)
+  const reservation = await reservationService.updateStatus(reservation_id, status);
+  console.log("updated ressie ", reservation)
 
   res.json({ data });
 }

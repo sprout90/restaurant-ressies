@@ -7,7 +7,7 @@ function ReservationSeatBtn({reservation_id, status}){
       <a id="seat" 
         name="seat" 
         className="btn btn-primary" 
-        data-reservation-id-status={`${status}`}
+        data-reservation-id-status={`${reservation_id}`}
         href={`/reservations/${reservation_id}/seat`} >
         Seat
       </a>

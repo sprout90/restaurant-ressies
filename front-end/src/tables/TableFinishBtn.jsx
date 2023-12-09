@@ -3,7 +3,7 @@ import React from "react";
 function TableFinishBtn({table, finishTableHandler}){
 
 
-  if (table.status === "Occupied"){
+  if (table.status === "seated"){
     return (
       <button id="seat" 
         name="seat" 

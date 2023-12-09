@@ -3,8 +3,7 @@ import { useLocation } from "react-router-dom";
 import {
   listReservations,
   listTables,
-  deleteTableSeat,
-  updateReservationStatus,
+  deleteTableSeat
 } from "../utils/api";
 import { today, previous, next } from "../utils/date-time";
 import ErrorAlert from "../layout/ErrorAlert";
@@ -65,26 +64,19 @@ function Dashboard({ date }) {
     }
   }
 
-  // define event actions for finish table or cancel reservation
+  // define event actions for FINISH table or CANCEL reservation
   const closeReservationEvent = (reservation_id, table_id, closeStatus) => {
     const abortController = new AbortController();
 
-    const saveReservation = { status: closeStatus };
+    //const reservationStatus = { status: closeStatus };
+    //console.log("save reservation status ", reservationStatus)
 
     // remove reservation from table entry
-    const tablePromise = deleteTableSeat(table_id, abortController.signal)
+    const tablePromise = deleteTableSeat(reservation_id, table_id, closeStatus, abortController.signal)
       .then((tableResult) => {
-        // save updated reservation status
-        const reservationPromise = updateReservationStatus(
-          reservation_id,
-          saveReservation,
-          abortController.signal
-        );
-        reservationPromise.then((reservationResult) => {
           loadTables(reservationDate, abortController);
           loadReservations(reservationDate, abortController);
-        });
-      })
+        })
       .catch(setReservationsError);
 
     return () => {

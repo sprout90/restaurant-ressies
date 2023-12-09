@@ -3,6 +3,15 @@ import TableFinishBtn from "./TableFinishBtn";
 
 function TableListRow({table, finishTableHandler}){
 
+  const renderStatus = (status) => {
+
+    if (status === "seated"){
+      return "Occupied"
+    } else {
+      return "Free"
+    }
+  }
+
   return (
     <div className="row" data-table-id-status={table.table_id}>
     <div className="col-2">
@@ -12,7 +21,7 @@ function TableListRow({table, finishTableHandler}){
       {table.capacity}
     </div>
     <div className="col-2">
-      {table.status}
+      {renderStatus(table.status)}
     </div>
     <div className="col-2">
       {table.formatted_date}&nbsp;{table.formatted_time}
