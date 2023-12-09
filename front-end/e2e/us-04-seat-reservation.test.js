@@ -208,10 +208,14 @@ describe("US-04 - Seat reservation - E2E", () => {
 
         await selectOptionByText(page, "table_id", "Bar #1 - 1");
 
+        console.log("after select input ")
+
         await page.screenshot({
           path: ".screenshots/us-04-seat-capacity-reservation-submit-before.png",
           fullPage: true,
         });
+
+        console.log("after 'before submit' screen shot ")
 
         await Promise.all([
           page.click("[type=submit]"),
@@ -249,6 +253,7 @@ describe("US-04 - Seat reservation - E2E", () => {
 
     // eslint-disable-next-line no-template-curly-in-string
     test("seat button has href with /reservations/${reservation_id}/seat", async () => {
+
       await page.screenshot({
         path: ".screenshots/us-04-dashboard-seat-button-before.png",
         fullPage: true,
@@ -256,7 +261,11 @@ describe("US-04 - Seat reservation - E2E", () => {
 
       const hrefSelector = `[href="/reservations/${reservation.reservation_id}/seat"]`;
 
+      console.log("debug href ", hrefSelector)
+
       await page.waitForSelector(hrefSelector);
+
+      console.log("debug wait for selector ", hrefSelector)
 
       await page.screenshot({
         path: ".screenshots/us-04-dashboard-seat-button-after.png",

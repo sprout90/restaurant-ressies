@@ -108,21 +108,13 @@ function ReservationSeat(){
     // set table object to only include reservation_id 
     const saveTable = {reservation_id: reservation_id};
 
-    // set reservation object to only include reservation status ("seated")
-    const saveReservation = {status: "seated"};
-
     // save updated table object with reservation
-    const tablePromise = updateTableSeat(table_id, saveTable, abortController.signal);
-    tablePromise
-    .then((tableResult) => {
-      // save updated reservation object with status 
-     const reservationPromise = updateReservationStatus(reservation_id, saveReservation, abortController.signal)
-     reservationPromise
-      .then((reservationResult) => {
-        gotoDashboard();
-      })
-      })
-    .catch(setErrors);
+    try{
+      updateTableSeat(table_id, saveTable, abortController.signal);
+      gotoDashboard();
+    } catch(error){
+      setErrors(error);
+    }
 
     return () => {
       abortController.abort();
@@ -170,7 +162,7 @@ function ReservationSeat(){
           value={formData.table_id} 
           >
             <option value="0">Select a Table</option>
-            {tables.map((table) => <option key={table.table_id} value={table.table_id}>Table: {table.table_name} - Capacity: {table.capacity}</option>)}
+            {tables.map((table) => <option key={table.table_id} value={table.table_id}>{table.table_name} - {table.capacity}</option>)}
         </select>
       </div>
     } else {
