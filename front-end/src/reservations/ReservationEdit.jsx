@@ -269,7 +269,6 @@ function ReservationEdit() {
             placeholder="YYYY-MM-DD"
             onChange={handleChange}
             value={formData.reservation_date}
-            min={today()}
             required={true}
           />
         </label>
