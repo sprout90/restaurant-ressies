@@ -152,15 +152,18 @@ function Dashboard({ date }) {
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Reservations for {reservationDate}</h4>
       </div>
+      <div><hr/></div>
       <div>
         <ReservationList
           reservations={reservations}
           cancelHandler={cancelReservationClick}
         />
       </div>
+      <div><hr/></div>
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Tables</h4>
       </div>
+      <div><hr/></div>
       <div>
         <TableList tables={tables} finishTableHandler={finishTableClick} />
       </div>
