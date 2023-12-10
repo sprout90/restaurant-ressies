@@ -206,7 +206,7 @@ export async function updateReservationStatus(
  *  a promise that resolves to a possibly empty array of reservation saved in the database.
  */
 export async function listTables(params, signal) {
-  let counter = 0;
+
   const url = new URL(`${API_BASE_URL}/tables`);
   Object.entries(params).forEach(([key, value]) => {
     url.searchParams.append(key, value.toString());

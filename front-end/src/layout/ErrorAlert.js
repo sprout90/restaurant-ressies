@@ -25,7 +25,7 @@ function ErrorAlert({ error }) {
           <div>
             <ul>
               {error.map((item, index) => (
-                <div>
+                <div key={`${index}`}>
                   <li>{item.message}</li>
                 </div>
               ))}

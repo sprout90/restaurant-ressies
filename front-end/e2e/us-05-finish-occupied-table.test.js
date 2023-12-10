@@ -62,8 +62,6 @@ describe("US-05 - Finish an occupied table - E2E", () => {
         fullPage: true,
       });
 
-      console.log("after the before screenshot ")
-
       const containsOccupied = await containsText(
         page,
         `[data-table-id-status="${table.table_id}"]`,
@@ -72,12 +70,8 @@ describe("US-05 - Finish an occupied table - E2E", () => {
 
       expect(containsOccupied).toBe(true);
 
-      console.log("after the occupied text validation")
-
       const finishButtonSelector = `[data-table-id-finish="${table.table_id}"]`;
       await page.waitForSelector(finishButtonSelector);
-
-      console.log("after button select test")
 
       page.on("dialog", async (dialog) => {
         expect(dialog.message()).toContain(
@@ -86,14 +80,9 @@ describe("US-05 - Finish an occupied table - E2E", () => {
         await dialog.accept();
       });
 
-      console.log("after dialog test")
-
       await page.click(finishButtonSelector);
 
-      console.log("after click test")
-
       await page.waitForResponse((response) => {
-        console.log("RESPONSE url test ", response.url())
         return response.url().endsWith(`/tables`);
       });
 
