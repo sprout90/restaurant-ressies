@@ -209,11 +209,7 @@ export async function listTables(params, signal) {
   let counter = 0;
   const url = new URL(`${API_BASE_URL}/tables`);
   Object.entries(params).forEach(([key, value]) => {
-    //if (counter === 0) {
-    //  url.pathname = url.pathname + "?";
-    //}
     url.searchParams.append(key, value.toString());
-    counter = counter++;
   });
   return await fetchJson(url, { headers, signal }, []);
 }

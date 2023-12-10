@@ -49,7 +49,7 @@ function Dashboard({ date }) {
 
       setReservations(filtered);
     } catch (error) {
-      setReservationsError(error);
+      setReservationsError(error.message);
     }
   }
 
@@ -58,7 +58,7 @@ function Dashboard({ date }) {
       const result = await listTables(abortController.signal);
       setTables(result);
     } catch (error) {
-      setReservationsError(error);
+      setReservationsError(error.message);
     }
   }
 
@@ -77,7 +77,10 @@ function Dashboard({ date }) {
         loadTables(abortController);
         loadReservations(reservationDate, abortController);
       })
-      .catch(setReservationsError);
+      .catch((error) => {
+        console.log(`Error in Close Reservation data load. Error: ${error.message}` );
+        setReservationsError(error.message);
+      })
 
     return () => {
       abortController.abort();
@@ -125,16 +128,13 @@ function Dashboard({ date }) {
   };
 
   // determine input value for date init
-  // TODO: remove console statements
   function getDateParam(propDate, qDate, state) {
     if (qDate) {
       return qDate;
     } else {
       if (state !== undefined) {
-        // console.log("state date wins ", state.date)
         return state.date;
       } else {
-        // console.log("propDate wins ", propDate)
         return propDate;
       }
     }

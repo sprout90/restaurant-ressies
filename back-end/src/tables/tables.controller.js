@@ -189,6 +189,7 @@ async function deleteSeat(req, res, next) {
   // default status value to finished, other set to body.data value
   let status = "finished"
   if ((req.body.data) && (req.body.data.status)){
+    const data = req.body.data;
     status = data["status"]
   }
   console.log("delete status ", status)
