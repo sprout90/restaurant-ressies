@@ -186,16 +186,21 @@ async function updateSeat(req, res, next) {
 
 async function deleteSeat(req, res, next) {
 
-  // next status object.  
-  const { status } = req.body.data;
+  // default status value to finished, other set to body.data value
+  let status = "finished"
+  if ((req.body.data) && (req.body.data.status)){
+    status = data["status"]
+  }
+  console.log("delete status ", status)
+
   const { table_id } = res.locals.table;
   const { reservation_id } = res.locals.table;
-  const data = await service.updateSeat(table_id, null);
-  console.log("updated seat ", data)
+  const table = await service.updateSeat(table_id, null);
+  console.log("updated seat ", table)
   const reservation = await reservationService.updateStatus(reservation_id, status);
   console.log("updated ressie ", reservation)
 
-  res.json({ data });
+  res.json({ table });
 }
 
 async function destroy(req, res, next) {
