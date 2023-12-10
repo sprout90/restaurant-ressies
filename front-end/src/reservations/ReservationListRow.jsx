@@ -8,7 +8,7 @@ function ReservationListRow({reservation, cancelHandler}){
 
    return (
     <div className="row">
-      <div className="col-4">
+      <div className="col-3">
         {reservation.first_name}&nbsp;{reservation.last_name}
       </div>
       <div className="col-2">
@@ -19,6 +19,9 @@ function ReservationListRow({reservation, cancelHandler}){
       </div>
       <div className="col-1">
         {reservation.people}
+      </div>
+      <div className="col-1">
+        <span data-reservation-id-status={reservation.reservation_id}>{reservation.status}</span>
       </div>
       <div className="col-1">
         <ReservationSeatBtn reservation_id={reservation.reservation_id} status={reservation.status}/>

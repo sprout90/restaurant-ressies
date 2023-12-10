@@ -7,7 +7,6 @@ function ReservationEditBtn({reservation_id, status}){
       <a id="edit" 
         name="edit" 
         className="btn btn-primary" 
-        data-reservation-id-status={`${reservation_id}`}
         href={`/reservations/${reservation_id}/edit`} >
         Edit
       </a>

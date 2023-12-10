@@ -7,7 +7,7 @@ function ReservationList({reservations, cancelHandler}){
     return ( 
       <div>
         <div className="row">
-          <div className="col-4">
+          <div className="col-3">
             <span>Name</span>
           </div>
           <div className="col-2">
@@ -18,6 +18,9 @@ function ReservationList({reservations, cancelHandler}){
           </div>
           <div className="col-1">
             <span>People</span>
+          </div>
+          <div className="col-1">
+            <span>Status</span>
           </div>
           <div className="col-1">
             <span>Table</span>
@@ -38,6 +41,5 @@ function ReservationList({reservations, cancelHandler}){
     </div>
     );
 }
-
 
 export default ReservationList;

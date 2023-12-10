@@ -30,7 +30,7 @@ function ReservationSeat(){
           .then((result)=> {
             result.reservation_date = formatAsDate(result.reservation_date);
             setReservation(result);
-            loadTables(result.reservation_date, abortController);}
+            loadTables(abortController);}
             )
 
         } catch (error){
@@ -38,10 +38,10 @@ function ReservationSeat(){
         }
       }
     
-      async function loadTables(date, abortController) {
+      async function loadTables(abortController) {
     
         try{
-          const result = await listTables({date}, abortController.signal);
+          const result = await listTables(abortController.signal);
           const filtered = result.filter((table) => ((table.reservation_date === null) && (table.reservation_id === null  )))
 
           setTables(filtered)

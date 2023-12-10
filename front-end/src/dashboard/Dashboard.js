@@ -21,7 +21,8 @@ function Dashboard({ date }) {
   // get date inputs from lcoation.state and query param.
   // query param assumes only 1 param
   const { state, search } = useLocation();
-  const qDate = search.substring(search.indexOf("=") + 1);
+  const qTest = search.indexOf("date=")
+  const qDate = (qTest > -1) ? search.substring(search.indexOf("date=") + 5) : "";
 
   // reset date var from state variable if defined.
   date = getDateParam(date, qDate, state);
@@ -127,7 +128,6 @@ function Dashboard({ date }) {
   // TODO: remove console statements
   function getDateParam(propDate, qDate, state) {
     if (qDate) {
-      //console.log("qDate wins ", qDate)
       return qDate;
     } else {
       if (state !== undefined) {
