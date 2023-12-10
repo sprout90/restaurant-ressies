@@ -192,14 +192,11 @@ async function deleteSeat(req, res, next) {
     const data = req.body.data;
     status = data["status"]
   }
-  console.log("delete status ", status)
 
   const { table_id } = res.locals.table;
   const { reservation_id } = res.locals.table;
   const table = await service.updateSeat(table_id, null);
-  console.log("updated seat ", table)
   const reservation = await reservationService.updateStatus(reservation_id, status);
-  console.log("updated ressie ", reservation)
 
   res.json({ table });
 }
