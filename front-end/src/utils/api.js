@@ -21,7 +21,7 @@ headers.append("Content-Type", "application/json");
  * in a future refactor if needed.
  * @returns {String containing day of the week}
  */
-export function getBlackoutDay(){
+export function getBlackoutDay() {
   const BLACKOUT_DAY = process.env.BLACKOUT_DAY || "Tuesday";
 
   return BLACKOUT_DAY;
@@ -29,10 +29,10 @@ export function getBlackoutDay(){
 
 /**
  * Returns starting time for reservations of a given day
- * 
+ *
  * @returns {array where index 0 is hours, and index 1 is minutes}
  */
-export function getReservationStartTime(){
+export function getReservationStartTime() {
   const RESERVATION_START_HOUR = process.env.RESERVATION_START_HOUR || "10";
   const RESERVATION_START_MINUTE = process.env.RESERVATION_START_MINUTE || "30";
   return [RESERVATION_START_HOUR, RESERVATION_START_MINUTE];
@@ -42,7 +42,7 @@ export function getReservationStartTime(){
  * Returns ending time for reservations of a given day
  * @returns {array where index 0 is hours, and index 1 is minutes}
  */
-export function getReservationEndTime(){
+export function getReservationEndTime() {
   const RESERVATION_END_HOUR = process.env.RESERVATION_END_HOUR || "21";
   const RESERVATION_END_MINUTE = process.env.RESERVATION_END_MINUTE || "30";
   return [RESERVATION_END_HOUR, RESERVATION_END_MINUTE];
@@ -110,7 +110,7 @@ export async function listReservations(params, signal) {
  */
 export async function createReservation(reservation, signal) {
   const data = reservation;
-  const dataPackage = {data};
+  const dataPackage = { data };
   const url = `${API_BASE_URL}/reservations`;
   const options = {
     method: "POST",
@@ -146,7 +146,7 @@ export async function readReservation(reservationId, signal) {
  */
 export async function updateReservation(updatedReservation, signal) {
   const data = updatedReservation;
-  const dataPackage = {data};
+  const dataPackage = { data };
   const url = `${API_BASE_URL}/reservations/${updatedReservation.reservation_id}`;
   const options = {
     method: "PUT",
@@ -183,9 +183,13 @@ export async function deleteReservation(reservationId, signal) {
  * @returns {Promise<Error|*>}
  *  a promise that resolves to the updated reservation.
  */
-export async function updateReservationStatus(reservation_id, updatedReservation, signal) {
+export async function updateReservationStatus(
+  reservation_id,
+  updatedReservation,
+  signal
+) {
   const data = updatedReservation;
-  const dataPackage = {data};
+  const dataPackage = { data };
   const url = `${API_BASE_URL}/reservations/${reservation_id}/status`;
   const options = {
     method: "PUT",
@@ -196,17 +200,21 @@ export async function updateReservationStatus(reservation_id, updatedReservation
   return await fetchJson(url, options, {});
 }
 
-
 /**
  * Retrieves all existing tables.
  * @returns {Promise<[reservation]>}
  *  a promise that resolves to a possibly empty array of reservation saved in the database.
  */
 export async function listTables(params, signal) {
-  const url = new URL(`${API_BASE_URL}/tables?`);
-  Object.entries(params).forEach(([key, value]) =>
-    url.searchParams.append(key, value.toString())
-  );
+  let counter = 0;
+  const url = new URL(`${API_BASE_URL}/tables`);
+  Object.entries(params).forEach(([key, value]) => {
+    if (counter === 0) {
+      url.pathname = url.pathname + "?";
+    }
+    url.searchParams.append(key, value.toString());
+    counter = counter++;
+  });
   return await fetchJson(url, { headers, signal }, []);
 }
 
@@ -235,7 +243,7 @@ export async function readTable(tableId, signal) {
  */
 export async function createTable(table, signal) {
   const data = table;
-  const dataPackage = {data};
+  const dataPackage = { data };
   const url = `${API_BASE_URL}/tables`;
   const options = {
     method: "POST",
@@ -257,7 +265,7 @@ export async function createTable(table, signal) {
  */
 export async function updateTable(updatedTable, signal) {
   const data = updatedTable;
-  const dataPackage = {data};
+  const dataPackage = { data };
   const url = `${API_BASE_URL}/tables/${updatedTable.table_id}`;
   const options = {
     method: "PUT",
@@ -273,7 +281,7 @@ export async function updateTable(updatedTable, signal) {
  *  in effect, setting seat to "occupied".
  * @param table_id
  *  the row to update in tables
- * @param updatedTable 
+ * @param updatedTable
  *  the object containing table data to update
  * @param signal
  *  optional AbortController.signal
@@ -282,7 +290,7 @@ export async function updateTable(updatedTable, signal) {
  */
 export async function updateTableSeat(table_id, updatedTable, signal) {
   const data = updatedTable;
-  const dataPackage = {data};
+  const dataPackage = { data };
   const url = `${API_BASE_URL}/tables/${table_id}/seat`;
   const options = {
     method: "PUT",
@@ -303,19 +311,22 @@ export async function updateTableSeat(table_id, updatedTable, signal) {
  * @returns {Promise<Error|*>}
  *  a promise that resolves to the updated table.
  */
-export async function deleteTableSeat(reservation_id, table_id, status, signal) {
-
-  if (table_id === "null"){
-
+export async function deleteTableSeat(
+  reservation_id,
+  table_id,
+  status,
+  signal
+) {
+  if (table_id === "null") {
     // delete by calling reservation table
     const url = `${API_BASE_URL}/reservations/${reservation_id}/status`;
-    const data = {reservation_id: reservation_id,
-                  status: status,
-                  event: "clear table"
-                }
-                
-    console.log("update ressie status only ", url)
-    const dataPackage = {data}
+    const data = {
+      reservation_id: reservation_id,
+      status: status,
+      event: "clear table",
+    };
+
+    const dataPackage = { data };
     const options = {
       method: "PUT",
       headers,
@@ -323,19 +334,17 @@ export async function deleteTableSeat(reservation_id, table_id, status, signal) 
       signal,
     };
 
-    return await fetchJson(url, options, {})
-
+    return await fetchJson(url, options, {});
   } else {
-
     // delete by calling delete table
     const url = `${API_BASE_URL}/tables/${table_id}/seat`;
-    const data = {reservation_id: reservation_id,
-                  status: status,
-                  event: "finish table"
-                }
-                
-    console.log("delete url ", url)
-    const dataPackage = {data}
+    const data = {
+      reservation_id: reservation_id,
+      status: status,
+      event: "finish table",
+    };
+
+    const dataPackage = { data };
     const options = {
       method: "DELETE",
       headers,
@@ -343,7 +352,6 @@ export async function deleteTableSeat(reservation_id, table_id, status, signal) 
       signal,
     };
 
-    return await fetchJson(url, options, {})
+    return await fetchJson(url, options, {});
   }
 }
-

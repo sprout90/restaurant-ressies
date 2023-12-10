@@ -73,6 +73,8 @@ describe("US-05 - Finish an occupied table - E2E", () => {
       const finishButtonSelector = `[data-table-id-finish="${table.table_id}"]`;
       await page.waitForSelector(finishButtonSelector);
 
+      //console.log("after button select test")
+
       page.on("dialog", async (dialog) => {
         expect(dialog.message()).toContain(
           "Is this table ready to seat new guests?"
@@ -80,9 +82,14 @@ describe("US-05 - Finish an occupied table - E2E", () => {
         await dialog.accept();
       });
 
+      //console.log("after dialog test")
+
       await page.click(finishButtonSelector);
 
+      //console.log("after click test")
+
       await page.waitForResponse((response) => {
+        //console.log("RESPONSE url test ", response.url())
         return response.url().endsWith(`/tables`);
       });
 

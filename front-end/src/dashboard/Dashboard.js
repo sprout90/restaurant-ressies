@@ -32,7 +32,7 @@ function Dashboard({ date }) {
 
     setReservationsError(null);
     loadReservations(reservationDate, abortController);
-    loadTables(reservationDate, abortController);
+    loadTables(abortController);
 
     return () => abortController.abort();
   }, [reservationDate]);
@@ -52,9 +52,9 @@ function Dashboard({ date }) {
     }
   }
 
-  async function loadTables(date, abortController) {
+  async function loadTables(abortController) {
     try {
-      const result = await listTables({ date }, abortController.signal);
+      const result = await listTables(abortController.signal);
       setTables(result);
     } catch (error) {
       setReservationsError(error);
@@ -73,7 +73,7 @@ function Dashboard({ date }) {
       abortController.signal
     )
       .then((tableResult) => {
-        loadTables(reservationDate, abortController);
+        loadTables(abortController);
         loadReservations(reservationDate, abortController);
       })
       .catch(setReservationsError);

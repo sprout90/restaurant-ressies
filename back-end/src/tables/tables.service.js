@@ -34,9 +34,11 @@ async function update(updatedTable) {
 }
 
 async function updateSeat(table_id, reservation_id) {
-  await knex("tables")
+  return await knex("tables")
     .where({ table_id: table_id })
-    .update({ reservation_id: reservation_id });
+    .update({ reservation_id: reservation_id })
+    .returning("*")
+    .then((updatedRecords) => updatedRecords[0]);
 }
 
 async function destroy(tableId) {

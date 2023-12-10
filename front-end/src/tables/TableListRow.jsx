@@ -5,7 +5,7 @@ function TableListRow({table, finishTableHandler}){
 
   const renderStatus = (status) => {
 
-    if (status === "seated"){
+    if (table.reservation_id){
       return "Occupied"
     } else {
       return "Free"
@@ -22,9 +22,6 @@ function TableListRow({table, finishTableHandler}){
     </div>
     <div className="col-2">
       {renderStatus(table.status)}
-    </div>
-    <div className="col-2">
-      {table.formatted_date}&nbsp;{table.formatted_time}
     </div>
     <div>
       <TableFinishBtn table={table} finishTableHandler={finishTableHandler}/>

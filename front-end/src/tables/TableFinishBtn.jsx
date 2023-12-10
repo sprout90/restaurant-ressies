@@ -3,7 +3,7 @@ import React from "react";
 function TableFinishBtn({table, finishTableHandler}){
 
 
-  if (table.status === "seated"){
+  if (table.reservation_id){
     return (
       <button id="seat" 
         name="seat" 
