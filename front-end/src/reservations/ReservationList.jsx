@@ -14,7 +14,7 @@ function ReservationList({reservations, cancelHandler}){
             <span>Mobile</span>
           </div>
           <div className="col-2">
-            <span>Reservation Date & Time</span>
+            <span>Date & Time</span>
           </div>
           <div className="col-1">
             <span>People</span>

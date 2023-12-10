@@ -1,4 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Pangolin&family=Poppins&display=swap');
+
+body {
+  font-family: "Poppins", sans-serif;
+}
+
 .side-bar {
-  background-color: #393a44;
+  background-color: #023e8a;
+  color: #caf0f8;
   min-width: 200px;
+}
+
+.sidebar-brand-text{
+  color: #caf0f8;
+}
+
+nav {
+  margin-top: 2px;
+  color: #caf0f8;
+}
+
+.nav-link {
+  color: #48cae4;  
+}
+
+.nav-link:hover {
+  color: #caf0f8;
+}
+
+/* -------  Media Query ------- */
+/* When a web browser is larger than 768 pixels -- apply these rules. */
+@media all and (min-width: 768px) {
+  h1 {
+      font-size: 48px;
+  }
+
+  nav {
+    margin-top: 8px;
+    color: #bdbdbd;
+  }
 }
