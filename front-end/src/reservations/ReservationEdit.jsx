@@ -218,20 +218,21 @@ function ReservationEdit() {
           }
         }}
       >
-        <label htmlFor="first_name">
-          First Name
-          <br />
-          <input
-            id="first_name"
-            name="first_name"
-            type="text"
-            placeholder="First Name"
-            onChange={handleChange}
-            value={formData.first_name}
-            required={true}
-          />
-        </label>
-        <br />
+        <div className="input-group">
+          <label htmlFor="first_name">
+            First Name
+            <br />
+            <input
+              id="first_name"
+              name="first_name"
+              type="text"
+              placeholder="First Name"
+              className="form-control"
+              onChange={handleChange}
+              value={formData.first_name}
+              required={true}
+            />
+          </label></div>
         <label htmlFor="last_name">
           Last Name
           <br />

@@ -6,7 +6,7 @@ function NavButtons({prevClick, todayClick, nextClick}){
   return (
     <nav>
       <div className="container px-lg-5">
-        <div className="row mx-lg-n5">
+        <div className=" mx-lg-n5 d-flex flex-row-reverse">
           <div className="col py-1 px-lg-1 border bg-light">
             <button id="previous" name="previous" className="btn btn-primary" onClick={prevClick}>Previous</button>        
           </div>

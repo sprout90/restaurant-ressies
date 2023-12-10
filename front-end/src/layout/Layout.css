@@ -1,10 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Pangolin&family=Poppins&display=swap');
 
+/* -------  General Styles ------- */
+
+h1 {
+  font-size: 32px;
+}
+
 body {
   font-family: "Poppins", sans-serif;
   background-color: #caf0f8;
   color: #023e8a;
 }
+
+/* -------  Menu ------- */
 
 .side-bar {
   background-color: #023e8a;
@@ -15,6 +23,35 @@ body {
 .sidebar-brand-text{
   color: #caf0f8;
 }
+
+/* -------  Groups & Items --- */
+
+.group-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.group-field {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: right;
+}
+
+.item {
+  flex: 1;
+  margin: 10px;
+}
+
+input[type=text] {
+  max-width: 200px; 
+}
+
+.item-width {
+  flex: 1;
+}
+
+/* -------  Navigation ------- */
 
 nav {
   margin-top: 2px;
@@ -32,9 +69,47 @@ nav {
 /* -------  Media Query ------- */
 /* When a web browser is larger than 768 pixels -- apply these rules. */
 @media all and (min-width: 768px) {
+
+  /* -------  General Styles ------- */
+
   h1 {
       font-size: 48px;
   }
+
+  /* -------  Groups & Items --- */
+
+  .group-form {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    align-items: flex-start;
+    border-color: #fff;
+    flex-wrap: nowrap;
+  }
+
+  .group-field {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    flex-wrap: nowrap;
+    margin: 0px;
+  }
+
+  .item {
+    flex: 1;
+    margin: 2px 0px;
+    padding: 5px;
+  }
+
+  .item-width {
+    flex: 2;
+  }
+
+  input[type=text] {
+    max-width: 300px; 
+  }
+
+  /* -------  Navigation ------- */
 
   nav {
     margin-top: 8px;

@@ -144,13 +144,13 @@ function Dashboard({ date }) {
     <main>
       <h1>Dashboard</h1>
       <ErrorAlert error={reservationsError} />
-      <NavButtons
+      <div className="d-sm-flex mb-3">
+        <h4 className="mb-0">Reservations for {reservationDate}</h4>
+        <NavButtons
         prevClick={prevButton}
         todayClick={todayButton}
         nextClick={nextButton}
-      />
-      <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Reservations for {reservationDate}</h4>
+        />
       </div>
       <div><hr/></div>
       <div>
