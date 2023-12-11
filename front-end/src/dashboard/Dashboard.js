@@ -28,6 +28,9 @@ function Dashboard({ date }) {
   date = getDateParam(date, qDate, state);
   const [reservationDate, setReservationDate] = useState(date);
 
+
+  // Manage the Change Reservation Date event, 
+  // by reloading the page from the database
   useEffect(() => {
     const abortController = new AbortController();
 
@@ -38,6 +41,9 @@ function Dashboard({ date }) {
     return () => abortController.abort();
   }, [reservationDate]);
 
+  // Load Reservations with async using a REST API call
+  // only display reservations with booked, or seated status
+  // any errors caught are displayed via ReservationsError state variable
   async function loadReservations(date, abortController) {
     try {
       const result = await listReservations({ date }, abortController.signal);
@@ -53,6 +59,8 @@ function Dashboard({ date }) {
     }
   }
 
+  // Load Tables with async using a REST API call
+  // any errors caught are displayed via ReservationsError state variable
   async function loadTables(abortController) {
     try {
       const result = await listTables(abortController.signal);
@@ -63,6 +71,8 @@ function Dashboard({ date }) {
   }
 
   // define event actions for FINISH table or CANCEL reservation
+  // Call the deleteTableSeat REST api to remove 
+  // reservation_id from tables (table) and set reservation table status
   const closeReservationEvent = (reservation_id, table_id, closeStatus) => {
     const abortController = new AbortController();
 
@@ -74,6 +84,7 @@ function Dashboard({ date }) {
       abortController.signal
     )
       .then((tableResult) => {
+        // reload page from REST calls
         loadTables(abortController);
         loadReservations(reservationDate, abortController);
       })
@@ -87,20 +98,32 @@ function Dashboard({ date }) {
     };
   };
 
+  // Goto prev date, and set ReservationDate state variable.
+  // Reservation date change triggests useEffect event
+  // does not cause ?date QueryString or Prop date var to change.
   const prevButton = () => {
     const prevDate = previous(reservationDate);
     setReservationDate(prevDate);
   };
 
+  // Goto today's date, and set ReservationDate state variable.
+  // Reservation date change triggests useEffect event
+  // does not cause ?date QueryString or Prop date var to change.
   const todayButton = () => {
     setReservationDate(today());
   };
 
+  // Goto next date, and set ReservationDate state variable.
+  // Reservation date change triggests useEffect event
+  // does not cause ?date QueryString or Prop date var to change.
   const nextButton = () => {
     const nextDate = next(reservationDate);
     setReservationDate(nextDate);
   };
 
+  // catch the Finish table click event, and display confirmation popup.
+  // If yes, call perform actions in closeReservationEvent
+  // If no, cancel and return to page -- doing nothing
   const finishTableClick = (event) => {
     if (
       window.confirm(
@@ -114,6 +137,9 @@ function Dashboard({ date }) {
     }
   };
 
+  // catch the cancel reservation click event, and display confirmation popup.
+  // If yes, call perform actions in closeReservationEvent
+  // If no, cancel and return to page -- doing nothing
   const cancelReservationClick = (event) => {
     if (
       window.confirm(
@@ -127,7 +153,10 @@ function Dashboard({ date }) {
     }
   };
 
-  // determine input value for date init
+  // Logic used to determine which input method to 
+  // derive the reservation date var that drives the page
+  // qDate takes priority if defined.
+  // propDate only used on initial load from Layout.js
   function getDateParam(propDate, qDate, state) {
     if (qDate) {
       return qDate;
@@ -142,31 +171,46 @@ function Dashboard({ date }) {
 
   return (
     <main>
-      <h1>Dashboard</h1>
-      <ErrorAlert error={reservationsError} />
-      <div className="d-sm-flex mb-3">
-        <h4 className="mb-0">Reservations for {reservationDate}</h4>
-        <NavButtons
-        prevClick={prevButton}
-        todayClick={todayButton}
-        nextClick={nextButton}
-        />
-      </div>
-      <div><hr/></div>
-      <div>
-        <ReservationList
-          reservations={reservations}
-          cancelHandler={cancelReservationClick}
-        />
-      </div>
-      <div><hr/></div>
-      <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Tables</h4>
-      </div>
-      <div><hr/></div>
-      <div>
-        <TableList tables={tables} finishTableHandler={finishTableClick} />
-      </div>
+      {/* HEADER */}
+      <section id="header">
+        <h1>Dashboard</h1>
+        <ErrorAlert error={reservationsError} />
+        <div className="group">
+          <div className="item">
+            <h4 className="mt-3">Reservations for {reservationDate}</h4>
+          </div>
+          <div className="item">
+            <NavButtons
+            prevClick={prevButton}
+            todayClick={todayButton}
+            nextClick={nextButton}
+            />
+        </div>
+        </div>
+        <div><hr/></div>
+      </section>
+
+      {/* RESERVATIONS */}
+      <section id="reservations">
+        <div>
+          <ReservationList
+            reservations={reservations}
+            cancelHandler={cancelReservationClick}
+          />
+        </div>
+        <div><hr/></div>
+      </section>
+     
+      {/* TABLES */}
+      <section id="tables">
+        <div className="d-md-flex mb-3">
+          <h4 className="mb-0">Tables</h4>
+        </div>
+        <div><hr/></div>
+        <div>
+          <TableList tables={tables} finishTableHandler={finishTableClick} />
+        </div>
+      </section>
     </main>
   );
 }

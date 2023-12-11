@@ -12,7 +12,14 @@ function ReservationSeatBtn({reservation_id, status}){
       </a>
     )
   } else {
-    return (<p>N/A</p>)
+    return (
+      <a id="seat" 
+        name="seat" 
+        className="btn btn-primary" 
+        disabled="true">
+        Seat
+      </a>
+    )
   }
 
 };
