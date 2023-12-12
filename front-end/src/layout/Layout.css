@@ -20,6 +20,11 @@ body {
   min-width: 200px;
 }
 
+.sidebar-align{
+  align-items: start;
+  justify-content: start;
+}
+
 .sidebar-brand-text{
   color: #caf0f8;
 }
@@ -58,10 +63,21 @@ body {
 }
 
 
-input[type=text] {
+form input[type=text] {
   max-width: 200px; 
 }
 
+form input[type=number] {
+  max-width: 200px; 
+}
+
+form input[type=date] {
+  width: 200px; 
+}
+
+form input[type=time] {
+  width: 200px; 
+}
 
 /* -------  Navigation ------- */
 
@@ -88,7 +104,15 @@ nav {
       font-size: 48px;
   }
 
-  /* -------  Groups & Items --- */
+
+  /* ---------- Side Bar  -----------*/
+
+  .sidebar-align{
+    align-items: center;
+    justify-content: center;
+  } 
+
+  /* -------  Groups & Items ------- */
 
   .group {
     display: flex;
@@ -127,8 +151,16 @@ nav {
     flex: 2;
   }
 
-  input[type=text] {
+  form input[type=text] {
     max-width: 300px; 
+  }
+
+  form input[type=number] {
+    max-width: 200px; 
+  }
+
+  select {
+    max-width: 300px;
   }
 
   /* -------  Navigation ------- */

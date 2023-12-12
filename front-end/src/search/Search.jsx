@@ -91,20 +91,23 @@ function Search() {
           }
         }}
       >
-        <label htmlFor="mobile_number">
-          Mobile Number
-          <br />
-          <input
-            id="mobile_number"
-            name="mobile_number"
-            type="text"
-            placeholder="Enter a customer's phone number"
-            onChange={handleChange}
-            value={formData.mobile_number}
-            required={true}
-          />
-        </label>
-        <br />
+        <div className="input-group">
+          <label htmlFor="mobile_number">
+            Mobile Number
+            <br />
+
+            <input
+              id="mobile_number"
+              name="mobile_number"
+              type="text"
+              placeholder="Enter a customer's phone number"
+              className="form-control"
+              onChange={handleChange}
+              value={formData.mobile_number}
+              required={true}
+            />
+          </label>
+        </div>
         <div>
           <button onClick={cancelButton} className="btn btn-primary">
             Cancel

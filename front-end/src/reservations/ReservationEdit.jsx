@@ -232,78 +232,89 @@ function ReservationEdit() {
               value={formData.first_name}
               required={true}
             />
-          </label></div>
-        <label htmlFor="last_name">
-          Last Name
-          <br />
-          <input
-            id="last_name"
-            name="last_name"
-            type="text"
-            placeholder="Last Name"
-            onChange={handleChange}
-            value={formData.last_name}
-            required={true}
-          />
-        </label>
-        <br />
-        <label htmlFor="mobile_number">
-          Mobile Number
-          <br />
-          <input
-            id="mobile_number"
-            name="mobile_number"
-            type="text"
-            placeholder="555-555-5555"
-            onChange={handleChange}
-            value={formData.mobile_number}
-            required={true}
-          />
-        </label>
-        <br />
-        <label htmlFor="reservation_date">
-          Reservation Date
-          <br />
-          <input
-            id="reservation_date"
-            name="reservation_date"
-            type="date"
-            placeholder="YYYY-MM-DD"
-            onChange={handleChange}
-            value={formData.reservation_date}
-            required={true}
-          />
-        </label>
-        <br />
-        <label htmlFor="reservation_time">
-          Reservation Time
-          <br />
-          <input
-            id="reservation_time"
-            name="reservation_time"
-            type="time"
-            placeholder="HH:MM"
-            onChange={handleChange}
-            value={formData.reservation_time}
-            required={true}
-          />
-        </label>
-        <br />
-        <label htmlFor="people">
-          People
-          <br />
-          <input
-            id="people"
-            name="people"
-            type="number"
-            placeholder="People in party"
-            onChange={handleChange}
-            value={formData.people}
-            min="1"
-            required={true}
-          />
-        </label>
-        <br />
+          </label>
+        </div>
+        <div className="input-group">
+          <label htmlFor="last_name">
+            Last Name
+            <br />
+            <input
+              id="last_name"
+              name="last_name"
+              type="text"
+              placeholder="Last Name"
+              className="form-control"
+              onChange={handleChange}
+              value={formData.last_name}
+              required={true}
+            />
+          </label>
+        </div>
+        <div className="input-group">
+          <label htmlFor="mobile_number">
+            Mobile Number
+            <br />
+            <input
+              id="mobile_number"
+              name="mobile_number"
+              type="text"
+              placeholder="555-555-5555"
+              className="form-control"
+              onChange={handleChange}
+              value={formData.mobile_number}
+              required={true}
+            />
+          </label>
+        </div>
+        <div className="input-group">
+          <label htmlFor="reservation_date">
+            Reservation Date
+            <br />
+            <input
+              id="reservation_date"
+              name="reservation_date"
+              type="date"
+              placeholder="YYYY-MM-DD"
+              className="form-control"
+              onChange={handleChange}
+              value={formData.reservation_date}
+              required={true}
+            />
+          </label>
+        </div>
+        <div class="input-group">
+          <label htmlFor="reservation_time">
+            Reservation Time
+            <br />
+            <input
+              id="reservation_time"
+              name="reservation_time"
+              type="time"
+              placeholder="HH:MM"
+              className="form-control"
+              onChange={handleChange}
+              value={formData.reservation_time}
+              required={true}
+            />
+          </label>
+        </div>
+        <div className="input-group">
+          <label htmlFor="people">
+            People
+            <br />
+            <input
+              id="people"
+              name="people"
+              type="number"
+              placeholder="People in party"
+              className="form-control"
+              onChange={handleChange}
+              value={formData.people}
+              min="1"
+              required={true}
+            />
+          </label>
+        </div>
         <div>
           <button onClick={cancelButton} className="btn btn-primary">
             Cancel
