@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import { listReservations, listTables, deleteTableSeat } from "../utils/api";
 import { today, previous, next } from "../utils/date-time";
 import ErrorAlert from "../layout/ErrorAlert";
@@ -17,19 +17,19 @@ function Dashboard({ date }) {
   const [reservations, setReservations] = useState([]);
   const [tables, setTables] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
+  const history = useHistory();
 
   // get date inputs from lcoation.state and query param.
   // query param assumes only 1 param
   const { state, search } = useLocation();
-  const qTest = search.indexOf("date=")
-  const qDate = (qTest > -1) ? search.substring(search.indexOf("date=") + 5) : "";
+  const qTest = search.indexOf("date=");
+  const qDate = qTest > -1 ? search.substring(search.indexOf("date=") + 5) : "";
 
   // reset date var from state variable if defined.
   date = getDateParam(date, qDate, state);
   const [reservationDate, setReservationDate] = useState(date);
 
-
-  // Manage the Change Reservation Date event, 
+  // Manage the Change Reservation Date event,
   // by reloading the page from the database
   useEffect(() => {
     const abortController = new AbortController();
@@ -71,7 +71,7 @@ function Dashboard({ date }) {
   }
 
   // define event actions for FINISH table or CANCEL reservation
-  // Call the deleteTableSeat REST api to remove 
+  // Call the deleteTableSeat REST api to remove
   // reservation_id from tables (table) and set reservation table status
   const closeReservationEvent = (reservation_id, table_id, closeStatus) => {
     const abortController = new AbortController();
@@ -89,9 +89,11 @@ function Dashboard({ date }) {
         loadReservations(reservationDate, abortController);
       })
       .catch((error) => {
-        console.log(`Error in Close Reservation data load. Error: ${error.message}` );
+        console.log(
+          `Error in Close Reservation data load. Error: ${error.message}`
+        );
         setReservationsError(error.message);
-      })
+      });
 
     return () => {
       abortController.abort();
@@ -120,6 +122,11 @@ function Dashboard({ date }) {
     const nextDate = next(reservationDate);
     setReservationDate(nextDate);
   };
+
+  const tableAddButton = () => {
+    const url = "/tables/new";
+    history.push(url);
+  }
 
   // catch the Finish table click event, and display confirmation popup.
   // If yes, call perform actions in closeReservationEvent
@@ -153,7 +160,7 @@ function Dashboard({ date }) {
     }
   };
 
-  // Logic used to determine which input method to 
+  // Logic used to determine which input method to
   // derive the reservation date var that drives the page
   // qDate takes priority if defined.
   // propDate only used on initial load from Layout.js
@@ -169,6 +176,37 @@ function Dashboard({ date }) {
     }
   }
 
+  const renderReservationList = () => {
+    if (reservations.length === 0) {
+      return <p>No reservations found for selected date.</p>;
+    } else {
+      return ( 
+        <ReservationList
+          reservations={reservations}
+          cancelHandler={cancelReservationClick}
+        />
+      );
+    }
+  };
+
+  const renderTableList = () => {
+    if (tables.length === 0) {
+      return (
+        <div><p>No tables found. Please add some. &nbsp;
+            <button className="btn btn-primary" onClick={tableAddButton}>
+              New Table
+          </button>
+          </p>
+        </div>  
+      )
+    } else {
+      return ( 
+        <TableList tables={tables} finishTableHandler={finishTableClick} />
+      );
+    }
+  };
+
+
   return (
     <main>
       {/* HEADER */}
@@ -181,34 +219,37 @@ function Dashboard({ date }) {
           </div>
           <div className="item">
             <NavButtons
-            prevClick={prevButton}
-            todayClick={todayButton}
-            nextClick={nextButton}
+              prevClick={prevButton}
+              todayClick={todayButton}
+              nextClick={nextButton}
             />
+          </div>
         </div>
+        <div>
+          <hr />
         </div>
-        <div><hr/></div>
       </section>
 
       {/* RESERVATIONS */}
       <section id="reservations">
         <div>
-          <ReservationList
-            reservations={reservations}
-            cancelHandler={cancelReservationClick}
-          />
+          {renderReservationList()}
         </div>
-        <div><hr/></div>
+        <div>
+          <hr />
+        </div>
       </section>
-     
+
       {/* TABLES */}
       <section id="tables">
         <div className="d-md-flex mb-3">
           <h4 className="mb-0">Tables</h4>
         </div>
-        <div><hr/></div>
         <div>
-          <TableList tables={tables} finishTableHandler={finishTableClick} />
+          <hr />
+        </div>
+        <div>
+          {renderTableList()}
         </div>
       </section>
     </main>
