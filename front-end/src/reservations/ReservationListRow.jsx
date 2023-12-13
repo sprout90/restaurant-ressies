@@ -5,41 +5,41 @@ import ReservationCancelBtn from "./ReservationCancelBtn";
 
 function ReservationListRow({ reservation, cancelHandler }) {
   return (
-    <div className="row">
-      <div className="col-3">
+    <tr>
+      <td>
         {reservation.first_name}&nbsp;{reservation.last_name}
-      </div>
-      <div className="col-2">{reservation.mobile_number}</div>
-      <div className="col-2">
+      </td>
+      <td>{reservation.mobile_number}</td>
+      <td>
         {reservation.formatted_date}&nbsp;{reservation.formatted_time}
-      </div>
-      <div className="col-1">{reservation.people}</div>
-      <div className="col-1">
+      </td>
+      <td>{reservation.people}</td>
+      <td>
         <span data-reservation-id-status={reservation.reservation_id}>
           {reservation.status}
         </span>
-      </div>
-      <div className="col-1">
+      </td>
+      <td>
         <ReservationSeatBtn
           reservation_id={reservation.reservation_id}
           status={reservation.status}
         />
-      </div>
-      <div className="col-1">
+      </td>
+      <td>
         <ReservationEditBtn
           reservation_id={reservation.reservation_id}
           status={reservation.status}
         />
-      </div>
-      <div className="col-1">
+      </td>
+      <td>
         <ReservationCancelBtn
           reservation_id={reservation.reservation_id}
           table_id={reservation.table_id}
           cancelHandler={cancelHandler}
           status={reservation.status}
         />
-      </div>
-    </div>
+      </td>
+    </tr>
   );
 }
 

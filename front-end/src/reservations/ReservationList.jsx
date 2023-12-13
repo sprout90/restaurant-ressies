@@ -3,34 +3,33 @@ import ReservationListRow from "./ReservationListRow";
 
 function ReservationList({ reservations, cancelHandler }) {
   return (
-    <div>
-      <div className="row">
-        <div className="col-3 font-weight-bold">
-          <span>Name</span>
-        </div>
-        <div className="col-2 font-weight-bold">
-          <span>Mobile</span>
-        </div>
-        <div className="col-2 font-weight-bold">
-          <span>Date & Time</span>
-        </div>
-        <div className="col-1 font-weight-bold">
-          <span>People</span>
-        </div>
-        <div className="col-1 font-weight-bold">
-          <span>Status</span>
-        </div>
-        <div className="col-1 font-weight-bold">
-          <span>Table</span>
-        </div>
-        <div className="col-1 font-weight-bold">
-          <span>Edit</span>
-        </div>
-        <div className="col-1 font-weight-bold">
-          <span>Cancel</span>
-        </div>
-      </div>
-      <div>
+    <div className="table-responsive">
+      <table className="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Mobile</th>
+            <th>
+              Date & Time
+            </th>
+            <th>
+              People
+            </th>
+            <th>
+              Status
+            </th>
+            <th>
+              Table
+            </th>
+            <th>
+              Edit
+            </th>
+            <th>
+              Cancel
+            </th>
+          </tr>
+        </thead>
+        <tbody>
         {reservations.map((reservation, index) => (
           <ReservationListRow
             reservation={reservation}
@@ -39,7 +38,8 @@ function ReservationList({ reservations, cancelHandler }) {
             index={index}
           />
         ))}
-      </div>
+        </tbody>
+      </table>
     </div>
   );
 }

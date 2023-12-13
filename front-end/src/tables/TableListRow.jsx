@@ -13,20 +13,20 @@ function TableListRow({table, finishTableHandler}){
   }
 
   return (
-    <div className="row" data-table-id-status={table.table_id}>
-    <div className="col-2">
+    <tr>
+    <td>
       {table.table_name}
-    </div>
-    <div className="col-2">
+    </td>
+    <td>
       {table.capacity}
-    </div>
-    <div className="col-2">
+    </td>
+    <td>
       {renderStatus(table.status)}
-    </div>
-    <div>
+    </td>
+    <td>
       <TableFinishBtn table={table} finishTableHandler={finishTableHandler}/>
-    </div>
-  </div>
+    </td>
+  </tr>
   );
 }
 
