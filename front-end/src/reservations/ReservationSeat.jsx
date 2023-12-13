@@ -6,8 +6,12 @@ import ErrorAlert from "../layout/ErrorAlert";
 
 function ReservationSeat() {
   const { reservationId } = useParams();
-  const [reservation_id, setReservation_Id] = useState(reservationId);
   const history = useHistory();
+
+  // Use State Declarations
+  // ** trick to avoid unused setReservation_Id warning in useState()
+  // ** place comma after reservation_id with empty cell.
+  const [reservation_id, ] = useState(reservationId);
   const [reservation, setReservation] = useState(undefined);
   const [tables, setTables] = useState([]);
   const [errors, setErrors] = useState(undefined);

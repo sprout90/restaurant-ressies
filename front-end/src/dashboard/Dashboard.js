@@ -83,7 +83,7 @@ function Dashboard({ date }) {
       closeStatus,
       abortController.signal
     )
-      .then((tableResult) => {
+      tablePromise.then((tableResult) => {
         // reload page from REST calls
         loadTables(abortController);
         loadReservations(reservationDate, abortController);
@@ -123,6 +123,8 @@ function Dashboard({ date }) {
     setReservationDate(nextDate);
   };
 
+  // Table Add button action.
+  // Route use to TableEdit page
   const tableAddButton = () => {
     const url = "/tables/new";
     history.push(url);
@@ -176,6 +178,9 @@ function Dashboard({ date }) {
     }
   }
 
+  // manage the display of the ReservationList control
+  // dont display when reservations are not defined for given date, 
+  // and show friendly message
   const renderReservationList = () => {
     if (reservations.length === 0) {
       return <p>No reservations found for selected date.</p>;
@@ -189,6 +194,9 @@ function Dashboard({ date }) {
     }
   };
 
+  // manage the display of the TableList control
+  // dont display when tables are not defined for given date, 
+  // and show friendly message with Add Table button
   const renderTableList = () => {
     if (tables.length === 0) {
       return (

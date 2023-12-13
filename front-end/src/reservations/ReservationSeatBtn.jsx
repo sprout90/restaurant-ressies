@@ -17,9 +17,9 @@ function ReservationSeatBtn({ reservation_id, status }) {
   } else {
     // otherwise display disabled Seat button
     return (
-      <a id="seat" name="seat" className="btn btn-primary" disabled="true">
+      <button id="seat" name="seat" className="btn btn-primary" disabled={true}>
         Seat
-      </a>
+      </button>
     );
   }
 }
