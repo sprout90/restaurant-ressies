@@ -1,5 +1,8 @@
 import React from "react";
 
+/* Display cancel button in enabled or disabled state
+   Determined whether status is "cancelled" or not
+*/
 function ReservationCancelBtn({
   reservation_id,
   table_id,

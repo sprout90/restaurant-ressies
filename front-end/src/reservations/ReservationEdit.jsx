@@ -76,6 +76,7 @@ function ReservationEdit() {
     };
   }, [reservationId]);
 
+  // determine page title
   let title;
   if (path === "/reservations/new") {
     title = "Create Reservation";
@@ -134,6 +135,8 @@ function ReservationEdit() {
     gotoDashboard();
   };
 
+  // return to dashboard page, and maintain 
+  // state of reservation date
   function gotoDashboard() {
     const url = "/dashboard";
     const location = {
@@ -146,6 +149,9 @@ function ReservationEdit() {
     history.push(location);
   }
 
+  /*  Perform all form validation functions with exception of
+      HTML validation performed on the controls themselves
+  */
   function validateForm(formData) {
     let validForm = true;
     const errorList = [];

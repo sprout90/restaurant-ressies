@@ -1,6 +1,9 @@
 import React from "react";
 import ReservationListRow from "./ReservationListRow";
 
+/* display the list of reservations 
+   Currently used by Search result, and Dashboard pages
+*/
 function ReservationList({ reservations, cancelHandler }) {
   return (
     <div className="table-responsive">
@@ -34,7 +37,7 @@ function ReservationList({ reservations, cancelHandler }) {
           <ReservationListRow
             reservation={reservation}
             cancelHandler={cancelHandler}
-            key={index}
+            key={reservation.reservation_id}
             index={index}
           />
         ))}

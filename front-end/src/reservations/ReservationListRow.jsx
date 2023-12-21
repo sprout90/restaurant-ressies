@@ -3,6 +3,9 @@ import ReservationSeatBtn from "./ReservationSeatBtn";
 import ReservationEditBtn from "./ReservationEditBtn";
 import ReservationCancelBtn from "./ReservationCancelBtn";
 
+/* Display a single reservation row.
+   Child of reservationList
+*/
 function ReservationListRow({ reservation, cancelHandler }) {
   return (
     <tr>

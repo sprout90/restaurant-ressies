@@ -1,5 +1,7 @@
 import React from "react";
 
+// Display enabled or disabled Reservation Edit button
+// determined by "booked" status
 function ReservationEditBtn({ reservation_id, status }) {
   if (status === "booked") {
     return (
