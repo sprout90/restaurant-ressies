@@ -2,7 +2,9 @@ import React from "react";
 
 function NavButtons({prevClick, todayClick, nextClick}){
   
-  
+  /* Display prev, today, and next reservation date buttons for Dashboard
+    uses bootstrap button group class
+  */
   return (
     <nav>
       <div className="btn-group justify-content-end align-middle ">

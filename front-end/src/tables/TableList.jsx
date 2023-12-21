@@ -22,7 +22,7 @@ function TableList({tables, finishTableHandler}){
       </thead>
     <tbody>
       {tables.map((table, index) =>  
-            <TableListRow table={table} key={index} index={index} finishTableHandler={finishTableHandler}/>
+            <TableListRow table={table} key={table.table_id} index={index} finishTableHandler={finishTableHandler}/>
             ) 
       }
       </tbody>

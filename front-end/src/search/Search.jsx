@@ -16,10 +16,12 @@ function Search() {
   };
   const [formData, setFormData] = useState({ ...initialFormState });
 
+  // handle the cancel button click event
   const cancelButton = () => {
     gotoDashboard();
   };
 
+  // return to the dashboard page
   function gotoDashboard() {
     const url = "/dashboard";
     history.push(url);
@@ -30,6 +32,13 @@ function Search() {
     setFormData({ ...formData, [target.name]: target.value });
   };
 
+  /*  Perform all form validation functions with exception of
+      HTML validation performed on the controls themselves
+
+      function is called, but validations have not been needed 
+      This is currently a placeholder that maintains my standard form 
+      validation logic.
+  */
   function validateForm({ table_id }) {
     let validForm = true;
     const errorList = [];
@@ -41,6 +50,9 @@ function Search() {
     return validForm;
   }
 
+  // load reservations based on mobile number
+  // input parameter.
+  // Result is loaded into state variable for later display
   async function loadReservations() {
     const abortController = new AbortController();
 
@@ -57,6 +69,8 @@ function Search() {
     }
   }
 
+  // Display the reservation list with separate logic
+  // for returned reservations or empty result set
   const renderReservationList = () => {
     if (reservations.length === 0 && formData.searchAttempted === true) {
       return (
@@ -71,6 +85,7 @@ function Search() {
     }
   };
 
+  // Handle the search click event
   const searchEvent = () => {
     setFormData({ ...formData, searchAttempted: true });
     loadReservations();
@@ -95,7 +110,6 @@ function Search() {
           <label htmlFor="mobile_number">
             Mobile Number
             <br />
-
             <input
               id="mobile_number"
               name="mobile_number"
