@@ -11,7 +11,7 @@ function ReservationSeat() {
   // Use State Declarations
   // ** trick to avoid unused setReservation_Id warning in useState()
   // ** place comma after reservation_id with empty cell.
-  const [reservation_id, ] = useState(reservationId);
+  const [reservation_id] = useState(reservationId);
   const [reservation, setReservation] = useState(undefined);
   const [tables, setTables] = useState([]);
   const [errors, setErrors] = useState(undefined);
@@ -40,6 +40,9 @@ function ReservationSeat() {
       }
     }
 
+    // Load tables from the database,
+    // and filter out rows with not null reservation date
+    // or  reservation_id
     async function loadTables(abortController) {
       try {
         const result = await listTables(abortController.signal);
@@ -62,6 +65,8 @@ function ReservationSeat() {
     };
   }, [reservation_id]);
 
+  // is the capacity valid. Capacity must be greater than or
+  // equal to the number of people in party
   function validCapacity(capacity) {
     // compare table capacity to reservation people
     if (parseInt(capacity) >= parseInt(reservation.people)) {
@@ -71,6 +76,7 @@ function ReservationSeat() {
     }
   }
 
+  // Is the table selection valid
   function validRequiredTable(tableId) {
     if (tableId > 0) {
       return true;
@@ -84,10 +90,13 @@ function ReservationSeat() {
     setFormData({ ...formData, [target.name]: target.value });
   };
 
+  // handle the cancel button click event
   const cancelButton = () => {
     gotoDashboard();
   };
 
+  // return to Dashboard, and
+  // save reservation date state
   function gotoDashboard() {
     const url = "/dashboard";
     const location = {
@@ -124,6 +133,9 @@ function ReservationSeat() {
     };
   };
 
+  /*  Perform all form validation functions with exception of
+      HTML validation performed on the controls themselves
+  */
   function validateForm({ table_id }) {
     let validForm = true;
     const errorList = [];
@@ -157,6 +169,8 @@ function ReservationSeat() {
     return validForm;
   }
 
+  // display the select control
+  // that contains the tables to choose from
   const renderSelectControl = () => {
     if (tables.length !== 0) {
       return (
@@ -167,6 +181,7 @@ function ReservationSeat() {
             name="table_id"
             required={true}
             onChange={handleChange}
+            className="form-control"
             value={formData.table_id}
           >
             <option value="0">Select a Table</option>
@@ -187,6 +202,8 @@ function ReservationSeat() {
     }
   };
 
+  // display the submit button
+  // does not display when table list is empty
   const renderSubmitBtn = () => {
     if (tables.length !== 0) {
       return (

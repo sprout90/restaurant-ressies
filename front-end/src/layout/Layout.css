@@ -79,6 +79,10 @@ form input[type=time] {
   width: 200px; 
 }
 
+select {
+  max-width: 200px;
+}
+
 /* -------  Navigation ------- */
 
 nav {
