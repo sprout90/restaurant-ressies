@@ -45,6 +45,14 @@ View of a completed table entry in the create table page.
 ## API Documentation
 
 ### Reservations
+<!--- 
+- list 
+- create
+- read
+- update
+- updateStatus
+- destroy
+--->
 Attibute | Definition
 ---|---
 Rest Method | reservations/
@@ -59,7 +67,7 @@ Properties | First Name, Last Name, Mobile Number, Reservation Date, Reservation
 &nbsp; | &nbsp;
 Rest Method | reservations/:reservationId
 Method | Get
-Description | Returns a matching reservation record given the reservation id parameter.  In addition to all columns, the following 2 derived values are also returned: formatted_date 'YYYY-MM-DD'; formatted_time 'HH12:MIPM'.
+Description | Returns a matching reservation record given the reservation id parameter.  In addition to all columns, the following 2 derived values are also returned: formatted_date 'YYYY-MM-DD'; formatted_time 'HH12:MIPM', based on reservation date and time.
 Parameter | Reservation Id
 &nbsp; | &nbsp;
 Rest Method | reservations/:reservationId
@@ -77,16 +85,13 @@ Rest Method | reservations/:reservationId/status
 Method | Put
 Description | Updates the status of a reservation in the database.
 Parameters | Reservation Id
-Properties | Statusd
+Properties | Status
 <br/>
 
-<!--- 
-- update
-- updateStatus
-- destroy
---->
+
 
 ### Tables
+<!--- 
 - list
 - create
 - read
@@ -94,6 +99,53 @@ Properties | Statusd
 - fillSeat
 - deleteSeat
 - destroy 
+--->
+Attibute | Definition
+---|---
+Rest Method | tables/
+Method | Get
+Description | Returns a list of tables with optional reservations when a match is found on reservation_id and date.
+In addition to all columns from tables and optionally reservations, the following 2 derived values are also returned: formatted_date 'YYYY-MM-DD'; formatted_time 'HH12:MIPM' based on reservation date and time.
+Parameters | Date
+&nbsp; | &nbsp;
+Rest Method | tables/
+Method | Post
+Description | Accepts all attributes required to create a new table record
+Properties | Table name and capacity
+&nbsp; | &nbsp;
+Rest Method | tables/:tableId
+Method | Post
+Description | Accepts all attributes required to update an existing table record.
+Parameters | Table Id
+Properties | Table name and capacity
+&nbsp; | &nbsp;
+Rest Method | tables/:tableid
+Method | Get
+Description | Returns a matching table record given the table id parameter.  
+Parameter | Table Id
+&nbsp; | &nbsp;
+Rest Method | tables/:tableId
+Method | Delete
+Description | Removes a table record from the tables table.
+Parameter | Table Id
+&nbsp; | &nbsp;
+Rest Method | tables/:tableId
+Method | Put
+Description | Updates a reservation record in the reservations table.  
+Parameters | Reservation Id
+Properties | First Name, Last Name, Mobile Number, Reservation Date, Reservation Time, People
+&nbsp; | &nbsp;
+Rest Method | tables/:tableId/FillSeat
+Method | Put
+Description | Updates a tables record with a reservation id, and also sets the 'seated' status in matching reservation record.
+Parameters | Table Id
+Properties | Reservation Id
+&nbsp; | &nbsp;
+Rest Method | tables/:tableId/DeleteSeat
+Method | Put
+Description | Removes the reservation id from the matching table record, and also sets the 'finished' or 'canceled' status to matching reservation record. The 'finished' status is set by default when not defined as property.
+Parameters | Table Id
+Properties | Status
 
 
 ## Existing files
