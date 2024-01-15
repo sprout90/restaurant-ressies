@@ -7,8 +7,8 @@ function TableFinishBtn({table, finishTableHandler}){
   // Else return null
   if (table.reservation_id){
     return (
-      <button id="seat" 
-        name="seat" 
+      <button id="finish" 
+        name="finish" 
         data-table-id-finish={table.table_id}
         data-reservation-id-finish={table.reservation_id}
         className="btn btn-primary" 

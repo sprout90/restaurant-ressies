@@ -13,7 +13,7 @@ function TableListRow({table, finishTableHandler}){
   }
 
   return (
-    <tr>
+    <tr data-table-id-status={table.table_id}>
     <td>
       {table.table_name}
     </td>
