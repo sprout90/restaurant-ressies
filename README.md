@@ -60,12 +60,27 @@ Properties | First Name, Last Name, Mobile Number, Reservation Date, Reservation
 Rest Method | reservations/:reservationId
 Method | Get
 Description | Returns a matching reservation record given the reservation id parameter.  In addition to all columns, the following 2 derived values are also returned: formatted_date 'YYYY-MM-DD'; formatted_time 'HH12:MIPM'.
+Parameter | Reservation Id
+&nbsp; | &nbsp;
+Rest Method | reservations/:reservationId
+Method | Delete
+Description | Removes a reservation record from the reservations table.
+Parameter | Reservation Id
+&nbsp; | &nbsp;
+Rest Method | reservations/:reservationId
+Method | Put
+Description | Updates a reservation record in the reservations table.  
+Parameters | Reservation Id
 Properties | First Name, Last Name, Mobile Number, Reservation Date, Reservation Time, People
+&nbsp; | &nbsp;
+Rest Method | reservations/:reservationId/status
+Method | Put
+Description | Updates the status of a reservation in the database.
+Parameters | Reservation Id
+Properties | Statusd
 <br/>
 
 <!--- 
-- create
-- read
 - update
 - updateStatus
 - destroy
