@@ -47,10 +47,19 @@ View of a completed table entry in the create table page.
 ### Reservations
 Attibute | Definition
 ---|---
-Rest Method | list
-Description | Returns a list of reservations associated with a given date or mobile number.
+Rest Method | reservations/
 Method | Get
-Parameters | Reservation Date, or Mobile Number 
+Description | Returns a list of reservations associated with a given date or mobile number.
+Parameters | Reservation Date, or Mobile Number query parameters
+<br/>
+Attibute | Definition
+---|---
+Rest Method | reservations/
+Method | Post
+Description | Accepts all attributes required to create a new reservation
+Properties | First Name, Last Name, Mobile Number, Reservation Date, Reservation Time, People
+
+<br/>
 
 
 - create
