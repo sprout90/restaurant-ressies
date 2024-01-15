@@ -56,6 +56,11 @@ Rest Method | reservations/
 Method | Post
 Description | Accepts all attributes required to create a new reservation
 Properties | First Name, Last Name, Mobile Number, Reservation Date, Reservation Time, People
+&nbsp; | &nbsp;
+Rest Method | reservations/:reservationId
+Method | Get
+Description | Returns a matching reservation record given the reservation id parameter.  In addition to all columns, the following 2 derived values are also returned: formatted_date 'YYYY-MM-DD'; formatted_time 'HH12:MIPM'.
+Properties | First Name, Last Name, Mobile Number, Reservation Date, Reservation Time, People
 <br/>
 
 <!--- 
