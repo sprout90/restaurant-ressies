@@ -1,12 +1,17 @@
-# Capstone: Restaurant Reservation System
+# Restaurant Ressies
 
-> You have been hired as a full stack developer at _Periodic Tables_, a startup that is creating a reservation system for fine dining restaurants.
-> The software is used only by restaurant personnel when a customer calls to request a reservation.
-> At this point, the customers will not access the system online.
+## What is it?
+This is a restaurant reservation system that will allow a user to create, seat and finish a reservation.  Users are also allowed to edit & delete reservations.  
 
-There are no user stories for deployment: it is expected that you will deploy the application to production after you finish a user story.
+## Where Can I See it?
+To run the web application, please click this [Restaurant Ressies](https://restaurant-ressies.onrender.com) link. 
 
-There are no user stories for logging: it is expected that you will add logging to the application with enough detail to help you diagnose issues in production.
+## Screen Samples
+In lieu of visiting the site, some screen shots are available here for quick reference.
+
+### Main Dashboard
+This is the essentially the 'home page' that drives all activity in the reserveration system.
+![Dashboard](./images/dashboard.png)
 
 ## Existing files
 
