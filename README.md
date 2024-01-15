@@ -46,6 +46,11 @@ View of a completed table entry in the create table page.
 
 ### Reservations
 - list
+Attibute | Definition
+---|---
+Description | Returns a list of reservations associated with a given date or mobile number.
+Method | Get
+Parameters | Reservation Date, or Mobile Number 
 - create
 - read
 - update
