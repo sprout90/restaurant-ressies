@@ -51,9 +51,7 @@ Rest Method | reservations/
 Method | Get
 Description | Returns a list of reservations associated with a given date or mobile number.
 Parameters | Reservation Date, or Mobile Number query parameters
-<br/><br/>
-Attibute | Definition
----|---
+<br/>
 Rest Method | reservations/
 Method | Post
 Description | Accepts all attributes required to create a new reservation
