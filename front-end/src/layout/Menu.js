@@ -17,7 +17,8 @@ function Menu() {
           to="/"
         >
           <div className="sidebar-brand-text mx-3">
-            <span>Menu</span>
+            <span>Restaurant</span><br/>
+            <span>Periodic Tables</span>
           </div>
         </Link>
         <hr className="sidebar-divider my-0" />

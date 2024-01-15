@@ -288,7 +288,7 @@ function ReservationEdit() {
             />
           </label>
         </div>
-        <div class="input-group">
+        <div className="input-group">
           <label htmlFor="reservation_time">
             Reservation Time
             <br />

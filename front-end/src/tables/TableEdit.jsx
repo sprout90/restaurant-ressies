@@ -154,7 +154,7 @@ function TableEdit() {
             />
           </label>
         </div>
-        <div class="input-group">
+        <div className="input-group">
           <label htmlFor="capacity">
             Capacity
             <br />

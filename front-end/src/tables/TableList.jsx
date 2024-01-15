@@ -7,6 +7,7 @@ function TableList({tables, finishTableHandler}){
     <div className="table-responsive">
       <table className="table">
         <thead>
+          <tr>
           <th>
             Name
           </th>
@@ -19,6 +20,7 @@ function TableList({tables, finishTableHandler}){
           <th>
             Action
           </th>
+          </tr>
       </thead>
     <tbody>
       {tables.map((table, index) =>  
