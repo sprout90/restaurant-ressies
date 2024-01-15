@@ -51,7 +51,7 @@ Rest Method | reservations/
 Method | Get
 Description | Returns a list of reservations associated with a given date or mobile number.
 Parameters | Reservation Date, or Mobile Number query parameters
-<br/>
+<br/><br/>
 Attibute | Definition
 ---|---
 Rest Method | reservations/
@@ -61,12 +61,13 @@ Properties | First Name, Last Name, Mobile Number, Reservation Date, Reservation
 
 <br/>
 
-
+<!--- 
 - create
 - read
 - update
 - updateStatus
 - destroy
+--->
 
 ### Tables
 - list
