@@ -6,12 +6,42 @@ This is a restaurant reservation system that will allow a user to create, seat a
 ## Where Can I See it?
 To run the web application, please click this [Restaurant Ressies](https://restaurant-ressies.onrender.com) link. 
 
+## Technology Used
+Javascript is the fundamental software development language used for both front-end and back-end implementations. In additino, the following tools and technology have been used to create the site. 
+
+### Back-End
+- Node 
+- Express 
+- Knex PostgreSQL API 
+
+### Front-End
+- React
+- Bootstrap
+- CSS & HTML
+
 ## Screen Samples
-In lieu of visiting the site, some screen shots are available here for quick reference.
+In lieu of visiting the site, some screen shots of Restaurant Ressies system web pages made available here for quick reference.
 
 ### Main Dashboard
 This is the essentially the 'home page' that drives all activity in the reserveration system.
 ![Dashboard](./images/dashboard.png)
+
+### Dashboard with Reservation
+View of the dashboard with 1 reservation loaded.
+![Reservation on Dashboard](./images/dashboard_with_reservation.png)
+
+### Create Reservation
+View of a completed reservation entry in the create reservation page.
+![Create New Reservation](./images/create.png)
+
+### Search Reservation
+View of a submitted search that successfully returned previously created reservations. 
+![Reservation Search](./images/search.png)
+
+### Create Table
+View of a completed table entry in the create table page. 
+![Reservation Search](./images/createTable.png)
+
 
 ## Existing files
 
