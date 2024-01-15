@@ -42,6 +42,25 @@ View of a submitted search that successfully returned previously created reserva
 View of a completed table entry in the create table page. 
 ![Reservation Search](./images/createTable.png)
 
+## API Documentation
+
+### Reservations
+- list
+- create
+- read
+- update
+- updateStatus
+- destroy
+
+### Tables
+- list
+- create
+- read
+- update
+- fillSeat
+- deleteSeat
+- destroy 
+
 
 ## Existing files
 
