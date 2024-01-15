@@ -104,8 +104,7 @@ Attibute | Definition
 ---|---
 Rest Method | tables/
 Method | Get
-Description | Returns a list of tables with optional reservations when a match is found on reservation_id and date.
-In addition to all columns from tables and optionally reservations, the following 2 derived values are also returned: formatted_date 'YYYY-MM-DD'; formatted_time 'HH12:MIPM' based on reservation date and time.
+Description | Returns a list of tables with optional reservations when a match is found on reservation_id and date. In addition to all columns from tables and optionally reservations, the following 2 derived values are also returned: formatted_date 'YYYY-MM-DD'; formatted_time 'HH12:MIPM' based on reservation date and time.
 Parameters | Date
 &nbsp; | &nbsp;
 Rest Method | tables/
