@@ -3,9 +3,6 @@
 ## What is it?
 This is a restaurant reservation system that will allow a user to create, seat and finish a reservation.  Users are also allowed to edit & delete reservations.  
 
-## Where Can I See it?
-To run the web application, please click this [Restaurant Ressies](https://restaurant-ressies.onrender.com) link. 
-
 ## Technology Used
 Javascript is the fundamental software development language used for both front-end and back-end implementations. In additino, the following tools and technology have been used to create the site. 
 
