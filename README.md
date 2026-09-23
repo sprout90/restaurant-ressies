@@ -42,7 +42,7 @@ The original scaffold included supporting project configuration and starter file
 In lieu of visiting the site, some screen shots of Restaurant Ressies system web pages made available here for quick reference.
 
 ### Main Dashboard
-This is the essentially the 'home page' that drives all activity in the reserveration system.
+This is the essentially the 'home page' that drives all activity in the reservation system.
 ![Dashboard](./images/dashboard.png)
 
 ### Dashboard with Reservation
@@ -72,7 +72,7 @@ View of a completed table entry in the create table page.
 - updateStatus
 - destroy
 --->
-Attibute | Definition
+Attribute | Definition
 ---|---
 Rest Method | reservations/
 Method | Get
@@ -119,7 +119,7 @@ Properties | Status
 - deleteSeat
 - destroy 
 --->
-Attibute | Definition
+Attribute | Definition
 ---|---
 Rest Method | tables/
 Method | Get
