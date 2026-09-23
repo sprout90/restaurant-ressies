@@ -1,12 +1,12 @@
 {
-  "name": "starter-restaurant-reservation-back-end",
+  "name": "restaurant-ressies-back-end",
   "version": "1.0.0",
-  "description": "Starter code for restaurant reservation backend",
+  "description": "Back-end REST API for the Restaurant Ressies application",
   "main": "src/server.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Thinkful-Ed/starter-restaurant-reservation",
-    "directory": "/back-end"
+    "url": "https://github.com/sprout90/restaurant-ressies.git",
+    "directory": "back-end"
   },
   "scripts": {
     "start": "node src/server.js",
@@ -25,7 +25,7 @@
     "test:start:run": "run-s test:drop-database start "
   },
   "keywords": [],
-  "author": "",
+  "author": "Michael Brehm",
   "license": "UNLICENSED",
   "dependencies": {
     "cors": "^2.8.5",
