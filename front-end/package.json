@@ -1,12 +1,12 @@
 {
-  "name": "starter-restaurant-reservation-front-end",
+  "name": "restaurant-ressies-front-end",
   "version": "1.0.0",
-  "description": "Starter code for restaurant reservation frontend",
+  "description": "React front end for the Restaurant Ressies application",
   "main": "src/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Thinkful-Ed/starter-restaurant-reservation",
-    "directory": "/front-end"
+    "url": "https://github.com/sprout90/restaurant-ressies.git",
+    "directory": "front-end"
   },
   "private": true,
   "engines": {
