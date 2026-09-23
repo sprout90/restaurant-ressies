@@ -1,20 +1,42 @@
 # Restaurant Ressies
 
-## What is it?
-This is a restaurant reservation system that will allow a user to create, seat and finish a reservation.  Users are also allowed to edit & delete reservations.  
+Restaurant Ressies is a full-stack restaurant reservation and table-management application developed as my capstone project for the Thinkful Software Engineering program.
 
-## Technology Used
-Javascript is the fundamental software development language used for both front-end and back-end implementations. In additino, the following tools and technology have been used to create the site. 
+The project began with a Thinkful-provided scaffold, project requirements, and user stories. I implemented the application functionality across the React frontend, Node/Express REST API, and PostgreSQL database to satisfy those requirements.
 
-### Back-End
-- Node 
-- Express 
-- Knex PostgreSQL API 
+## Application Overview
 
-### Front-End
-- React
-- Bootstrap
-- CSS & HTML
+Restaurant Ressies provides restaurant staff with a centralized way to manage reservations and table assignments. The application supports the reservation lifecycle from creation through seating and completion, while enforcing business rules such as operating hours, valid reservation dates, party sizes, and reservation status.
+
+Key functionality includes:
+
+* Create, edit, search, and manage reservations
+* View reservations by date
+* Search reservations by customer phone number
+* Manage restaurant tables and seating capacity
+* Assign reservations to available tables
+* Track reservation status through the seating workflow
+* Validate reservation and table-management business rules
+* Persist application data using PostgreSQL
+
+## Technical Implementation
+
+The application uses a full-stack JavaScript architecture:
+
+* **Frontend:** React, React Router, and Bootstrap
+* **Backend:** Node.js and Express
+* **Database:** PostgreSQL with Knex.js
+* **API:** RESTful endpoints for reservations and tables
+* **Testing:** Backend integration tests and frontend end-to-end tests
+* **Deployment/Configuration:** Environment-based configuration for development and deployed environments
+
+The backend separates HTTP/controller responsibilities from database services, with validation middleware used to enforce reservation and table-management rules before database operations are performed.
+
+## Thinkful Project Scaffold
+
+Thinkful supplied the initial project structure and capstone requirements used as the starting point for the application. My work focused on implementing the required frontend and backend functionality, database integration, business-rule validation, API behavior, and user workflows described above.
+
+The original scaffold included supporting project configuration and starter files intended to provide a consistent development environment for the capstone.
 
 ## Screen Samples
 In lieu of visiting the site, some screen shots of Restaurant Ressies system web pages made available here for quick reference.
@@ -144,69 +166,6 @@ Parameters | Table Id
 Properties | Status
 
 
-## Existing files
-
-This repository is set up as a *monorepo*, meaning that the frontend and backend projects are in one repository. This allows you to open both projects in the same editor.
-
-As you work through the user stories listed later in this document, you will be writing code that allows your frontend and backend applications to talk to each other. You will also write code to allow your controllers and services to connect to, and query, your PostgreSQL database via [Knex](http://knexjs.org/).
-
-The table below describes the folders in this starter repository:
-
-| Folder/file path | Description                                                      |
-| ---------------- | ---------------------------------------------------------------- |
-| `./back-end`     | The backend project, which runs on `localhost:5001` by default.  |
-| `./front-end`    | The frontend project, which runs on `localhost:3000` by default. |
-
-This starter code closely follows the best practices and patterns established in the Robust Server Structure module.
-
-**Note**: Please do not submit a pull request to this repository with your solution.
-
-### Backend Existing files
-
-The `./back-end` folder contains all the code for the backend project.
-
-The table below describes the existing files in the `./back-end` folder:
-
-| Folder/file path                                         | Description                                                                                                         |
-| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| `./back-end/knexfile.js`                                 | The Knex configuration file. You will not need to make changes to this file.                                        |
-| `./back-end/src/app.js`                                  | Defines the Express application and connects routers.                                                               |
-| `./back-end/src/db/connection.js`                        | The Knex connection file. You will not need to make changes to this file.                                           |
-| `./back-end/src/db/migrations`                           | The Knex migrations folder.                                                                                         |
-| `./back-end/src/db/seeds/`                               | The Knex seeds folder.                                                                                              |
-| `./back-end/src/errors/errorHandler.js`                  | Defined an Express API error handler.                                                                               |
-| `./back-end/src/errors/notFound.js`                      | Defined an Express API "not found" handler.                                                                         |
-| `./back-end/src/reservations/reservations.controller.js` | A controller for the reservations resource.                                                                         |
-| `./back-end/src/reservations/reservations.router.js`     | A router for the reservations resource.                                                                             |
-| `./back-end/src/server.js`                               | Defines the node server.                                                                                            |
-| `./back-end/test`                                        | A folder that contains all of the integration tests. You will not need to make changes to the files in this folder. |
-| `./back-end/vercel.json`                                 | A vercel deployment configuration file. You will not need to make changes to this file.                             |
-
-### Frontend Existing files
-
-The `./front-end` folder contains all the code for the frontend project.
-
-The table below describes the existing files in the `./front-end` folder:
-
-| Folder/file path                                   | Description                                                                                            |
-| -------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| `./front-end/e2e`                                  | Contains all of the end-to-end tests. You will not need to make changes to the files in this folder.   |
-| `./front-end/jest-puppeteer.config.js`             | A configuration file used by the end-to-end tests. You will not need to make changes to this file.     |
-| `./front-end/src/App.js`                           | Defines the root application component. You will not need to make changes to this file.                |
-| `./front-end/src/App.test.js`                      | Contains the tests for the root application component. You will not need to make changes to this file. |
-| `./front-end/src/dashboard/Dashboard.js`           | Defines the Dashboard page.                                                                            |
-| `./front-end/src/index.js`                         | The main entry point for the React application.                                                        |
-| `./front-end/src/layout/ErrorAlert.js`             | Defines an error alert component that display only when an error is specified.                         |
-| `./front-end/src/layout/Layout.css`                | The css for the Layout component.                                                                      |
-| `./front-end/src/layout/Layout.js`                 | Defines the main layout of the application.                                                            |
-| `./front-end/src/layout/Menu.js`                   | Defines the menu for the application.                                                                  |
-| `./front-end/src/layout/NotFound.js`               | Defines the "Not found" component that is displayed when no route matches.                             |
-| `./front-end/src/layout/Routes.js`                 | Defines all the routes for the application.                                                            |
-| `./front-end/src/utils/api.js`                     | Defines the functions used to access the backend API                                                   |
-| `./front-end/src/utils/date-time.js`               | Defines functions to format date and time strings.                                                     |
-| `./front-end/src/utils/format-reservation-date.js` | Defines a function to format the date on a single reservation or an array of reservations.             |
-| `./front-end/src/utils/format-reservation-time.js` | Defines a function to format the time on a single reservation or an array of reservations.             |
-| `./front-end/src/utils/useQuery.js`                | Defines a custom hook to parse the query parameters from the URL.                                      |
 
 ## Database setup
 
@@ -532,5 +491,70 @@ so that reservations are accurate and current.
    - Only reservations with a status of "booked" can be edited.
    - Clicking the "Submit" button will save the reservation, then displays the previous page.
    - Clicking "Cancel" makes no changes, then display the previous page.
+
+## Existing files
+
+This repository is set up as a *monorepo*, meaning that the frontend and backend projects are in one repository. This allows you to open both projects in the same editor.
+
+As you work through the user stories listed later in this document, you will be writing code that allows your frontend and backend applications to talk to each other. You will also write code to allow your controllers and services to connect to, and query, your PostgreSQL database via [Knex](http://knexjs.org/).
+
+The table below describes the folders in this starter repository:
+
+| Folder/file path | Description                                                      |
+| ---------------- | ---------------------------------------------------------------- |
+| `./back-end`     | The backend project, which runs on `localhost:5001` by default.  |
+| `./front-end`    | The frontend project, which runs on `localhost:3000` by default. |
+
+This starter code closely follows the best practices and patterns established in the Robust Server Structure module.
+
+**Note**: Please do not submit a pull request to this repository with your solution.
+
+### Backend Existing files
+
+The `./back-end` folder contains all the code for the backend project.
+
+The table below describes the existing files in the `./back-end` folder:
+
+| Folder/file path                                         | Description                                                                                                         |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `./back-end/knexfile.js`                                 | The Knex configuration file. You will not need to make changes to this file.                                        |
+| `./back-end/src/app.js`                                  | Defines the Express application and connects routers.                                                               |
+| `./back-end/src/db/connection.js`                        | The Knex connection file. You will not need to make changes to this file.                                           |
+| `./back-end/src/db/migrations`                           | The Knex migrations folder.                                                                                         |
+| `./back-end/src/db/seeds/`                               | The Knex seeds folder.                                                                                              |
+| `./back-end/src/errors/errorHandler.js`                  | Defined an Express API error handler.                                                                               |
+| `./back-end/src/errors/notFound.js`                      | Defined an Express API "not found" handler.                                                                         |
+| `./back-end/src/reservations/reservations.controller.js` | A controller for the reservations resource.                                                                         |
+| `./back-end/src/reservations/reservations.router.js`     | A router for the reservations resource.                                                                             |
+| `./back-end/src/server.js`                               | Defines the node server.                                                                                            |
+| `./back-end/test`                                        | A folder that contains all of the integration tests. You will not need to make changes to the files in this folder. |
+| `./back-end/vercel.json`                                 | A vercel deployment configuration file. You will not need to make changes to this file.                             |
+
+### Frontend Existing files
+
+The `./front-end` folder contains all the code for the frontend project.
+
+The table below describes the existing files in the `./front-end` folder:
+
+| Folder/file path                                   | Description                                                                                            |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `./front-end/e2e`                                  | Contains all of the end-to-end tests. You will not need to make changes to the files in this folder.   |
+| `./front-end/jest-puppeteer.config.js`             | A configuration file used by the end-to-end tests. You will not need to make changes to this file.     |
+| `./front-end/src/App.js`                           | Defines the root application component. You will not need to make changes to this file.                |
+| `./front-end/src/App.test.js`                      | Contains the tests for the root application component. You will not need to make changes to this file. |
+| `./front-end/src/dashboard/Dashboard.js`           | Defines the Dashboard page.                                                                            |
+| `./front-end/src/index.js`                         | The main entry point for the React application.                                                        |
+| `./front-end/src/layout/ErrorAlert.js`             | Defines an error alert component that display only when an error is specified.                         |
+| `./front-end/src/layout/Layout.css`                | The css for the Layout component.                                                                      |
+| `./front-end/src/layout/Layout.js`                 | Defines the main layout of the application.                                                            |
+| `./front-end/src/layout/Menu.js`                   | Defines the menu for the application.                                                                  |
+| `./front-end/src/layout/NotFound.js`               | Defines the "Not found" component that is displayed when no route matches.                             |
+| `./front-end/src/layout/Routes.js`                 | Defines all the routes for the application.                                                            |
+| `./front-end/src/utils/api.js`                     | Defines the functions used to access the backend API                                                   |
+| `./front-end/src/utils/date-time.js`               | Defines functions to format date and time strings.                                                     |
+| `./front-end/src/utils/format-reservation-date.js` | Defines a function to format the date on a single reservation or an array of reservations.             |
+| `./front-end/src/utils/format-reservation-time.js` | Defines a function to format the time on a single reservation or an array of reservations.             |
+| `./front-end/src/utils/useQuery.js`                | Defines a custom hook to parse the query parameters from the URL.                                      |
+
 
 > **Hint** The same validation used for create applies to editing a reservation. The form and the API for updating a reservation must not allow the user to violate any of the rules specified when creating a reservation.
