@@ -63,7 +63,10 @@ function Dashboard({ date }) {
   // any errors caught are displayed via ReservationsError state variable
   async function loadTables(abortController) {
     try {
-      const result = await listTables(abortController.signal);
+      const result = await listTables(
+        { date: reservationDate },
+        abortController.signal
+      );
       setTables(result);
     } catch (error) {
       setReservationsError(error.message);

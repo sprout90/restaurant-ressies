@@ -45,7 +45,7 @@ function ReservationSeat() {
     // or  reservation_id
     async function loadTables(abortController) {
       try {
-        const result = await listTables(abortController.signal);
+        const result = await listTables({}, abortController.signal);
         const filtered = result.filter(
           (table) =>
             table.reservation_date === null && table.reservation_id === null
