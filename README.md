@@ -145,7 +145,7 @@ Method | Put
 Description | Removes the reservation id from the matching table record, and also sets the 'finished' or 'canceled' status to matching reservation record. The 'finished' status is set by default when not defined as property.
 Parameters | Table Id
 Properties | Status
-
+<br/>
 
 ## Existing files
 
