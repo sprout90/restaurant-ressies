@@ -55,7 +55,7 @@ function Dashboard({ date }) {
 
       setReservations(filtered);
     } catch (error) {
-      setReservationsError(error.message);
+      setReservationsError(error);
     }
   }
 
@@ -69,7 +69,7 @@ function Dashboard({ date }) {
       );
       setTables(result);
     } catch (error) {
-      setReservationsError(error.message);
+      setReservationsError(error);
     }
   }
 
@@ -95,7 +95,7 @@ function Dashboard({ date }) {
         console.log(
           `Error in Close Reservation data load. Error: ${error.message}`
         );
-        setReservationsError(error.message);
+        setReservationsError(error);
       });
 
     return () => {

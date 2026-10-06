@@ -9,14 +9,6 @@ knex.migrate
     console.log("migrations", migrations);
     app.listen(PORT, listener);
   })
-  .then(() => {
-    knex.seed
-      .run()
-      .then((seeds) => {
-        console.log("seeds", seeds);
-      })
-
-  } )
   .catch((error) => {
     console.error(error);
     knex.destroy();

@@ -3,20 +3,25 @@ import React from "react";
 /**
  * Defines the alert message to render if the specified error is truthy.
  * @param error
- *  an instance of an object with `.message` property as a string, typically an Error instance.
+ *  an Error, `{ message }`, a string, or an array of those.
  * @returns {JSX.Element}
  *  a bootstrap danger alert that contains the message string.
  */
 
+function errorMessage(value) {
+  if (typeof value === "string") {
+    return value;
+  }
+  return value && value.message;
+}
+
 function ErrorAlert({ error }) {
   if (error) {
     if (Array.isArray(error) === false) {
-      // return single error message
       return (
-        <div className="alert alert-danger m-2">Error: {error.message}</div>
+        <div className="alert alert-danger m-2">Error: {errorMessage(error)}</div>
       );
     } else {
-      // return one or more errors from error.map
       return (
         <div>
           <div className="alert alert-danger m-2">
@@ -26,7 +31,7 @@ function ErrorAlert({ error }) {
             <ul>
               {error.map((item, index) => (
                 <div key={`${index}`}>
-                  <li>{item.message}</li>
+                  <li>{errorMessage(item)}</li>
                 </div>
               ))}
             </ul>
@@ -35,7 +40,6 @@ function ErrorAlert({ error }) {
       );
     }
   } else {
-    // return empty span tag for no errors as placeholder.
     return null;
   }
 }
