@@ -80,11 +80,16 @@ describe("US-05 - Finish an occupied table - E2E", () => {
         await dialog.accept();
       });
 
-      await page.click(finishButtonSelector);
-
-      await page.waitForResponse((response) => {
-        return response.url().endsWith(`/tables`);
+      const tablesRefresh = page.waitForResponse((response) => {
+        const url = new URL(response.url());
+        return (
+          response.request().method() === "GET" &&
+          url.pathname.endsWith("/tables")
+        );
       });
+
+      await page.click(finishButtonSelector);
+      await tablesRefresh;
 
       await page.screenshot({
         path: ".screenshots/us-05-dashboard-finish-button-after.png",

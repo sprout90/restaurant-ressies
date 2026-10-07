@@ -116,11 +116,16 @@ describe("US-06 - Reservation status - E2E", () => {
         await dialog.accept();
       });
 
-      await page.click(finishButtonSelector);
-
-      await page.waitForResponse((response) => {
-        return response.url().endsWith(`/tables`);
+      const tablesRefresh = page.waitForResponse((response) => {
+        const url = new URL(response.url());
+        return (
+          response.request().method() === "GET" &&
+          url.pathname.endsWith("/tables")
+        );
       });
+
+      await page.click(finishButtonSelector);
+      await tablesRefresh;
 
       await page.screenshot({
         path: ".screenshots/us-06-finish-after.png",
